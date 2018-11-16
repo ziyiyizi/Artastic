@@ -11,6 +11,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Welcome to Artastic</title>
+<link rel="stylesheet" type="text/css" href="App.css" />
 </head>
 <body>
 	<div id="Welcome Page"></div>
