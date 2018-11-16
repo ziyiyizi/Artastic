@@ -9,13 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 @EnableAutoConfiguration
 @RestController
 public class HomeController {
-	@RequestMapping(value="/home")
-	public String home() {
-		System.out.println("home");
-		return "index";
-	}
+
 	
-	@RequestMapping(value="/home/page")
+	@RequestMapping(value="/home")
 	@ResponseBody
 	public ModelAndView gohome() {
 		ModelAndView mv = new ModelAndView();
@@ -24,11 +20,6 @@ public class HomeController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/home/res")
-	@ResponseBody
-	public String homeRes() {
-		return "index";
-	}
 	
 	
 }
