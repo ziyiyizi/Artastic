@@ -22,6 +22,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>src/main/webapp/Artastic.png</name>
+			<type>1</type>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/Artastic.png</location>
+		</link>
+		<link>
 			<name>src/main/webapp/babel.js</name>
 			<type>1</type>
 			<location>D:/Workspace/Github/Artastic/src/main/webapp/babel.js</location>
