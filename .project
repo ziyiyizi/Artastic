@@ -20,4 +20,21 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/webapp/babel.js</name>
+			<type>1</type>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/babel.js</location>
+		</link>
+		<link>
+			<name>src/main/webapp/react-dom.production.min.js</name>
+			<type>1</type>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/react-dom.production.min.js</location>
+		</link>
+		<link>
+			<name>src/main/webapp/react.production.min.js</name>
+			<type>1</type>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/react.production.min.js</location>
+		</link>
+	</linkedResources>
 </projectDescription>
