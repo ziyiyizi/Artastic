@@ -1,9 +1,8 @@
 
 
-ReactDOM.render(            <div className="App">
+ReactDOM.render(<div className="App">
 <header className="App-header">
 <img src="/Artastic.png" className="App-logo" alt="logo" />
-<img src="/logo.svg" className="App-logo" alt="logo" />
 <p>
   Edit <code>src/App.js</code> and save to reload.
 </p>
