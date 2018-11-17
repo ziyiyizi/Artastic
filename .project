@@ -22,24 +22,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/main/webapp/Artastic.png</name>
+			<name>src/main/webapp/08bb1cb4afc1e3b06fa0659eab583d36.png</name>
 			<type>1</type>
-			<location>D:/Workspace/Github/Artastic/src/main/webapp/Artastic.png</location>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/08bb1cb4afc1e3b06fa0659eab583d36.png</location>
 		</link>
 		<link>
-			<name>src/main/webapp/babel.js</name>
+			<name>src/main/webapp/JsResources/index.js</name>
 			<type>1</type>
-			<location>D:/Workspace/Github/Artastic/src/main/webapp/babel.js</location>
-		</link>
-		<link>
-			<name>src/main/webapp/react-dom.production.min.js</name>
-			<type>1</type>
-			<location>D:/Workspace/Github/Artastic/src/main/webapp/react-dom.production.min.js</location>
-		</link>
-		<link>
-			<name>src/main/webapp/react.production.min.js</name>
-			<type>1</type>
-			<location>D:/Workspace/Github/Artastic/src/main/webapp/react.production.min.js</location>
+			<location>D:/Workspace/Github/Artastic/src/main/webapp/JsResources/index.js</location>
 		</link>
 	</linkedResources>
 </projectDescription>
