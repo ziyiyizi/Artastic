@@ -4,19 +4,17 @@
 <html>
 
 
-<script src="/react.production.min.js"></script>
-<script src="/react-dom.production.min.js"></script>
-<script src="/babel.js"></script>
+
 
 <head>
 <meta charset="ISO-8859-1">
 <title>Welcome to Artastic</title>
-<link rel="stylesheet" type="text/css" href="App.css" />
+
 </head>
 <body>
-	<div id="Welcome Page"></div>
-	<a></a>
-	<script type ="text/babel" src="/RenderLogin.js"></script>
+	<div id="root"></div>
+
+	<script type ="text/javascript" src="/JsResources/index.js"></script>
 
 </body>
 </html>
