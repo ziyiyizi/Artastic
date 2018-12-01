@@ -1,4 +1,4 @@
-package com.javaee.artastic.Artastic;
+package com.javaee.artastic.Artastic.controller;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +14,8 @@ public class HomeController {
 	@RequestMapping(value="/home")
 	@ResponseBody
 	public ModelAndView gohome() {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("name","ziyi");
-		mv.setViewName("index");
+		ModelAndView mv = new ModelAndView("index");
+		mv.addObject("webName","Artastic");
 		return mv;
 	}
 	

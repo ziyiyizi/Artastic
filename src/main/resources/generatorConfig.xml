@@ -11,7 +11,7 @@
         </commentGenerator>
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-            connectionURL="jdbc:mysql://47.101.145.218:3306/ippool?serverTimezone=UTC" userId="root"
+            connectionURL="jdbc:mysql://47.101.145.218:3306/artastic?serverTimezone=UTC" userId="root"
             password="123456">
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
@@ -30,8 +30,8 @@
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
         <!-- targetProject:mapper映射文件生成的位置-->
-        <sqlMapGenerator targetPackage="com.javaee.artastic.Artastic.mapping"
-            targetProject=".\src\main\java\">
+        <sqlMapGenerator targetPackage="mapping"
+            targetProject=".\src\main\resources\">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
         <!-- targetPackage：mapper接口生成的位置 -->
@@ -42,11 +42,54 @@
         </javaClientGenerator>
         <!-- 指定数据库表，要生成哪些表，就写哪些表，要和数据库中对应 -->
 
-        <table tableName="test" enableCountByExample="false" 
+        <table tableName="users" enableCountByExample="false" 
   enableUpdateByExample="false" 
   enableDeleteByExample="false"
       enableSelectByExample="false" 
-      selectByExampleQueryId="false"></table>     
+      selectByExampleQueryId="false"></table>  
+      
+      	<table tableName="artdata" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+      	
+      	<table tableName="artworks" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+      	
+      	<table tableName="clicks" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+      	
+      	<table tableName="comments" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+      
+      	<table tableName="follow" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>   
+      
+      	<table tableName="likes" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+      
+      	<table tableName="tags" enableCountByExample="false" 
+  enableUpdateByExample="false" 
+  enableDeleteByExample="false"
+      enableSelectByExample="false" 
+      selectByExampleQueryId="false"></table>
+
  
     </context>
 </generatorConfiguration>

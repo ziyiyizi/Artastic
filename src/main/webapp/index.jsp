@@ -12,9 +12,13 @@
 
 </head>
 <body>
-	<div id="root"></div>
+	<!--  <div id="root"></div>-->
+	<div id="welcome"></div>
+	<div id="CommunityPage"></div>
 
 	<script type ="text/javascript" src="/JsResources/index.js"></script>
+	<script type ="text/javascript" src="/JsResources/home.js"></script>
+	<script type ="text/javascript" src="/JsResources/login.js"></script>
 
 </body>
 </html>
