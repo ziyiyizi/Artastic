@@ -16,6 +16,7 @@ import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.UserRole;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.entity.Params;
+import com.javaee.artastic.Artastic.service.UsersService;
 
 @EnableAutoConfiguration
 @RestController
@@ -23,7 +24,7 @@ import com.javaee.artastic.Artastic.entity.Params;
 
 public class UsersController {
 	@Autowired
-	private UsersDao usersdao;
+	private UsersService usersService;
 	
 	@RequestMapping(value="/login")	
 	@ResponseBody
@@ -39,12 +40,19 @@ public class UsersController {
 	@RequestMapping(value={"/showAll"})
 	@ResponseBody
 	public List<Users> showAll(){
-		List<Users> usersEntities = usersdao.findAll();
+		List<Users> usersEntities = usersService.findAll();
 		for(Users usersEntity : usersEntities) {
 			
 			System.out.println(usersEntity.getUserName());
 		}
-		
 		return usersEntities;
+	}
+	
+	@RequestMapping(value= {"/byName"})
+	@ResponseBody
+	public Users getUserByName(@RequestParam("name")String name) {
+		Users users = usersService.findByUserName(name);
+		return users;
+		
 	}
 }

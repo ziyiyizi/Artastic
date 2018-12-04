@@ -1,5 +1,7 @@
 package com.javaee.artastic.Artastic.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +24,9 @@ public class UsersServiceImpl implements UsersService{
         System.out.println("UsersServiceImpl.findByUsername()");  
         return usersDao.findByUserName(username);  
     }  
+	
+	@Override
+	public List<Users> findAll(){
+		return usersDao.findAll();
+	}
 }
