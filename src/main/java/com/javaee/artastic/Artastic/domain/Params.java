@@ -1,4 +1,4 @@
-package com.javaee.artastic.Artastic.entity;
+package com.javaee.artastic.Artastic.domain;
 
 public class Params {
 	String username;

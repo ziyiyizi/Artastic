@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,18 +24,6 @@ import com.aliyun.oss.model.PutObjectResult;
 @Component
 public class AliyunOSSUtil {
 	private final static Logger LOGGER = Logger.getLogger(AliyunOSSUtil.class);
-	
-//	@Value("${aliyun.endpoint}")
-//	private String endpoint;
-//	
-//	@Value("${aliyun.accessKeyId}")
-//	private String accessKeyId;
-//	
-//	@Value("${aliyun.accessKeySecret}")
-//	private String accessKeySecret;
-//	
-//	@Value("${aliyun.bucketName}")
-//	private String bucketName;
 	
 	private String endpoint = "oss-cn-shanghai.aliyuncs.com";
 	
@@ -52,17 +41,27 @@ public class AliyunOSSUtil {
 		ossClient = new OSSClient(endpoint, accessKeyId,accessKeySecret);
 	}
 	
+	@PostConstruct
 	public void init() {
 		ossClient = new OSSClient(endpoint, accessKeyId,accessKeySecret);
 	}
 	
+	@PreDestroy
 	public void destroy() {
 		ossClient.shutdown();
 	}
 	
+	public String getFileDir() {
+		return fileDir;
+	}
+
+	public void setFileDir(String fileDir) {
+		this.fileDir = fileDir;
+	}
+
 	public void uploadImg2Oss(String url) throws Exception {
         File fileOnServer = new File(url);
-        FileInputStream fin;
+        FileInputStream fin = null;
         try {
             fin = new FileInputStream(fileOnServer);
             String[] split = url.split("/");
@@ -74,7 +73,7 @@ public class AliyunOSSUtil {
 	
 	public String uploadImg2Oss(MultipartFile file) throws Exception {
         if (file.getSize() > 5 * 1024 * 1024) {
-            throw new Exception("上传图片大小不能超过5M！");
+            throw new Exception("上传图片大小不能超过5MB！");
         }
         String originalFilename = file.getOriginalFilename();
         String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
@@ -98,7 +97,7 @@ public class AliyunOSSUtil {
      * @return 出错返回"" ,唯一MD5数字签名
      */
     public String uploadFile2OSS(InputStream instream, String fileName) {
-        String ret = "";
+        String ret = null;
         try {
             //创建上传Object的Metadata
             ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -197,7 +196,4 @@ public class AliyunOSSUtil {
         return null;
     }
 
-
-	
-	
 }

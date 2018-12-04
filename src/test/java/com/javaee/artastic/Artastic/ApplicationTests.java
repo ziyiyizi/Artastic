@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.javaee.artastic.Artastic.service.MailService;
+import com.javaee.artastic.Artastic.service.impl.MailService;
 
 
 @RunWith(SpringRunner.class)

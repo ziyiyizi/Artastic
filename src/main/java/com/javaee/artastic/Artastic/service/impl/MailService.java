@@ -1,4 +1,4 @@
-package com.javaee.artastic.Artastic.service;
+package com.javaee.artastic.Artastic.service.impl;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

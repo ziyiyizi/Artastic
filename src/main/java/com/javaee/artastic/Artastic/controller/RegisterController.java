@@ -15,7 +15,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.javaee.artastic.Artastic.dao.UsersDao;
-import com.javaee.artastic.Artastic.service.MailService;
+import com.javaee.artastic.Artastic.service.impl.MailService;
 import com.sun.mail.handlers.text_html;
 
 @EnableAutoConfiguration

@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.javaee.artastic.Artastic.dao.RolesDao;
+import com.javaee.artastic.Artastic.dao.UserRoleDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
+import com.javaee.artastic.Artastic.domain.Roles;
+import com.javaee.artastic.Artastic.domain.UserRole;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 
@@ -17,6 +21,9 @@ public class UsersServiceImpl implements UsersService{
 	
 	@Resource
 	private UsersDao usersDao;
+	
+	@Resource
+	private RolesDao rolesDao;
 	
 	@Transactional(readOnly=true)  
     @Override  
@@ -28,5 +35,11 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public List<Users> findAll(){
 		return usersDao.findAll();
+	}
+	
+	@Override
+	public List<Roles> findRoleList(int userId){
+		return rolesDao.findRolesByUser(userId);
+		
 	}
 }

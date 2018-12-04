@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -15,7 +14,7 @@ import com.javaee.artastic.Artastic.utils.AliyunOSSUtil;
 
 @Service
 public class UploadPicService {
-
+	
     private AliyunOSSUtil ossUtil = new AliyunOSSUtil();
 	
     public Map<String, Object> uploadFile(HttpServletRequest request){
