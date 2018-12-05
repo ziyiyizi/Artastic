@@ -42,4 +42,12 @@ public class UsersServiceImpl implements UsersService{
 		return rolesDao.findRolesByUser(userId);
 		
 	}
+
+	@Override
+	public List<Roles> findRoleList(Users users) {
+		// TODO Auto-generated method stub
+		int userid = users.getUserId();
+		return rolesDao.findRolesByUser(userid);
+	}
+	
 }

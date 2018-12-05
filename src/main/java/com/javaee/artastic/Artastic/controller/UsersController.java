@@ -2,6 +2,7 @@ package com.javaee.artastic.Artastic.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,13 +44,10 @@ public class UsersController {
 	}
 	
 	@RequestMapping(value={"/showAll"})
+	@RequiresPermissions("user:showAll")
 	@ResponseBody
 	public List<Users> showAll(){
 		List<Users> usersEntities = usersService.findAll();
-		for(Users usersEntity : usersEntities) {
-			
-			System.out.println(usersEntity.getUserName());
-		}
 		return usersEntities;
 	}
 	

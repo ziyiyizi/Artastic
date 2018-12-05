@@ -9,4 +9,5 @@ public interface UsersService {
 	public Users findByUserName(String username);
 	public List<Users> findAll(); 
 	public List<Roles> findRoleList(int userId);
+	public List<Roles> findRoleList(Users users);
 }

@@ -38,7 +38,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "User_name")
+    @Column(name = "User_name", unique = true)
     public String getUserName() {
         return userName;
     }
