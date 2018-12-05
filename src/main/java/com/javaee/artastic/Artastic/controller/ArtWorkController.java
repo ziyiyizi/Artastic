@@ -1,10 +1,15 @@
 package com.javaee.artastic.Artastic.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.service.ArtworksService;
+import com.javaee.artastic.Artastic.service.UsersService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -13,6 +18,11 @@ import java.util.List;
 
 @RestController
 public class ArtWorkController {
+	@Autowired
+	private ArtworksService artworkService;
+	
+	@Autowired
+	private UsersService userService;
 	
 	@RequestMapping(value="/post")
 	@ResponseBody
@@ -34,5 +44,24 @@ public class ArtWorkController {
 		artworks.add(artwork1);
 		artworks.add(artwork2);
 		return artworks;
+	}
+	
+	@RequestMapping(value="/artwork/show")
+	@ResponseBody
+	public ArtWorkDetails show(@RequestParam("artworkId")int artworkId) {
+		ArtWorkDetails artWorkDetails = new ArtWorkDetails();
+		Artworks artworks = artworkService.findByArtworkId(artworkId);
+		int userId = artworks.getArtistId();
+		artWorkDetails.setArtworkId(artworkId);
+		artWorkDetails.setArtworkName(artworks.getArtworkName());
+		artWorkDetails.setArtistId(userId);
+		artWorkDetails.setArtistName(userService.findUserNameByUserId(userId));
+		artWorkDetails.setDate(artworks.getUploadtime());
+		artWorkDetails.setComments(artworkService.findCommentList(artworkId));
+		artWorkDetails.setFrenzy(artworkService.countLikes(artworkId));
+		artWorkDetails.setLikes(artworkService.findLikesList(artworkId));
+		artWorkDetails.setTags(artworkService.findTagList(artworkId));
+		
+		return artWorkDetails;
 	}
 }

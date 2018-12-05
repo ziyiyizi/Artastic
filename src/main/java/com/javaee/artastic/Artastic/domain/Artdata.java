@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class Artdata {
     private int artworkId;
     private int artdataId;
-    private byte[] artdata;
+    private String artdata;
 
     @Id
     @Column(name = "Artwork_ID")
@@ -32,11 +32,11 @@ public class Artdata {
 
     @Basic
     @Column(name = "Artdata")
-    public byte[] getArtdata() {
+    public String getArtdata() {
         return artdata;
     }
 
-    public void setArtdata(byte[] artdata) {
+    public void setArtdata(String artdata) {
         this.artdata = artdata;
     }
 
@@ -49,7 +49,7 @@ public class Artdata {
 
         if (artworkId != artdata1.artworkId) return false;
         if (artdataId != artdata1.artdataId) return false;
-        if (!Arrays.equals(artdata, artdata1.artdata)) return false;
+        if (artdata!= null ? !artdata.equals(artdata1.artdata) : artdata1.artdata != null) return false;
 
         return true;
     }
@@ -58,7 +58,7 @@ public class Artdata {
     public int hashCode() {
         int result = artworkId;
         result = 31 * result + artdataId;
-        result = 31 * result + Arrays.hashCode(artdata);
+        result = 31 * result + (artdata != null ? artdata.hashCode() : 0);
         return result;
     }
 }

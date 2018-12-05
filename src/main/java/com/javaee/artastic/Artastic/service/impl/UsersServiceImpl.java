@@ -28,7 +28,6 @@ public class UsersServiceImpl implements UsersService{
 	@Transactional(readOnly=true)  
     @Override  
     public Users findByUserName(String username) {  
-        System.out.println("UsersServiceImpl.findByUsername()");  
         return usersDao.findByUserName(username);  
     }  
 	
@@ -49,5 +48,13 @@ public class UsersServiceImpl implements UsersService{
 		int userid = users.getUserId();
 		return rolesDao.findRolesByUser(userid);
 	}
+
+	@Override
+	public String findUserNameByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 }

@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@MapperScan("com.javaee.artastic.Artastic.mapper")
+//@MapperScan("com.javaee.artastic.Artastic.mapper")
 public class App 
 {
     public static void main( String[] args )
