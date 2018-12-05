@@ -69,6 +69,20 @@ public class HomeController {
 		}
         
     }
+	
+	@RequestMapping(value= {"/success"})
+	@ResponseBody
+	public ModelAndView success() {
+		ModelAndView mv = new ModelAndView("success");
+		return mv;
+	}
+	
+	@RequestMapping(value= {"/community"})
+	@ResponseBody
+	public ModelAndView community() {
+		ModelAndView mv = new ModelAndView("community");
+		return mv;
+	}
 
 	
 }

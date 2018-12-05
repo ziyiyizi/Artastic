@@ -24,22 +24,35 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/index", "authc");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/loginUser", "anon");
-        filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/index", "user");
-        filterChainDefinitionMap.put("/", "user");
-
-        filterChainDefinitionMap.put("/favicon.ico", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
-        //authc表示需要验证身份才能访问，还有一些比如anon表示不需要验证身份就能访问等。
-
-
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+//        filterChainDefinitionMap.put("/index", "authc");
+//        filterChainDefinitionMap.put("/login", "anon");
+//        filterChainDefinitionMap.put("/loginUser", "anon");
+//        filterChainDefinitionMap.put("/logout", "logout");
+////        filterChainDefinitionMap.put("/index", "user");
+////        filterChainDefinitionMap.put("/", "user");
+//        filterChainDefinitionMap.put("/favicon.ico", "anon");
+//        filterChainDefinitionMap.put("/**", "authc");
+//        //authc表示需要验证身份才能访问，还有一些比如anon表示不需要验证身份就能访问等。
+//        shiroFilterFactoryBean.setLoginUrl("/login");
+//        shiroFilterFactoryBean.setSuccessUrl("/index");
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/403"); //这里设置403并不会起作用，参考http://www.jianshu.com/p/e03f5b54838c
 
+        filterChainDefinitionMap.put("/success", "authc");
+        filterChainDefinitionMap.put("/index", "anon");
+        filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/loginUser", "anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/0e40b5786876766a7db2a1b5922ac748.png", "anon");
+        filterChainDefinitionMap.put("/1cedb6e919bfed6a2c1ec00b5d8ee620.svg", "anon");
+        filterChainDefinitionMap.put("/94b2d71afb3182b7c9d52b7bd18377e7.jpg", "anon");
+        
+        filterChainDefinitionMap.put("/**", "authc");
+        shiroFilterFactoryBean.setLoginUrl("/user/login");
+        shiroFilterFactoryBean.setSuccessUrl("/success");
+        
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
