@@ -6,23 +6,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import com.javaee.artastic.Artastic.service.UsersService;
+
+import net.sf.json.JSONArray;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.JList;
+
 @RestController
 public class ArtWorkController {
 	@Autowired
 	private ArtworksService artworkService;
-	
-	@Autowired
-	private UsersService userService;
 	
 	@RequestMapping(value="/post")
 	@ResponseBody
@@ -46,22 +49,25 @@ public class ArtWorkController {
 		return artworks;
 	}
 	
-	@RequestMapping(value="/artwork/show")
+	@RequestMapping(value="/artwork/showOne")
 	@ResponseBody
-	public ArtWorkDetails show(@RequestParam("artworkId")int artworkId) {
-		ArtWorkDetails artWorkDetails = new ArtWorkDetails();
-		Artworks artworks = artworkService.findByArtworkId(artworkId);
-		int userId = artworks.getArtistId();
-		artWorkDetails.setArtworkId(artworkId);
-		artWorkDetails.setArtworkName(artworks.getArtworkName());
-		artWorkDetails.setArtistId(userId);
-		artWorkDetails.setArtistName(userService.findUserNameByUserId(userId));
-		artWorkDetails.setDate(artworks.getUploadtime());
-		artWorkDetails.setComments(artworkService.findCommentList(artworkId));
-		artWorkDetails.setFrenzy(artworkService.countLikes(artworkId));
-		artWorkDetails.setLikes(artworkService.findLikesList(artworkId));
-		artWorkDetails.setTags(artworkService.findTagList(artworkId));
+	public ArtWorkDetails showOne(@RequestParam("artworkId")int artworkId) {
 		
-		return artWorkDetails;
+		return artworkService.getArtworkDetails(artworkId);
+	}
+	
+	@RequestMapping(value="/getPosts")
+	@ResponseBody
+	public ArtworksList getArtWorksAll() {
+		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+		List<Artworks> artworks = artworkService.findAll();
+		
+		for(Artworks artwork : artworks) {
+			artWorkDetails.add(artworkService.getArtworkDetails(artwork.getArtworkId()));
+			
+		}
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setPosts(artWorkDetails);
+		return artworksList;
 	}
 }

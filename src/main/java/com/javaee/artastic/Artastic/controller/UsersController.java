@@ -30,6 +30,7 @@ import com.javaee.artastic.Artastic.domain.UserRole;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 
+
 @EnableAutoConfiguration
 @RestController
 @RequestMapping(value="/user")
@@ -37,13 +38,14 @@ import com.javaee.artastic.Artastic.service.UsersService;
 public class UsersController {
 	
 	@Autowired
-	private UsersDao usersDao;
-	
-	@Autowired
 	private UsersService usersService;
 	
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public ModelAndView login() {
+		return new ModelAndView("index");
+	}
 	
-	@RequestMapping(value="/login")
+	@RequestMapping(value="/login",method = RequestMethod.POST)
 	@ResponseBody
 	public Params login(@RequestBody Params param, HttpResponse response, HttpSession session) throws Exception {
 

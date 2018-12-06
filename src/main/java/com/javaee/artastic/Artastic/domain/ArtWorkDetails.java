@@ -2,6 +2,7 @@ package com.javaee.artastic.Artastic.domain;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public class ArtWorkDetails {
 	private int artistId;
@@ -9,10 +10,19 @@ public class ArtWorkDetails {
 	private int artworkId;
 	private String artworkName;
 	private Timestamp date;
-	private List<String> likes;
+	private List<Map<String, Object>> likes;
 	private int frenzy;
-	private List<String> comments;
+	private List<Map<String, Object>> comments;
 	private List<String> tags;
+	private String description;
+	private String fileURL;
+	
+	public String getFileURL() {
+		return fileURL;
+	}
+	public void setFileURL(String fileURL) {
+		this.fileURL = fileURL;
+	}
 	public int getArtistId() {
 		return artistId;
 	}
@@ -43,23 +53,11 @@ public class ArtWorkDetails {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
-	public List<String> getLikes() {
-		return likes;
-	}
-	public void setLikes(List<String> likes) {
-		this.likes = likes;
-	}
 	public int getFrenzy() {
 		return frenzy;
 	}
 	public void setFrenzy(int frenzy) {
 		this.frenzy = frenzy;
-	}
-	public List<String> getComments() {
-		return comments;
-	}
-	public void setComments(List<String> comments) {
-		this.comments = comments;
 	}
 	public List<String> getTags() {
 		return tags;
@@ -67,6 +65,25 @@ public class ArtWorkDetails {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
+	public List<Map<String, Object>> getLikes() {
+		return likes;
+	}
+	public void setLikes(List<Map<String, Object>> likes) {
+		this.likes = likes;
+	}
+	public List<Map<String, Object>> getComments() {
+		return comments;
+	}
+	public void setComments(List<Map<String, Object>> comments) {
+		this.comments = comments;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	
 	
 }

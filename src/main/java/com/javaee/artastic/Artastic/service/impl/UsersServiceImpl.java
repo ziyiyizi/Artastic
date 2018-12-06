@@ -52,7 +52,7 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public String findUserNameByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return usersDao.findUserNameByUserId(userId);
 	}
 	
 	
