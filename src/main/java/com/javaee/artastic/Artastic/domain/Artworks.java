@@ -4,12 +4,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@IdClass(ArtworksPK.class)
 public class Artworks {
     private int artworkId;
     private int artistId;
     private String artworkName;
     private String artworkDescription;
+    private String artworkDir;
     private Timestamp uploadtime;
 
     @Id
@@ -22,7 +22,7 @@ public class Artworks {
         this.artworkId = artworkId;
     }
 
-    @Id
+    @Basic
     @Column(name = "Artist_ID")
     public int getArtistId() {
         return artistId;
@@ -53,6 +53,16 @@ public class Artworks {
     }
 
     @Basic
+    @Column(name = "Artwork_dir")
+    public String getArtworkDir() {
+        return artworkDir;
+    }
+
+    public void setArtworkDir(String artworkDir) {
+        this.artworkDir = artworkDir;
+    }
+
+    @Basic
     @Column(name = "Uploadtime")
     public Timestamp getUploadtime() {
         return uploadtime;
@@ -75,6 +85,7 @@ public class Artworks {
             return false;
         if (artworkDescription != null ? !artworkDescription.equals(artworks.artworkDescription) : artworks.artworkDescription != null)
             return false;
+        if (artworkDir != null ? !artworkDir.equals(artworks.artworkDir) : artworks.artworkDir != null) return false;
         if (uploadtime != null ? !uploadtime.equals(artworks.uploadtime) : artworks.uploadtime != null) return false;
 
         return true;
@@ -86,7 +97,9 @@ public class Artworks {
         result = 31 * result + artistId;
         result = 31 * result + (artworkName != null ? artworkName.hashCode() : 0);
         result = 31 * result + (artworkDescription != null ? artworkDescription.hashCode() : 0);
+        result = 31 * result + (artworkDir != null ? artworkDir.hashCode() : 0);
         result = 31 * result + (uploadtime != null ? uploadtime.hashCode() : 0);
         return result;
     }
+
 }

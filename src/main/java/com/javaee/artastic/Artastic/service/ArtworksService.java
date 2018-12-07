@@ -22,4 +22,5 @@ public interface ArtworksService {
 	public ArtWorkDetails getArtworkDetails(Artworks artworks);
 	
 	public List<Artworks> findAll();
+	public Artworks saveArtwork(Artworks artworks);
 }

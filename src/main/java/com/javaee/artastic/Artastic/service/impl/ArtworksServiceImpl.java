@@ -14,6 +14,7 @@ import com.javaee.artastic.Artastic.dao.ArtworksDao;
 import com.javaee.artastic.Artastic.dao.CommentsDao;
 import com.javaee.artastic.Artastic.dao.LikesDao;
 import com.javaee.artastic.Artastic.dao.TagsDao;
+import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.service.ArtworksService;
@@ -37,7 +38,8 @@ public class ArtworksServiceImpl implements ArtworksService{
 	@Autowired
 	private ArtdataDao artdataDao;
 	
-	@Resource UsersService usersService;
+	@Autowired
+	private UsersDao usersDao;
 	
 	@Override
 	public List<Artworks> findByArtistId(int artistId) {
@@ -96,7 +98,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkId(artworkId);
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
-		artWorkDetails.setArtistName(usersService.findUserNameByUserId(userId));
+		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
 		artWorkDetails.setDate(artworks.getUploadtime());
 		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
@@ -116,7 +118,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkId(artworkId);
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
-		artWorkDetails.setArtistName(usersService.findUserNameByUserId(userId));
+		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
 		artWorkDetails.setDate(artworks.getUploadtime());
 		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
@@ -133,7 +135,13 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findAll();
 	}
 
-	
+	@Override
+	public Artworks saveArtwork(Artworks artworks) {
+		// TODO Auto-generated method stub
+		return artworksDao.save(artworks);
+		
+	}
+
 
 	
 }

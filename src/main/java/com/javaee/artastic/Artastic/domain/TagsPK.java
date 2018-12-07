@@ -5,18 +5,8 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 public class TagsPK implements Serializable {
-    private int tagId;
     private int artworkId;
-
-    @Column(name = "Tag_ID")
-    @Id
-    public int getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
-    }
+    private String tagName;
 
     @Column(name = "Artwork_ID")
     @Id
@@ -28,6 +18,16 @@ public class TagsPK implements Serializable {
         this.artworkId = artworkId;
     }
 
+    @Column(name = "Tag_name")
+    @Id
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,16 +35,16 @@ public class TagsPK implements Serializable {
 
         TagsPK tagsPK = (TagsPK) o;
 
-        if (tagId != tagsPK.tagId) return false;
         if (artworkId != tagsPK.artworkId) return false;
+        if (tagName != null ? !tagName.equals(tagsPK.tagName) : tagsPK.tagName != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = tagId;
-        result = 31 * result + artworkId;
+        int result = artworkId;
+        result = 31 * result + (tagName != null ? tagName.hashCode() : 0);
         return result;
     }
 }

@@ -1,23 +1,15 @@
 package com.javaee.artastic.Artastic.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 
 @Entity
 @IdClass(TagsPK.class)
 public class Tags {
-    private int tagId;
     private int artworkId;
     private String tagName;
-
-    @Id
-    @Column(name = "Tag_ID")
-    public int getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
-    }
 
     @Id
     @Column(name = "Artwork_ID")
@@ -29,7 +21,7 @@ public class Tags {
         this.artworkId = artworkId;
     }
 
-    @Basic
+    @Id
     @Column(name = "Tag_name")
     public String getTagName() {
         return tagName;
@@ -46,7 +38,6 @@ public class Tags {
 
         Tags tags = (Tags) o;
 
-        if (tagId != tags.tagId) return false;
         if (artworkId != tags.artworkId) return false;
         if (tagName != null ? !tagName.equals(tags.tagName) : tags.tagName != null) return false;
 
@@ -55,8 +46,7 @@ public class Tags {
 
     @Override
     public int hashCode() {
-        int result = tagId;
-        result = 31 * result + artworkId;
+        int result = artworkId;
         result = 31 * result + (tagName != null ? tagName.hashCode() : 0);
         return result;
     }

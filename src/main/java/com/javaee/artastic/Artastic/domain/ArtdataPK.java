@@ -5,8 +5,9 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 public class ArtdataPK implements Serializable {
-    private int artworkId;
+    
     private int artdataId;
+    private int artworkId;
 
     @Column(name = "Artwork_ID")
     @Id

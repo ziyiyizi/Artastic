@@ -1,13 +1,12 @@
 package com.javaee.artastic.Artastic.domain;
 
 import javax.persistence.*;
-import java.util.Arrays;
 
 @Entity
 @IdClass(ArtdataPK.class)
 public class Artdata {
+	private int artdataId;
     private int artworkId;
-    private int artdataId;
     private String artdata;
 
     @Id
