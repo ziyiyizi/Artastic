@@ -30,7 +30,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <!-- <version>3.8.1</version> -->
       <scope>test</scope>
     </dependency>
     
@@ -38,18 +38,24 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    
+<!--      
 	<dependency>			
 		<groupId>javax.servlet</groupId>			
 		<artifactId>jstl</artifactId>		
 	</dependency> 		
-
+-->	
+	<dependency>
+		<groupId>javax.xml.bind</groupId>
+		<artifactId>jaxb-api</artifactId>
+		<version>2.3.0</version>
+	</dependency>
+<!--  
 	<dependency>			
 		<groupId>org.apache.tomcat.embed</groupId>			
 		<artifactId>tomcat-embed-jasper</artifactId>			
 		<scope>provided</scope>		
 	</dependency>
-	
+-->	
 	
 	<dependency>            
 		<groupId>org.springframework.boot</groupId>            
@@ -83,13 +89,89 @@
 		<artifactId>mybatis-spring-boot-starter</artifactId>            
 		<version>1.1.1</version>        
 	</dependency>
-	
+<!--  
 	<dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>1.16.10</version>
     </dependency>
+-->		
+	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-mail</artifactId>
+	</dependency>
 	
+	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+	</dependency>
+	
+	<!-- Spirng data JPA依赖; -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    
+    <dependency> 
+    	<groupId>org.apache.shiro</groupId>
+    	<artifactId>shiro-core</artifactId>
+    	<version>1.2.3</version> 
+    </dependency>
+    
+    <dependency> 
+    	<groupId>org.apache.shiro</groupId> 
+    	<artifactId>shiro-spring</artifactId> 
+    	<version>1.2.3</version> 
+    </dependency> 
+    
+    <dependency>  
+        <groupId>org.springframework.boot</groupId>  
+        <artifactId>spring-boot-devtools</artifactId>  
+        <optional>true</optional>  
+    </dependency>
+    
+    
+    <dependency>
+		<groupId>com.google.code.kaptcha</groupId>
+		<artifactId>kaptcha</artifactId>
+		<version>2.3</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.aliyun.oss</groupId>
+		<artifactId>aliyun-sdk-oss</artifactId>
+		<version>2.8.1</version>
+	</dependency>
+	
+	<dependency>
+    	<groupId>commons-fileupload</groupId>
+    	<artifactId>commons-fileupload</artifactId>
+    	<version>1.3.3</version>
+	</dependency>
+
+
+	<!-- shiro ehcache -->
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-ehcache</artifactId>
+        <version>1.2.2</version>
+    </dependency>
+
+        <!--
+           包含支持UI模版（Velocity，FreeMarker，JasperReports），
+           邮件服务，
+           脚本服务(JRuby)，
+           缓存Cache（EHCache），
+           任务计划Scheduling（uartz）。
+        -->
+    <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context-support</artifactId>
+    </dependency>
+
+
+
+
 
   </dependencies>
   
