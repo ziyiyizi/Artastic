@@ -25,7 +25,9 @@ import com.aliyun.oss.model.ObjectPermission;
 import com.javaee.artastic.Artastic.dao.ArtdataDao;
 import com.javaee.artastic.Artastic.dao.ArtworksDao;
 import com.javaee.artastic.Artastic.dao.TagsDao;
+import com.javaee.artastic.Artastic.domain.Artdata;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.domain.Tags;
 import com.javaee.artastic.Artastic.utils.AliyunOSSUtil;
 
 @Service
@@ -53,35 +55,47 @@ public class UploadPicService {
         	if (mFile == null || mFile.getSize() <= 0) {
                 throw new Exception("图片不能为空");
             }
-//        	String name = ossUtil.uploadImg2Oss(mFile);
-//            String imgUrl = ossUtil.getImgUrl(name);
-//            value.put("name", name);
-//            value.put("imgUrl", imgUrl);
-
+        	
             int artistId = Integer.valueOf(headers.getFirst("userId"));
             String description = mRequest.getParameter("description");
             String title = mRequest.getParameter("title");
             String tags = mRequest.getParameter("tags");
             String folders = mRequest.getParameter("folders");
+            if(title == null) {
+            	title = "unkonwn";
+            }
+            
+            ossUtil.setFileDir(String.valueOf(artistId) + "/" + folders + "/");
+        	String name = ossUtil.uploadImg2Oss(mFile);
+            String imgUrl = ossUtil.getImgUrl(name);
+            value.put("name", name);
+            value.put("imgUrl", imgUrl);
+            
             
             Artworks artworks = new Artworks();
             artworks.setArtistId(artistId);
             artworks.setArtworkDescription(description);
             artworks.setArtworkDir(folders);
             artworks.setArtworkName(title);
-            artworks.setUploadtime(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            artworks.setUploadtime(new Timestamp(System.currentTimeMillis()));
 
-            Artworks artworks2 = artworksDao.saveAndFlush(artworks);
-            System.out.println("id:"+artworks2.getArtworkId());
-            System.out.println("title:"+title);
-            System.out.println("description:"+description);
-            System.out.println("tags:"+tags);
-            System.out.println("folders:"+folders);
-            
-            String[] tagslist = tags.split(",");
-            for(String each:tagslist) {
-            	System.out.println(each);
+            int artworkId = artworksDao.saveAndFlush(artworks).getArtworkId();
+            if(tags != null) {
+            	String[] tagslist = tags.split(",");
+                for(String tagName : tagslist) {
+                	Tags tag = new Tags();
+                	tag.setArtworkId(artworkId);
+                	tag.setTagName(tagName);
+                	tagsDao.save(tag);
+                }
             }
+            
+            if(imgUrl != null) {
+            	Artdata artdata = new Artdata();
+            	artdata.setArtworkId(artworkId);
+            	artdata.setArtdata(imgUrl);
+            	artdataDao.save(artdata);
+            }        
 
         } catch (IOException e) {
             e.printStackTrace();

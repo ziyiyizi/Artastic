@@ -12,7 +12,7 @@ public class Artworks {
     private String artworkDir;
     private Timestamp uploadtime;
 
-    @Id
+    @Id@GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "Artwork_ID")
     public int getArtworkId() {
         return artworkId;
