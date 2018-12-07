@@ -2,14 +2,16 @@
 
 ## Overview
 
-## Project Environment
+## Project Environment & toolkits
 
 * eclipse-javaEE
 * apache tomcat v9.0
-* react.js
-* mysql-connector-java-8.0.13.jar (see in `/scr`)
-* maven
-* spring boot
+* react.js v16.6.3
+* mysql-connector-java-8.0.13.jar
+* maven v3.6
+* spring boot v1.4.1
+* webpack v4.0
+
 
 ## Code Contributors
 
