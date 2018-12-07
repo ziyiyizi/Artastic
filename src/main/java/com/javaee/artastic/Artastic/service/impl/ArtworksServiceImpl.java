@@ -99,7 +99,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
 		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
-		artWorkDetails.setDate(artworks.getUploadtime());
+		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setLikes(findLikesList(artworkId));
@@ -119,7 +119,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
 		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
-		artWorkDetails.setDate(artworks.getUploadtime());
+		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setLikes(findLikesList(artworkId));

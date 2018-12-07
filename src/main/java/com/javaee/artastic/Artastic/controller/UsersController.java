@@ -23,10 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.Params;
 import com.javaee.artastic.Artastic.domain.Roles;
-import com.javaee.artastic.Artastic.domain.UserRole;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 

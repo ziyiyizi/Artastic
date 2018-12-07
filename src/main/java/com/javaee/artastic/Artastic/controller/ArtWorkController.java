@@ -6,21 +6,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.service.ArtworksService;
-import com.javaee.artastic.Artastic.service.UsersService;
-
-import net.sf.json.JSONArray;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.JList;
 
 @RestController
 public class ArtWorkController {
@@ -35,14 +28,14 @@ public class ArtWorkController {
 		artwork1.setArtworkDescription("first artword");
 		artwork1.setArtworkId(1);
 		artwork1.setArtworkName("pixiv");
-		artwork1.setUploadtime(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		artwork1.setUploadtime(new Timestamp(System.currentTimeMillis()));
 		
 		Artworks artwork2= new Artworks();
 		artwork2.setArtistId(2);
 		artwork2.setArtworkDescription("second artword");
 		artwork2.setArtworkId(2);
 		artwork2.setArtworkName("pixiv2");
-		artwork2.setUploadtime(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		artwork2.setUploadtime(new Timestamp(System.currentTimeMillis()));
 		List<Artworks> artworks = new ArrayList<>();
 		artworks.add(artwork1);
 		artworks.add(artwork2);

@@ -54,6 +54,60 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return usersDao.findUserNameByUserId(userId);
 	}
+
+	@Override
+	public Users save(Users users) {
+		// TODO Auto-generated method stub
+		return usersDao.save(users);
+	}
+
+	@Override
+	public String findUserMailByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findUserPhoneByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isUserNameExists(String userName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isUserMailExists(String userMail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isUserPhoneExists(String userPhone) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isUserActivate(String userName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String findUserTokenByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findTokenTimeByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

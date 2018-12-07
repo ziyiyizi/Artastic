@@ -1,6 +1,8 @@
 package com.javaee.artastic.Artastic.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +11,10 @@ public class ArtWorkDetails {
 	private String artistName;
 	private int artworkId;
 	private String artworkName;
-	private Timestamp date;
-	private List<Map<String, Object>> likes;
+	private String date;
+	private List<Map<String, String>> likes;
 	private int frenzy;
-	private List<Map<String, Object>> comments;
+	private List<Map<String, String>> comments;
 	private List<String> tags;
 	private String description;
 	private String fileURL;
@@ -47,10 +49,10 @@ public class ArtWorkDetails {
 	public void setArtworkName(String artworkName) {
 		this.artworkName = artworkName;
 	}
-	public Timestamp getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Timestamp date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public int getFrenzy() {
@@ -65,17 +67,38 @@ public class ArtWorkDetails {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-	public List<Map<String, Object>> getLikes() {
+	public List<Map<String, String>> getLikes() {
 		return likes;
 	}
 	public void setLikes(List<Map<String, Object>> likes) {
-		this.likes = likes;
+		List<Map<String, String>> likeList = new ArrayList<>();
+		for(Map<String, Object> map1 : likes) {
+			Map<String, String> map2 = new HashMap<>();
+			for(String key : map1.keySet()) {
+				
+				map2.put(key, map1.get(key).toString());
+				
+			}
+			likeList.add(map2);
+		}
+		this.likes = likeList;
 	}
-	public List<Map<String, Object>> getComments() {
+	public List<Map<String, String>> getComments() {
 		return comments;
 	}
 	public void setComments(List<Map<String, Object>> comments) {
-		this.comments = comments;
+		
+		List<Map<String, String>> commentList = new ArrayList<>();
+		for(Map<String, Object> map1 : comments) {
+			Map<String, String> map2 = new HashMap<>();
+			for(String key : map1.keySet()) {
+				
+				map2.put(key, map1.get(key).toString());
+				
+			}
+			commentList.add(map2);
+		}
+		this.comments = commentList;
 	}
 	public String getDescription() {
 		return description;

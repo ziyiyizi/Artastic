@@ -11,4 +11,13 @@ public interface UsersService {
 	public List<Roles> findRoleList(int userId);
 	public List<Roles> findRoleList(Users users);
 	public String findUserNameByUserId(int userId);
+	public String findUserMailByUserId(int userId);
+	public String findUserPhoneByUserId(int userId);
+	public String findUserTokenByUserId(int userId);
+	public String findTokenTimeByUserId(int userId);
+	public Users save(Users users);
+	public boolean isUserNameExists(String userName);
+	public boolean isUserMailExists(String userMail);
+	public boolean isUserPhoneExists(String userPhone);
+	public boolean isUserActivate(String userName);
 }

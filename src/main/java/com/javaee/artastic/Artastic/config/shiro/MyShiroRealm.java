@@ -2,7 +2,6 @@ package com.javaee.artastic.Artastic.config.shiro;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
