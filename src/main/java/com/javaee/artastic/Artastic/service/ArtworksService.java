@@ -7,6 +7,9 @@ import java.util.Map;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.domain.Clicks;
+import com.javaee.artastic.Artastic.domain.Comments;
+import com.javaee.artastic.Artastic.domain.Likes;
 
 public interface ArtworksService {
 	public List<Artworks> findByArtistId(int artistId);
@@ -24,4 +27,7 @@ public interface ArtworksService {
 	public ArtWorkLikes getArtworkLikes(int artworkId);
 	public List<Artworks> findAll();
 	public Artworks saveArtwork(Artworks artworks);
+	public Clicks saveClick(Clicks clicks);
+	public boolean isLike(int userId, int artworkId);
+	public Likes saveLike(Likes likes);
 }

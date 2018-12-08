@@ -7,7 +7,8 @@ import java.sql.Timestamp;
 
 public class CommentsPK implements Serializable {
     private int artworkId;
-    private int userId;
+    private String userName;
+    private String commentorName;
     private Timestamp commentTime;
 
     @Column(name = "Artwork_ID")
@@ -20,17 +21,27 @@ public class CommentsPK implements Serializable {
         this.artworkId = artworkId;
     }
 
-    @Column(name = "User_ID")
+    @Column(name = "User_Name")
     @Id
-    public int getUserId() {
-        return userId;
-    }
+    public String getUserName() {
+		return userName;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    @Column(name = "Comment_time")
+	@Column(name = "Commentor_Name")
+    @Id
+	public String getCommentorName() {
+		return commentorName;
+	}
+
+	public void setCommentorName(String commentorName) {
+		this.commentorName = commentorName;
+	}
+
+	@Column(name = "Comment_time")
     @Id
     public Timestamp getCommentTime() {
         return commentTime;
@@ -48,7 +59,8 @@ public class CommentsPK implements Serializable {
         CommentsPK that = (CommentsPK) o;
 
         if (artworkId != that.artworkId) return false;
-        if (userId != that.userId) return false;
+        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (commentorName != null ? !commentorName.equals(that.commentorName) : that.commentorName != null) return false;
         if (commentTime != null ? !commentTime.equals(that.commentTime) : that.commentTime != null) return false;
 
         return true;
@@ -57,7 +69,8 @@ public class CommentsPK implements Serializable {
     @Override
     public int hashCode() {
         int result = artworkId;
-        result = 31 * result + userId;
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (commentorName != null ? commentorName.hashCode() : 0);
         result = 31 * result + (commentTime != null ? commentTime.hashCode() : 0);
         return result;
     }

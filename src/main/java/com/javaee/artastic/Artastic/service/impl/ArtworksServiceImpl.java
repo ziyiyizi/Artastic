@@ -1,16 +1,14 @@
 package com.javaee.artastic.Artastic.service.impl;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javaee.artastic.Artastic.dao.ArtdataDao;
 import com.javaee.artastic.Artastic.dao.ArtworksDao;
+import com.javaee.artastic.Artastic.dao.ClicksDao;
 import com.javaee.artastic.Artastic.dao.CommentsDao;
 import com.javaee.artastic.Artastic.dao.LikesDao;
 import com.javaee.artastic.Artastic.dao.TagsDao;
@@ -18,8 +16,10 @@ import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.domain.Clicks;
+import com.javaee.artastic.Artastic.domain.Comments;
+import com.javaee.artastic.Artastic.domain.Likes;
 import com.javaee.artastic.Artastic.service.ArtworksService;
-import com.javaee.artastic.Artastic.service.UsersService;
 
 @Service
 public class ArtworksServiceImpl implements ArtworksService{
@@ -41,6 +41,9 @@ public class ArtworksServiceImpl implements ArtworksService{
 	
 	@Autowired
 	private UsersDao usersDao;
+	
+	@Autowired
+	private ClicksDao clicksDao;
 	
 	@Override
 	public List<Artworks> findByArtistId(int artistId) {
@@ -99,11 +102,13 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkId(artworkId);
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
-		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
+		
+		Map<String, Object> userNameAndIcon = usersDao.findNameAndIconByUserId(userId);
+		artWorkDetails.setArtistName(userNameAndIcon.get("name").toString());
+		artWorkDetails.setIconURL(userNameAndIcon.get("icon").toString());
+		//获取头像
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
-		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
-		artWorkDetails.setLikes(findLikesList(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
 		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
@@ -119,11 +124,13 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setArtworkId(artworkId);
 		artWorkDetails.setArtworkName(artworks.getArtworkName());
 		artWorkDetails.setArtistId(userId);
-		artWorkDetails.setArtistName(usersDao.findUserNameByUserId(userId));
+		
+		Map<String, Object> userNameAndIcon = usersDao.findNameAndIconByUserId(userId);
+		artWorkDetails.setArtistName(userNameAndIcon.get("name").toString());
+		artWorkDetails.setIconURL(userNameAndIcon.get("icon").toString());
+		//获取头像
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
-		artWorkDetails.setComments(findCommentList(artworkId));
 		artWorkDetails.setFrenzy(countLikes(artworkId));
-		artWorkDetails.setLikes(findLikesList(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
 		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
@@ -135,7 +142,31 @@ public class ArtworksServiceImpl implements ArtworksService{
 		// TODO Auto-generated method stub
 		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
 		artWorkLikes.setLikerslist(findLikesList(artworkId));
+		artWorkLikes.setComments(commentDao.findCommentList(artworkId));
+		System.out.println(artWorkLikes.getLikerslist().size());
 		return artWorkLikes;
+	}
+
+	@Override
+	public Clicks saveClick(Clicks clicks) {
+		// TODO Auto-generated method stub
+		return clicksDao.save(clicks);
+	}
+
+	@Override
+	public Likes saveLike(Likes likes) {
+		// TODO Auto-generated method stub
+		return likesDao.save(likes);
+	}
+
+	@Override
+	public boolean isLike(int userId, int artworkId) {
+		// TODO Auto-generated method stub
+		if(likesDao.findByUserIdAndArtworkId(userId, artworkId) == null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 	@Override

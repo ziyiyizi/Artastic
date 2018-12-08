@@ -85,6 +85,7 @@ public class RegisterController {
 		String token = request.getParameter("token");
 		String tokenTime = usersService.findTokenTimeByUserId(userId);
 		String nowTime = new Timestamp(System.currentTimeMillis()).toString();
+		
 		int result = tokenTime.compareTo(nowTime);
 		if(result == 1) {
 			String realToken = Md5Util.string2MD5(usersService.findUserTokenByUserId(userId));

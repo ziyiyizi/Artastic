@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,31 +65,47 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public String findUserMailByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return usersDao.findUserMailByUserId(userId);
 	}
 
 	@Override
 	public String findUserPhoneByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return usersDao.findUserPhoneByUserId(userId);
 	}
 
 	@Override
 	public boolean isUserNameExists(String userName) {
 		// TODO Auto-generated method stub
-		return false;
+		Users users = usersDao.findByUserName(userName);
+		if(users == null) {
+			return false;
+		} else {
+			return true;
+		}
+		
 	}
 
 	@Override
 	public boolean isUserMailExists(String userMail) {
 		// TODO Auto-generated method stub
-		return false;
+		Users users = usersDao.findByUserMail(userMail);
+		if(users == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	public boolean isUserPhoneExists(String userPhone) {
 		// TODO Auto-generated method stub
-		return false;
+		Users users = usersDao.findByUserPhone(userPhone);
+		if(users == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -100,13 +117,13 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public String findUserTokenByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return usersDao.findUserTokenByUserId(userId);
 	}
 
 	@Override
 	public String findTokenTimeByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return usersDao.findTokenTimeByUserId(userId).toString();
 	}
 
 	@Override

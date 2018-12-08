@@ -12,6 +12,8 @@ import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.ArtworksList;
+import com.javaee.artastic.Artastic.domain.Clicks;
+import com.javaee.artastic.Artastic.domain.Likes;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -48,7 +50,31 @@ public class ArtWorkController {
 	@RequestMapping(value="/getlikelistandcomments")
 	@ResponseBody
 	public ArtWorkLikes getlikelistandcomments(@RequestHeader HttpHeaders headers) {
+		Clicks clicks = new Clicks();
+		
 		int artworkId = Integer.valueOf(headers.getFirst("artworkid"));
+		int userId = Integer.valueOf(headers.getFirst("userId"));
+		clicks.setArtworkId(artworkId);
+		clicks.setUserId(userId);
+		clicks.setClicktime(new Timestamp(System.currentTimeMillis()));
+		artworkService.saveClick(clicks);
+		
 		return artworkService.getArtworkLikes(artworkId);
+	}
+	
+	@RequestMapping(value="/likerequest")
+	public void addLikes(@RequestHeader HttpHeaders headers) {
+		int userId = Integer.valueOf(headers.getFirst("userid"));
+		int artworkId = Integer.valueOf(headers.getFirst("present"));
+		
+		if(artworkService.isLike(userId, artworkId) == false) {
+			Likes likes = new Likes();
+			likes.setArtworkId(artworkId);
+			likes.setUserId(userId);
+			likes.setLiketime(new Timestamp(System.currentTimeMillis()));
+			artworkService.saveLike(likes);
+			System.out.println("已添加喜欢");
+		}
+		
 	}
 }
