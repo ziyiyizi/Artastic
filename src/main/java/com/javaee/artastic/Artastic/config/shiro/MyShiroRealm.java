@@ -55,7 +55,7 @@ public class MyShiroRealm extends AuthorizingRealm{
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// TODO Auto-generated method stub
-		
+		System.out.println("身份认证");
         String username = (String)token.getPrincipal(); //获取用户名，loginUser-username。
         Users users = usersService.findByUserName(username);
 

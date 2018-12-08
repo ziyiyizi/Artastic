@@ -42,10 +42,11 @@ public class RegisterController {
 	
 	@RequestMapping(value= {"/test"}, method=RequestMethod.POST)
 	public void registerUser(@RequestParam("email")String email, @RequestParam("username")String username, @RequestParam("pwd")String pwd) {
-		
+		String token = UUID.randomUUID().toString();
 		Timestamp registerTime = new Timestamp(System.currentTimeMillis());
 		Timestamp tokenTime = new Timestamp(System.currentTimeMillis()+1000*3600*24);
 //检查邮箱用户名是否重复
+		//控制邮件在一定时间内只发送一次
 		Users users = new Users();
 		users.setRegistertime(registerTime);
 		users.setTokenTime(tokenTime);
@@ -53,17 +54,19 @@ public class RegisterController {
 		users.setUserName(username);
 		users.setUserPassword(pwd);
 		users.setUserState("0");
+		users.setUserToken(token);
 		
-		String token = UUID.randomUUID().toString();
+		//检查此处id是否有问题
 		Users users2 = usersService.save(users);
 		int userId = users2.getUserId();
 		
 		if(users2 != null) {
 			
-			String registerLink="http://localhost:8080/Register/check?userId="+Md5Util.string2MD5(String.valueOf(userId))
+			String registerLink="http://localhost:8080/Register/check?userId="+Md5Util.convertMD5(String.valueOf(userId))
 			+"&token="+Md5Util.string2MD5(token)
 			+"&tokenTime="+Md5Util.string2MD5(tokenTime.toString());
 			Context context = new Context();
+			context.setVariable("email", email);
 		    context.setVariable("registerLink", registerLink);
 			String emailContent = templateEngine.process("activate", context);
 			
@@ -74,18 +77,29 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value= {"/check"})
-	public void registerCheck(HttpServletRequest request) {
-		String userIdStr = request.getParameter("userId");
+	public String registerCheck(HttpServletRequest request) {
+		System.out.println("进入激活检查");
+		//检查用户状态是否需要激活
+		String userIdStr = Md5Util.convertMD5(request.getParameter("userId"));
 		int userId = Integer.valueOf(userIdStr);
-		String token = Md5Util.convertMD5(Md5Util.convertMD5(request.getParameter("token")));
-		String tokenTime = Md5Util.convertMD5(Md5Util.convertMD5(request.getParameter("tokenTime")));
+		String token = request.getParameter("token");
+		String tokenTime = usersService.findTokenTimeByUserId(userId);
 		String nowTime = new Timestamp(System.currentTimeMillis()).toString();
 		int result = tokenTime.compareTo(nowTime);
-		if(result == -1) {
-			String realToken = usersService.findUserTokenByUserId(userId);
+		if(result == 1) {
+			String realToken = Md5Util.string2MD5(usersService.findUserTokenByUserId(userId));
+			if(token.equals(realToken)) {
+				usersService.updateUserStateByUserId(userId, "1");
+				System.out.println("激活成功");
+				return "redirect:/";
+			}else {
+				
+			}
 			
+		}else {
+			usersService.updateUserTokenByUserId(userId, null);
 		}
-		
+		return "redirect:/error";
 	}
 
 }

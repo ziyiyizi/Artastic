@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
+import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
 
 public interface ArtworksService {
@@ -20,7 +21,7 @@ public interface ArtworksService {
 	
 	public ArtWorkDetails getArtworkDetails(int artworkId);
 	public ArtWorkDetails getArtworkDetails(Artworks artworks);
-	
+	public ArtWorkLikes getArtworkLikes(int artworkId);
 	public List<Artworks> findAll();
 	public Artworks saveArtwork(Artworks artworks);
 }

@@ -108,6 +108,26 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int updateUserStateByUserId(int userId, String userState) {
+		// TODO Auto-generated method stub
+		return usersDao.updateUserStateByUserId(userId, userState);
+	}
+
+	@Override
+	public void deleteByUserId(int userId) {
+		// TODO Auto-generated method stub
+		usersDao.delete((long)userId);
+		
+	}
+
+	@Override
+	public int updateUserTokenByUserId(int userId, String userToken) {
+		// TODO Auto-generated method stub
+		return usersDao.updateUserTokenByUserId(userId, userToken);
+	}
+	
 	
 	
 	

@@ -27,19 +27,9 @@ public class UploadPicController {
 	@Autowired
 	private UploadPicService uploadPicService;
 	
-	@RequestMapping(value="/uploadpic")
-	@ResponseBody
-	public ModelAndView uploadpic() {
-		ModelAndView mv = new ModelAndView("uploadpic");
-		return mv;
-	}
-	
     @RequestMapping(value="/test", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> headImgUpload(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
-//    	System.out.println(param.getTitle());
-//    	System.out.println(param.getDescription());
-//    	System.out.println(param.getTags());
 
     	return uploadPicService.uploadFile(request, headers);
     }

@@ -16,6 +16,7 @@ import com.javaee.artastic.Artastic.dao.LikesDao;
 import com.javaee.artastic.Artastic.dao.TagsDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
+import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import com.javaee.artastic.Artastic.service.UsersService;
@@ -127,6 +128,14 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
+	}
+
+	@Override
+	public ArtWorkLikes getArtworkLikes(int artworkId) {
+		// TODO Auto-generated method stub
+		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
+		artWorkLikes.setLikerslist(findLikesList(artworkId));
+		return artWorkLikes;
 	}
 
 	@Override

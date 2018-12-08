@@ -50,7 +50,6 @@ public class UsersController {
         //ModelAndView mView = new ModelAndView("success");
         String username = param.getUsername();
         String pwd = param.getPassword();
-        System.out.println(username+" "+pwd);
         UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -58,6 +57,7 @@ public class UsersController {
         	session.setAttribute("user", subject.getPrincipal());
         	Users users = usersService.findByUserName(username);
         	param.setUserId(users.getUserId());
+        	System.out.println("登录成功");
         	return param;
         }catch (Exception e) {
 			// TODO: handle exception

@@ -21,7 +21,7 @@ public class Users {
     private String userMail;
     private String userPhone;
     private Timestamp registertime;
-    private byte[] userIcon;
+    private String userIcon;
     private String userState;
     private String userToken;
     private Timestamp tokenTime;
@@ -149,11 +149,11 @@ public class Users {
 
     @Basic
     @Column(name = "User_icon")
-    public byte[] getUserIcon() {
+    public String getUserIcon() {
         return userIcon;
     }
 
-    public void setUserIcon(byte[] userIcon) {
+    public void setUserIcon(String userIcon) {
         this.userIcon = userIcon;
     }
 
@@ -217,7 +217,7 @@ public class Users {
         if (userMail != null ? !userMail.equals(users.userMail) : users.userMail != null) return false;
         if (userPhone != null ? !userPhone.equals(users.userPhone) : users.userPhone != null) return false;
         if (registertime != null ? !registertime.equals(users.registertime) : users.registertime != null) return false;
-        if (!Arrays.equals(userIcon, users.userIcon)) return false;
+        if (userIcon != null ? !userIcon.equals(users.userIcon) : users.userIcon != null) return false;
         if (userState != null ? !userState.equals(users.userState) : users.userState != null) return false;
         if (userToken != null ? !userToken.equals(users.userToken) : users.userToken != null) return false;
         if (tokenTime != null ? !tokenTime.equals(users.tokenTime) : users.tokenTime != null) return false;
@@ -240,7 +240,7 @@ public class Users {
         result = 31 * result + (userMail != null ? userMail.hashCode() : 0);
         result = 31 * result + (userPhone != null ? userPhone.hashCode() : 0);
         result = 31 * result + (registertime != null ? registertime.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(userIcon);
+        result = 31 * result + (userIcon != null ? userIcon.hashCode() : 0);
         result = 31 * result + (userState != null ? userState.hashCode() : 0);
         result = 31 * result + (userToken != null ? userToken.hashCode() : 0);
         result = 31 * result + (tokenTime != null ? tokenTime.hashCode() : 0);
