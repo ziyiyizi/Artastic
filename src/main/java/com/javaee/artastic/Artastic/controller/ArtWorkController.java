@@ -4,13 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.javaee.artastic.Artastic.dao.ArtworksDao;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
@@ -23,6 +25,10 @@ import com.javaee.artastic.Artastic.service.ArtworksService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -55,16 +61,23 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="/post")
+	@RequestMapping(value="/post/{postId}")
 	@ResponseBody
-	public ArtworksList getArtworkOne(String postId) {
-		int artworkId = Integer.parseInt(postId);
-		System.out.println("获取图片详细信息:"+postId);
+	public ModelAndView Post(@PathVariable("postId")String postId) {
+		return new ModelAndView("original");
+	}
+	
+	@RequestMapping(value="/getpost")
+	@ResponseBody
+	public ArtworksList getArtworkOne(HttpHeaders headers) {
+		
+		int artworkId = Integer.parseInt(headers.getFirst("Present"));
 		ArtworksList artworksList = new ArtworksList();
 		ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
 //		artWorkDetails.setLikerslist(artworkService.findLikesList(artworkId));
 //		artWorkDetails.setComments(artworkService.findCommentList(artworkId));
 		artworksList.setPost(artWorkDetails);
+		//return new ModelAndView("original");
 		return artworksList;
 		
 	}
