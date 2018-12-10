@@ -69,9 +69,10 @@ public class ArtWorkController {
 	
 	@RequestMapping(value="/getpost")
 	@ResponseBody
-	public ArtworksList getArtworkOne(HttpHeaders headers) {
+	public ArtworksList getArtworkOne(@RequestHeader HttpHeaders headers) {
 		
-		int artworkId = Integer.parseInt(headers.getFirst("Present"));
+		System.out.println(headers.getFirst("present"));
+		int artworkId = Integer.parseInt(headers.getFirst("present"));
 		ArtworksList artworksList = new ArtworksList();
 		ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
 //		artWorkDetails.setLikerslist(artworkService.findLikesList(artworkId));
