@@ -57,8 +57,12 @@ public class UploadPicService {
             if(title == null) {
             	title = "unkonwn";
             }
+            if(folders != null) {
+            	ossUtil.setFileDir(String.valueOf(artistId) + "/" + folders + "/");
+            }else {
+            	ossUtil.setFileDir(String.valueOf(artistId) + "/");
+            }
             
-            ossUtil.setFileDir(String.valueOf(artistId) + "/" + folders + "/");
         	String name = ossUtil.uploadImg2Oss(mFile);
             String imgUrl = ossUtil.getImgUrl(name);
             value.put("name", name);
