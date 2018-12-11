@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
@@ -26,8 +29,13 @@ public interface ArtworksService {
 	public ArtWorkDetails getArtworkDetails(Artworks artworks);
 	public ArtWorkLikes getArtworkLikes(int artworkId);
 	public List<Artworks> findAll();
+	public Page<Artworks> findAll(Pageable pageable);
+	public Page<Integer> findAllTimeSort(Pageable pageable);
+	public List<Integer> findAllRandSort();
+	public Page<Integer> findAllLikeSort(Pageable pageable);
 	public Artworks saveArtwork(Artworks artworks);
 	public Clicks saveClick(Clicks clicks);
 	public boolean isLike(int userId, int artworkId);
 	public Likes saveLike(Likes likes);
+	public Comments saveComment(Comments comments);
 }

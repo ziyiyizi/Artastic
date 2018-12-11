@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.javaee.artastic.Artastic.dao.ArtdataDao;
@@ -19,6 +21,7 @@ import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Likes;
+import com.javaee.artastic.Artastic.domain.Tags;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 
 @Service
@@ -110,6 +113,9 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
+		if(artWorkDetails.getTags().get(0).equals("")) {
+			artWorkDetails.getTags().clear();
+		}
 		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
@@ -132,6 +138,9 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
+		if(artWorkDetails.getTags().get(0).equals("")) {
+			artWorkDetails.getTags().clear();
+		}
 		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
@@ -143,7 +152,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
 		artWorkLikes.setLikerslist(findLikesList(artworkId));
 		artWorkLikes.setComments(commentDao.findCommentList(artworkId));
-		System.out.println(artWorkLikes.getLikerslist().size());
 		return artWorkLikes;
 	}
 
@@ -180,6 +188,36 @@ public class ArtworksServiceImpl implements ArtworksService{
 		// TODO Auto-generated method stub
 		return artworksDao.save(artworks);
 		
+	}
+
+	@Override
+	public Page<Artworks> findAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAll(pageable);
+	}
+
+	@Override
+	public Page<Integer> findAllTimeSort(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdTimeSort(pageable);
+	}
+
+	@Override
+	public List<Integer> findAllRandSort() {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdRandSort();
+	}
+
+	@Override
+	public Page<Integer> findAllLikeSort(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdLikeSort(pageable);
+	}
+
+	@Override
+	public Comments saveComment(Comments comments) {
+		// TODO Auto-generated method stub
+		return commentDao.save(comments);
 	}
 
 

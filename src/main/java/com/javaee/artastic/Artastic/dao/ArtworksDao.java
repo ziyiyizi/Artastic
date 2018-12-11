@@ -20,4 +20,13 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>{
 	public String findDesciptionByArtworkId(@Param("artworkId")int artworkId);
 	
 	public Page<Artworks> findAll(Pageable pageable); 
+	
+	@Query("select artworkId from Artworks order by uploadTime desc")
+	public Page<Integer> findAllArtworkIdTimeSort(Pageable pageable);
+	
+	@Query("select artworkId from Likes group by artworkId order by count(*)")
+	public Page<Integer> findAllArtworkIdLikeSort(Pageable pageable);
+	
+	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) limit 10", nativeQuery=true)
+	public List<Integer> findAllArtworkIdRandSort();
 }

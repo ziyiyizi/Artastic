@@ -31,7 +31,6 @@ public class ArtWorkDetails {
 			for(String key : map1.keySet()) {
 				Object value = map1.get(key);
 				if(value != null) {
-					System.out.println(value.toString());
 					map2.put(key, value.toString());
 				}
 
