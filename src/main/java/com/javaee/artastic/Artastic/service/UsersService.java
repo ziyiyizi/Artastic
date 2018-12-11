@@ -19,6 +19,7 @@ public interface UsersService {
 	public boolean isUserNameExists(String userName);
 	public boolean isUserMailExists(String userMail);
 	public boolean isUserPhoneExists(String userPhone);
+	public boolean isNameOrMailExists(String userName, String userMail);
 	public boolean isUserActivate(String userName);
 	public int updateUserStateByUserId(int userId, String userState);
 	public void deleteByUserId(int userId);

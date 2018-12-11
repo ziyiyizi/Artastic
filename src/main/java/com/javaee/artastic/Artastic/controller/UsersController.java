@@ -1,9 +1,9 @@
 package com.javaee.artastic.Artastic.controller;
 
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
@@ -15,7 +15,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.javaee.artastic.Artastic.domain.Error;
+import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Params;
 import com.javaee.artastic.Artastic.domain.Roles;
 import com.javaee.artastic.Artastic.domain.Users;
@@ -31,19 +35,19 @@ import com.javaee.artastic.Artastic.service.UsersService;
 
 @EnableAutoConfiguration
 @RestController
-@RequestMapping(value="/user")
+//@RequestMapping(value="/user")
 
 public class UsersController {
 	
 	@Autowired
 	private UsersService usersService;
 	
-	@RequestMapping(value="/login",method = RequestMethod.GET)
+	@RequestMapping(value="/user/login",method = RequestMethod.GET)
 	public ModelAndView login() {
 		return new ModelAndView("index");
 	}
 	
-	@RequestMapping(value="/login",method = RequestMethod.POST)
+	@RequestMapping(value="/user/login",method = RequestMethod.POST)
 	@ResponseBody
 	public Params login(@RequestBody Params param, HttpResponse response, HttpSession session) throws Exception {
 
@@ -80,7 +84,7 @@ public class UsersController {
         
     }
 	
-	@RequestMapping(value={"/showAll"})
+	@RequestMapping(value={"/user/showAll"})
 	@RequiresPermissions("user:showAll")
 	@ResponseBody
 	public List<Users> showAll(){
@@ -88,7 +92,7 @@ public class UsersController {
 		return usersEntities;
 	}
 	
-	@RequestMapping(value= {"/byName"})
+	@RequestMapping(value= {"/user/byName"})
 	@ResponseBody
 	public Users getUserByName(@RequestParam("name")String name) {
 		Users users = usersService.findByUserName(name);
@@ -96,9 +100,28 @@ public class UsersController {
 		
 	}
 	
-	@RequestMapping(value="/userRole")
+	@RequestMapping(value="/user/userRole")
 	@ResponseBody
 	public List<Roles> getRoles(@RequestParam("userid")int userid){
 		return usersService.findRoleList(userid);
+	}
+	
+	
+	@RequestMapping(value="/user/addFollow")
+	@ResponseBody
+	public Error addFollow(@RequestHeader HttpHeaders headers) {
+		Error error = new Error();
+		error.setError(false);
+		try {
+			Follow follow = new Follow();
+			follow.setArtistId(Integer.parseInt(headers.getFirst("artistId")));
+			follow.setFollowerId(Integer.parseInt(headers.getFirst("userId")));
+			follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
+			//usersService.saveFollow(follow);
+		}catch (Exception e) {
+			// TODO: handle exception
+			error.setError(true);
+		}
+		return error;
 	}
 }

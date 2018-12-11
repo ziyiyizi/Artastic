@@ -3,6 +3,8 @@ package com.javaee.artastic.Artastic.domain;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -27,7 +29,7 @@ public class Users {
     private Timestamp tokenTime;
     private String userSalt;
 
-    @Id
+    @Id@GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "User_ID")
     public int getUserId() {
         return userId;

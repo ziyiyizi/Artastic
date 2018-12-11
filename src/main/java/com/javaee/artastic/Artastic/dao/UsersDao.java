@@ -18,6 +18,7 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	public Users findByUserId(String userId);
 	public Users findByUserMail(String userMail);
 	public Users findByUserPhone(String userPhone);
+	public Users findByUserNameOrUserMail(String userName, String userMail);
 	
 	@Query("select userName from Users where userId = :userId")
 	public String findUserNameByUserId(@Param("userId")int userId);

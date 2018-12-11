@@ -3,17 +3,11 @@ package com.javaee.artastic.Artastic.service.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
-
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.javaee.artastic.Artastic.dao.RolesDao;
-import com.javaee.artastic.Artastic.dao.UserRoleDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.Roles;
-import com.javaee.artastic.Artastic.domain.UserRole;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 
@@ -109,6 +103,17 @@ public class UsersServiceImpl implements UsersService{
 	}
 
 	@Override
+	public boolean isNameOrMailExists(String userName, String userMail) {
+		// TODO Auto-generated method stub
+		Users users = usersDao.findByUserNameOrUserMail(userName, userMail);
+		if(users == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
 	public boolean isUserActivate(String userName) {
 		// TODO Auto-generated method stub
 		return false;
@@ -126,12 +131,14 @@ public class UsersServiceImpl implements UsersService{
 		return usersDao.findTokenTimeByUserId(userId).toString();
 	}
 
+	@Transactional
 	@Override
 	public int updateUserStateByUserId(int userId, String userState) {
 		// TODO Auto-generated method stub
 		return usersDao.updateUserStateByUserId(userId, userState);
 	}
 
+	@Transactional
 	@Override
 	public void deleteByUserId(int userId) {
 		// TODO Auto-generated method stub
@@ -139,6 +146,7 @@ public class UsersServiceImpl implements UsersService{
 		
 	}
 
+	@Transactional
 	@Override
 	public int updateUserTokenByUserId(int userId, String userToken) {
 		// TODO Auto-generated method stub
