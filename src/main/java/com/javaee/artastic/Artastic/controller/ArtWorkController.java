@@ -22,6 +22,7 @@ import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
+import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Likes;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 
@@ -160,9 +161,9 @@ public class ArtWorkController {
 	
 	@RequestMapping(value="/likerequest")
 	@ResponseBody
-	public JSONObject addLikes(@RequestHeader HttpHeaders headers) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("error", false);
+	public Error addLikes(@RequestHeader HttpHeaders headers) {
+		Error error = new Error();
+		error.setError(false);
 		try {
 			int userId = Integer.valueOf(headers.getFirst("userid"));
 			int artworkId = Integer.valueOf(headers.getFirst("present"));
@@ -177,10 +178,10 @@ public class ArtWorkController {
 			}
 			
 		}catch (Exception e) {
-			jsonObject.put("error", true);
+			error.setError(true);
 		}
 		
-		return jsonObject;
+		return error;
 	}
 	
 	@RequestMapping(value="/artwork/test")
@@ -200,20 +201,28 @@ public class ArtWorkController {
 	}
 	
 	@RequestMapping(value="makecomment")
-	public void makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
-		String commentorName = headers.getFirst("username");
-		
-		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest)request;
-		String responseTo = mRequest.getParameter("responseTo");
-		String comment = mRequest.getParameter("comment");
-		int artworkId = Integer.parseInt(mRequest.getParameter("artworkId"));
-		
-		Comments comments = new Comments();
-		comments.setArtworkId(artworkId);
-		comments.setComment(comment);
-		comments.setCommentorName(commentorName);
-		comments.setUserName(responseTo);
-		comments.setCommentTime(new Timestamp(System.currentTimeMillis()));
-		artworkService.saveComment(comments);
+	public Error makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+		Error error = new Error();
+		error.setError(false);
+		try {
+			String commentorName = headers.getFirst("username");
+			
+			MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest)request;
+			String responseTo = mRequest.getParameter("responseTo");
+			String comment = mRequest.getParameter("comment");
+			int artworkId = Integer.parseInt(mRequest.getParameter("artworkId"));
+			
+			Comments comments = new Comments();
+			comments.setArtworkId(artworkId);
+			comments.setComment(comment);
+			comments.setCommentorName(commentorName);
+			comments.setUserName(responseTo);
+			comments.setCommentTime(new Timestamp(System.currentTimeMillis()));
+			artworkService.saveComment(comments);
+		}catch (Exception e) {
+			// TODO: handle exception
+			error.setError(true);
+		}
+		return error;
 	}
 }

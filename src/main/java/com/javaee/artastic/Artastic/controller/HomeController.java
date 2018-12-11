@@ -76,7 +76,7 @@ public class HomeController {
 		return mv;
 	}
 	
-	@RequestMapping(value= {"/community"})
+	@RequestMapping(value= {"/community", "/error"})
 	@ResponseBody
 	public ModelAndView community() {
 		ModelAndView mv = new ModelAndView("community");
