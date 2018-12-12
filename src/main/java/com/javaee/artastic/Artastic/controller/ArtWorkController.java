@@ -52,6 +52,12 @@ public class ArtWorkController {
 		return artworkService.getArtworkDetails(artworkId);
 	}
 	
+//	@RequestMapping(value="/community/{postType}")
+//	@ResponseBody
+//	public ModelAndView showArtwork(@PathVariable("postType")String postType) {
+//		return new ModelAndView("community");
+//	}
+	
 	@RequestMapping(value="/getPosts")
 	@ResponseBody
 	public ArtworksList getArtWorksAll(@RequestHeader HttpHeaders headers) {

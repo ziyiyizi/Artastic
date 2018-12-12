@@ -30,13 +30,13 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) limit 10", nativeQuery=true)
 	public List<Integer> findAllArtworkIdRandSort();
 	
-	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:key% or lu.userName like %:key% or u.artworkName like %:key%)")
+	@Query("(select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and (lu.userName like %:key% or u.artworkName like %:key%)) union (select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName like %:key%)")
 	public Page<Integer> findBySearchKey(@Param("key")String key, Pageable pageable);
 	
 	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:tagName% and lu.userName like %:userName%)")
 	public Page<Integer> findByUserNameAndTag(@Param("userName")String userName, @Param("tagName")String tagName, Pageable pageable);
 	
-	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (lu.userName like %:userName% and u.artworkName like %:workName%)")
+	@Query("select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and (lu.userName like %:userName% and u.artworkName like %:workName%)")
 	public Page<Integer> findByUserNameAndWorkName(@Param("userName")String userName, @Param("workName")String artworkName, Pageable pageable);
 	
 	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:tagName% and u.artworkName like %:workName%)")
