@@ -11,7 +11,10 @@
 * maven v3.6
 * spring boot v1.4.1
 * webpack v4.0
-
+* jpa
+* thymeleaf
+* shiro
+* activemq
 
 ## Code Contributors
 
