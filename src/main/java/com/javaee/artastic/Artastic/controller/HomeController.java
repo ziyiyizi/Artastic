@@ -21,10 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
 	
-	@RequestMapping(value= {"/index", "/"})
+	@RequestMapping(value= {"/index", "/", "home"})
 	@ResponseBody
 	public ModelAndView gohome() {
-		ModelAndView mv = new ModelAndView("index");
+		ModelAndView mv = new ModelAndView("community");
 		mv.addObject("webName","Artastic");
 		return mv;
 	}

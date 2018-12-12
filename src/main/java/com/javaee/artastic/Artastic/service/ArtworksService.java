@@ -1,12 +1,10 @@
 package com.javaee.artastic.Artastic.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
@@ -32,8 +30,15 @@ public interface ArtworksService {
 	public Page<Artworks> findAll(Pageable pageable);
 	public Page<Integer> findAllTimeSort(Pageable pageable);
 	public List<Integer> findAllRandSort();
+	public Page<Integer> findAllRandSort(Pageable pageable);
 	public Page<Integer> findAllLikeSort(Pageable pageable);
 	public Page<Integer> findBySearchKey(String key, Pageable pageable);
+	public Page<Integer> findBySearchAll(String key, Pageable pageable);
+	public Page<Integer> findByUserNameAndTag(String userName, String tagName, Pageable pageable);
+	public Page<Integer> findByUserNameAndWorkName(String userName, String artworkName, Pageable pageable);
+	public Page<Integer> findByWorkNameAndTag(String artworkName, String tagName, Pageable pageable);
+	public Page<Integer> findByAllKey(String userName, String artworkName, String tagName, Pageable pageable);
+	
 	public Artworks saveArtwork(Artworks artworks);
 	public Clicks saveClick(Clicks clicks);
 	public boolean isLike(int userId, int artworkId);

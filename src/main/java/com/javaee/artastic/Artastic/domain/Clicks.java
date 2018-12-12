@@ -30,8 +30,8 @@ public class Clicks {
         this.artworkId = artworkId;
     }
 
-    @Basic
     @Column(name = "Clicktime")
+    @Id
     public Timestamp getClicktime() {
         return clicktime;
     }

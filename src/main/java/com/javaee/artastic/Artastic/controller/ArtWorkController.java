@@ -1,5 +1,6 @@
 package com.javaee.artastic.Artastic.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,10 +25,9 @@ import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Likes;
 import com.javaee.artastic.Artastic.service.ArtworksService;
+import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 
-import net.sf.ehcache.config.Searchable;
-import net.sf.json.JSONObject;
-
+import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ArtWorkController {
 	@Autowired
 	private ArtworksService artworkService;
-	
-	@Autowired
-	private ArtworksDao artworksDao;
-	
-	@RequestMapping(value="/artwork/showOne")
-	@ResponseBody
-	public ArtWorkDetails showOne(@RequestParam("artworkId")int artworkId) {
-		
-		return artworkService.getArtworkDetails(artworkId);
-	}
 	
 //	@RequestMapping(value="/community/{postType}")
 //	@ResponseBody
@@ -69,60 +59,69 @@ public class ArtWorkController {
 		} else {
 			return getArtworkAllRandSort();
 		}
-		
-//		Pageable pageable = new PageRequest(0, 10);
-//		Page<Artworks> page = artworkService.findAll(pageable);
-//		
-//		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
-//		List<Artworks> artworks = page.getContent();
-//		
-//		for(Artworks artwork : artworks) {
-//			artWorkDetails.add(artworkService.getArtworkDetails(artwork.getArtworkId()));
-//			
-//		}
-//		ArtworksList artworksList = new ArtworksList();
-//		artworksList.setPosts(artWorkDetails);
-//		return artworksList;
 	}
 	
 	public ArtworksList getArtworkAllLikeSort() {
-		Pageable pageable = new PageRequest(0, 10);
-		Page<Integer> page = artworkService.findAllLikeSort(pageable);
-		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
-		List<Integer> artworkIds = page.getContent();
-		
-		for(Integer integer : artworkIds) {
-			artWorkDetails.add(artworkService.getArtworkDetails(integer));
-		}
 		ArtworksList artworksList = new ArtworksList();
-		artworksList.setPosts(artWorkDetails);
+		try {
+			Pageable pageable = new PageRequest(0, 10);
+			Page<Integer> page = artworkService.findAllLikeSort(pageable);
+			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+			List<Integer> artworkIds = page.getContent();
+			
+			for(Integer integer : artworkIds) {
+				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+			}
+			
+			artworksList.setPosts(artWorkDetails);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
 		return artworksList;
 
 	}
 	public ArtworksList getArtworkAllRandSort() {
 
-		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
-		List<Integer> artworkIds = artworkService.findAllRandSort();
-		
-		for(Integer integer : artworkIds) {
-			artWorkDetails.add(artworkService.getArtworkDetails(integer));
-		}
 		ArtworksList artworksList = new ArtworksList();
-		artworksList.setPosts(artWorkDetails);
+		try {
+			Pageable pageable = new PageRequest(0, 10);
+			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+			Page<Integer> page = artworkService.findAllRandSort(pageable);
+			List<Integer> artworkIds = page.getContent();
+			
+			for(Integer integer : artworkIds) {
+				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+			}
+			
+			artworksList.setPosts(artWorkDetails);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
 		return artworksList;
 	}
 	
 	public ArtworksList getArtworkAllTimeSort() {
-		Pageable pageable = new PageRequest(0, 10);
-		Page<Integer> page = artworkService.findAllTimeSort(pageable);
-		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
-		List<Integer> artworkIds = page.getContent();
-		
-		for(Integer integer : artworkIds) {
-			artWorkDetails.add(artworkService.getArtworkDetails(integer));
-		}
 		ArtworksList artworksList = new ArtworksList();
-		artworksList.setPosts(artWorkDetails);
+		try {
+			Pageable pageable = new PageRequest(0, 10);
+			Page<Integer> page = artworkService.findAllTimeSort(pageable);
+			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+			List<Integer> artworkIds = page.getContent();
+			
+			for(Integer integer : artworkIds) {
+				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+			}
+			
+			artworksList.setPosts(artWorkDetails);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
 		return artworksList;
 		
 	}
@@ -143,33 +142,33 @@ public class ArtWorkController {
 			int artworkId = Integer.parseInt(headers.getFirst("present"));
 			
 			ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
-//			artWorkDetails.setLikerslist(artworkService.findLikesList(artworkId));
-//			artWorkDetails.setComments(artworkService.findCommentList(artworkId));
 			artworksList.setPost(artWorkDetails);
-			//return new ModelAndView("original");
 		} catch (Exception e) {
 			// TODO: handle exception
-			return null;
+			ExceptionUtil.handleException(e);
 		}
-		
-		
 		return artworksList;
-		
 	}
 	
 	@RequestMapping(value="/getlikelistandcomments")
 	@ResponseBody
 	public ArtWorkLikes getlikelistandcomments(@RequestHeader HttpHeaders headers) {
-		Clicks clicks = new Clicks();
+		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
+		try {
+			int artworkId = Integer.valueOf(headers.getFirst("artworkid"));
+			int userId = Integer.valueOf(headers.getFirst("userId"));
+			Clicks clicks = new Clicks();
+			clicks.setArtworkId(artworkId);
+			clicks.setUserId(userId);
+			clicks.setClicktime(new Timestamp(System.currentTimeMillis()));
+			artworkService.saveClick(clicks);
+			artWorkLikes = artworkService.getArtworkLikes(artworkId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
 		
-		int artworkId = Integer.valueOf(headers.getFirst("artworkid"));
-		int userId = Integer.valueOf(headers.getFirst("userId"));
-		clicks.setArtworkId(artworkId);
-		clicks.setUserId(userId);
-		clicks.setClicktime(new Timestamp(System.currentTimeMillis()));
-		artworkService.saveClick(clicks);
-		
-		return artworkService.getArtworkLikes(artworkId);
+		return artWorkLikes;
 	}
 	
 	@RequestMapping(value="/likerequest")
@@ -202,7 +201,7 @@ public class ArtWorkController {
 	public void pageable(@RequestParam("pageId")String pageId) {
 		int id = Integer.parseInt(pageId);
 		Pageable pageable = new PageRequest(id, 5);
-		Page<Artworks> page = artworksDao.findAll(pageable);
+		Page<Artworks> page = artworkService.findAll(pageable);
 		//查询结果总行数
 		System.out.println(page.getTotalElements());
 		  //按照当前分页大小，总页数
@@ -249,24 +248,30 @@ public class ArtWorkController {
 	@ResponseBody
 	public ArtworksList searchArtworks(@RequestHeader HttpHeaders headers) {
 		
-		String present = headers.getFirst("present");
-		String[] strings = present.split("/");
-		String searchType = strings[1];
-		String searchKey = strings[2];
-		
 		ArtworksList artworksList = new ArtworksList();
-		Pageable pageable = new PageRequest(0, 10);
-		Page<Integer> page = artworkService.findBySearchKey(searchKey, pageable);
-		
-		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
-		List<Integer> artworkIds = page.getContent();
-		System.out.println(artworkIds.size());
-		System.out.println(searchKey);
-		
-		for(Integer integer : artworkIds) {
-			artWorkDetails.add(artworkService.getArtworkDetails(integer));
+		try {
+			
+			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
+			String[] strings = present.split("/");
+			String searchType = strings[1];
+			String searchKey = strings[2];
+			Pageable pageable = new PageRequest(0, 10);
+			Page<Integer> page = artworkService.findBySearchKey(searchKey, pageable);
+//			Page<Integer> page = artworkService.findBySearchAll(searchKey, pageable);
+			
+			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+			List<Integer> artworkIds = page.getContent();
+			
+			for(Integer integer : artworkIds) {
+				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+			}
+			artworksList.setPosts(artWorkDetails);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			ExceptionUtil.handleException(e);
 		}
-		artworksList.setPosts(artWorkDetails);
+		
 		return artworksList;
 		
 	}

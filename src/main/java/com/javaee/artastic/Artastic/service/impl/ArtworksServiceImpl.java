@@ -21,7 +21,6 @@ import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Likes;
-import com.javaee.artastic.Artastic.domain.Tags;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 
 @Service
@@ -108,9 +107,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
-//		if(artWorkDetails.getTags().get(0).equals("")) {
-//			artWorkDetails.getTags().clear();
-//		}
 		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
@@ -133,9 +129,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
-//		if(artWorkDetails.getTags().get(0).equals("")) {
-//			artWorkDetails.getTags().clear();
-//		}
 		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
@@ -191,18 +184,21 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findAll(pageable);
 	}
 
+	//时间排序-最近七天 time>=? 传入time参数
 	@Override
 	public Page<Integer> findAllTimeSort(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return artworksDao.findAllArtworkIdTimeSort(pageable);
 	}
 
+	//随机排序
 	@Override
 	public List<Integer> findAllRandSort() {
 		// TODO Auto-generated method stub
 		return artworksDao.findAllArtworkIdRandSort();
 	}
 
+	//热度排序
 	@Override
 	public Page<Integer> findAllLikeSort(Pageable pageable) {
 		// TODO Auto-generated method stub
@@ -219,6 +215,42 @@ public class ArtworksServiceImpl implements ArtworksService{
 	public Page<Integer> findBySearchKey(String key, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return artworksDao.findBySearchKey(key, pageable);
+	}
+
+	@Override
+	public Page<Integer> findAllRandSort(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdRandSort(pageable);
+	}
+
+	@Override
+	public Page<Integer> findBySearchAll(String key, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findBySearchAll(key, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByUserNameAndTag(String userName, String tagName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByUserNameAndTag(userName, tagName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByUserNameAndWorkName(String userName, String artworkName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByUserNameAndWorkName(userName, artworkName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByWorkNameAndTag(String artworkName, String tagName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByWorkNameAndTag(artworkName, tagName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByAllKey(String userName, String artworkName, String tagName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByAllKey(userName, artworkName, tagName, pageable);
 	}
 
 

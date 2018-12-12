@@ -27,8 +27,14 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query("select artworkId from Likes group by artworkId order by count(*)")
 	public Page<Integer> findAllArtworkIdLikeSort(Pageable pageable);
 	
+	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) ORDER BY ?#{#pageable}", nativeQuery=true)
+	public Page<Integer> findAllArtworkIdRandSort(Pageable pageable);
+	
 	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) limit 10", nativeQuery=true)
 	public List<Integer> findAllArtworkIdRandSort();
+	
+	@Query(value="(select distinct u.Artwork_ID from Artworks u,Users lu where u.Artist_ID=lu.User_ID and (lu.User_Name like CONCAT('%',?1,'%') or u.Artwork_Name like CONCAT('%',?1,'%'))) union (select distinct u.Artwork_ID from Artworks u,Tags ru where u.Artwork_ID=ru.Artwork_ID and ru.Tag_name like CONCAT('%',?1,'%')) ORDER BY ?#{#pageable}", nativeQuery=true)
+	public Page<Integer> findBySearchAll(String key, Pageable pageable);
 	
 	@Query("select artworkId from Artworks where artworkId in (select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and (lu.userName like %:key% or u.artworkName like %:key%)) or artworkId in (select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName like %:key%)")
 	public Page<Integer> findBySearchKey(@Param("key")String key, Pageable pageable);
