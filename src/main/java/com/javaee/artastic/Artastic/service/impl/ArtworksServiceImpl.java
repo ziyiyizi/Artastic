@@ -220,6 +220,12 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return commentDao.save(comments);
 	}
 
+	@Override
+	public Page<Integer> findBySearchKey(String key, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findBySearchKey(key, pageable);
+	}
+
 
 	
 }

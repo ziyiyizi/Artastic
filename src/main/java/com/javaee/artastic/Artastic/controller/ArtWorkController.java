@@ -25,6 +25,7 @@ import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Likes;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 
+import net.sf.ehcache.config.Searchable;
 import net.sf.json.JSONObject;
 
 import java.sql.Timestamp;
@@ -130,15 +131,22 @@ public class ArtWorkController {
 	@RequestMapping(value="/getpost")
 	@ResponseBody
 	public ArtworksList getArtworkOne(@RequestHeader HttpHeaders headers) {
-		
-		System.out.println(headers.getFirst("present"));
-		int artworkId = Integer.parseInt(headers.getFirst("present"));
 		ArtworksList artworksList = new ArtworksList();
-		ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
-//		artWorkDetails.setLikerslist(artworkService.findLikesList(artworkId));
-//		artWorkDetails.setComments(artworkService.findCommentList(artworkId));
-		artworksList.setPost(artWorkDetails);
-		//return new ModelAndView("original");
+		try {
+			System.out.println(headers.getFirst("present"));
+			int artworkId = Integer.parseInt(headers.getFirst("present"));
+			
+			ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
+//			artWorkDetails.setLikerslist(artworkService.findLikesList(artworkId));
+//			artWorkDetails.setComments(artworkService.findCommentList(artworkId));
+			artworksList.setPost(artWorkDetails);
+			//return new ModelAndView("original");
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
+		
 		return artworksList;
 		
 	}
@@ -223,5 +231,35 @@ public class ArtWorkController {
 			error.setError(true);
 		}
 		return error;
+	}
+	
+	@RequestMapping(value="search/{searchType}/{searchKey}")
+	@ResponseBody
+	public ModelAndView search(@PathVariable("searchType")String searchType, @PathVariable("searchKey")String searchKey) {
+		return new ModelAndView("community");
+	}
+	
+	@RequestMapping(value="getsearch")
+	@ResponseBody
+	public ArtworksList searchArtworks(@RequestHeader HttpHeaders headers) {
+		
+		String present = headers.getFirst("present");
+		String[] strings = present.split("/");
+
+		System.out.println(strings[2]);
+		
+		ArtworksList artworksList = new ArtworksList();
+		Pageable pageable = new PageRequest(0, 10);
+		Page<Integer> page = artworkService.findBySearchKey(strings[2], pageable);
+		
+		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
+		List<Integer> artworkIds = page.getContent();
+		
+		for(Integer integer : artworkIds) {
+			artWorkDetails.add(artworkService.getArtworkDetails(integer));
+		}
+		artworksList.setPosts(artWorkDetails);
+		return artworksList;
+		
 	}
 }

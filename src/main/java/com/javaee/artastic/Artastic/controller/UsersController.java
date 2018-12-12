@@ -55,6 +55,7 @@ public class UsersController {
         String username = param.getUsername();
         String pwd = param.getPassword();
         UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
+        //token.setRememberMe(rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
         	subject.login(token);
