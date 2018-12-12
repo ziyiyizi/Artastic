@@ -54,13 +54,13 @@ public class UploadPicService {
             String title = mRequest.getParameter("title");
             String tags = mRequest.getParameter("tags");
             String folders = mRequest.getParameter("folders");
-            if(title == null) {
+            if(title == null || title.equals("")) {
             	title = "unkonwn";
             }
-            if(folders != null) {
-            	ossUtil.setFileDir(String.valueOf(artistId) + "/" + folders + "/");
+            if(folders != null && !folders.equals("")) {
+            	ossUtil.setFileDir(ossUtil.getBaseFileDir() + String.valueOf(artistId) + "/" + folders + "/");
             }else {
-            	ossUtil.setFileDir(String.valueOf(artistId) + "/");
+            	ossUtil.setFileDir(ossUtil.getBaseFileDir() + String.valueOf(artistId) + "/");
             }
             
         	String name = ossUtil.uploadImg2Oss(mFile);
@@ -83,7 +83,7 @@ public class UploadPicService {
 //            	throw new RuntimeException("test exception");
 //            }
             
-            if(tags != null) {
+            if(tags != null && !tags.equals("")) {
             	String[] tagslist = tags.split(",");
                 for(String tagName : tagslist) {
                 	Tags tag = new Tags();

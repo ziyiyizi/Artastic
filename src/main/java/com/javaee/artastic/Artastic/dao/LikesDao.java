@@ -3,6 +3,8 @@ package com.javaee.artastic.Artastic.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +22,9 @@ public interface LikesDao extends JpaRepository<Likes, Long>{
 	
 	@Query("select count(*) as likeNums from Likes where artworkId = :artworkId")
 	public int countLikes(@Param("artworkId")int artworkId);
+	
+	@Query("select artworkId from Likes where userId = :userId")
+	public Page<Integer> findUserLikes(@Param("userId")int userId, Pageable pageable);
 	
 	public Likes findByUserIdAndArtworkId(int userId, int artworkId);
 }

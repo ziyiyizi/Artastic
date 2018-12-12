@@ -245,15 +245,17 @@ public class ArtWorkController {
 		
 		String present = headers.getFirst("present");
 		String[] strings = present.split("/");
-
-		System.out.println(strings[2]);
+		String searchType = strings[1];
+		String searchKey = strings[2];
 		
 		ArtworksList artworksList = new ArtworksList();
 		Pageable pageable = new PageRequest(0, 10);
-		Page<Integer> page = artworkService.findBySearchKey(strings[2], pageable);
+		Page<Integer> page = artworkService.findBySearchKey(searchKey, pageable);
 		
 		List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
 		List<Integer> artworkIds = page.getContent();
+		System.out.println(artworkIds.size());
+		System.out.println(searchKey);
 		
 		for(Integer integer : artworkIds) {
 			artWorkDetails.add(artworkService.getArtworkDetails(integer));

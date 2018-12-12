@@ -90,11 +90,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return tagsDao.findTagList(artworkId);
 	}
 
-	@Override
-	public String findDescriptionByArtworkId(int artworkId) {
-		// TODO Auto-generated method stub
-		return artworksDao.findDesciptionByArtworkId(artworkId);
-	}
 
 	@Override
 	public ArtWorkDetails getArtworkDetails(int artworkId) {
@@ -113,10 +108,10 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
-		if(artWorkDetails.getTags().get(0).equals("")) {
-			artWorkDetails.getTags().clear();
-		}
-		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
+//		if(artWorkDetails.getTags().get(0).equals("")) {
+//			artWorkDetails.getTags().clear();
+//		}
+		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
 	}
@@ -138,10 +133,10 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setDate(artworks.getUploadtime().toString());
 		artWorkDetails.setFrenzy(countLikes(artworkId));
 		artWorkDetails.setTags(findTagList(artworkId));
-		if(artWorkDetails.getTags().get(0).equals("")) {
-			artWorkDetails.getTags().clear();
-		}
-		artWorkDetails.setDescription(findDescriptionByArtworkId(artworkId));
+//		if(artWorkDetails.getTags().get(0).equals("")) {
+//			artWorkDetails.getTags().clear();
+//		}
+		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
 		return artWorkDetails;
 	}

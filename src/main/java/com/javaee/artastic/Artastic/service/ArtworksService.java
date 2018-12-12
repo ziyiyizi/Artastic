@@ -24,7 +24,6 @@ public interface ArtworksService {
 	public int countLikes(int artworkId);
 	public List<Map<String, Object>> findCommentList(int artworkId);
 	public List<String> findTagList(int artworkId);
-	public String findDescriptionByArtworkId(int artworkId);
 	
 	public ArtWorkDetails getArtworkDetails(int artworkId);
 	public ArtWorkDetails getArtworkDetails(Artworks artworks);

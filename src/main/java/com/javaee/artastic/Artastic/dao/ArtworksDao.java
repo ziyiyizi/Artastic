@@ -18,8 +18,6 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	public List<Artworks> findByArtistId(int artistId);
 	public Artworks findByArtworkId(int artworkId);
 	public List<Artworks> findByArtworkName(String artworkName);
-	@Query("select artworkDescription from Artworks where artworkId = :artworkId")
-	public String findDesciptionByArtworkId(@Param("artworkId")int artworkId);
 	
 	public Page<Artworks> findAll(Pageable pageable); 
 	

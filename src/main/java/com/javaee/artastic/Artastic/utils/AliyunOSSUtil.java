@@ -33,6 +33,8 @@ public class AliyunOSSUtil {
 	
 	private String bucketName = "pic-artastic";
 	
+	private String baseFileDir = "PicArtastic/";
+	
 	private String fileDir = "PicArtastic/";
 	
 	private OSSClient ossClient;
@@ -51,12 +53,20 @@ public class AliyunOSSUtil {
 		ossClient.shutdown();
 	}
 	
+	public String getBaseFileDir() {
+		return baseFileDir;
+	}
+
+	public void setBaseFileDir(String baseFileDir) {
+		this.baseFileDir = baseFileDir;
+	}
+
 	public String getFileDir() {
 		return fileDir;
 	}
 
 	public void setFileDir(String fileDir) {
-		this.fileDir = this.fileDir + fileDir;
+		this.fileDir = fileDir;
 	}
 
 	public void uploadImg2Oss(String url) throws Exception {
