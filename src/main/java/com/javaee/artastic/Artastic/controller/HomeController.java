@@ -24,7 +24,7 @@ public class HomeController {
 	@RequestMapping(value= {"/index", "/", "home"})
 	@ResponseBody
 	public ModelAndView gohome() {
-		ModelAndView mv = new ModelAndView("community");
+		ModelAndView mv = new ModelAndView("index");
 		mv.addObject("webName","Artastic");
 		return mv;
 	}
