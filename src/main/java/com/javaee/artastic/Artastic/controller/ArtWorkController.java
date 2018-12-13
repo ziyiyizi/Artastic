@@ -57,7 +57,7 @@ public class ArtWorkController {
 			Pageable pageable = new PageRequest(0, 10);
 			Page<Integer> page = null;
 			String typeSort = headers.getFirst("present");
-			int clientId = Integer.parseInt(headers.getFirst("userId");)
+			int clientId = Integer.parseInt(headers.getFirst("userId"));
 			if(typeSort.equals("popular")) {
 				page = artworkService.findAllLikeSort(pageable);
 			} else if (typeSort.equals("latest")) {
