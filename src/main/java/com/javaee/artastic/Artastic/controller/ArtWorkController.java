@@ -57,6 +57,7 @@ public class ArtWorkController {
 			Pageable pageable = new PageRequest(0, 10);
 			Page<Integer> page = null;
 			String typeSort = headers.getFirst("present");
+			int clientId = Integer.parseInt(headers.getFirst("userId");)
 			if(typeSort.equals("popular")) {
 				page = artworkService.findAllLikeSort(pageable);
 			} else if (typeSort.equals("latest")) {
@@ -75,7 +76,7 @@ public class ArtWorkController {
 			List<Integer> artworkIds = page.getContent();
 			
 			for(Integer integer : artworkIds) {
-				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+				artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
 			}
 			
 			artworksList.setPosts(artWorkDetails);
@@ -100,8 +101,9 @@ public class ArtWorkController {
 		try {
 			System.out.println(headers.getFirst("present"));
 			int artworkId = Integer.parseInt(headers.getFirst("present"));
+			int clientId = Integer.parseInt(headers.getFirst("userId"));
 			
-			ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId);
+			ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId, clientId);
 			artworksList.setPost(artWorkDetails);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -184,6 +186,10 @@ public class ArtWorkController {
 			MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest)request;
 			String responseTo = mRequest.getParameter("responseTo");
 			String comment = mRequest.getParameter("comment");
+			if(comment == null || comment.equals("")) {
+				error.setError(true);
+				return error;
+			}
 			int artworkId = Integer.parseInt(mRequest.getParameter("artworkId"));
 			
 			Comments comments = new Comments();
@@ -214,6 +220,7 @@ public class ArtWorkController {
 		try {
 			
 			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
+			int clientId = Integer.parseInt(headers.getFirst("userId"));
 			String[] strings = present.split("/");
 			String searchType = strings[1];
 			String searchKey = strings[2];
@@ -225,7 +232,7 @@ public class ArtWorkController {
 			List<Integer> artworkIds = page.getContent();
 			
 			for(Integer integer : artworkIds) {
-				artWorkDetails.add(artworkService.getArtworkDetails(integer));
+				artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
 			}
 			artworksList.setPosts(artWorkDetails);
 
@@ -245,8 +252,27 @@ public class ArtWorkController {
 		try {
 			int artworkId = Integer.parseInt(headers.getFirst("present"));
 			
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	@RequestMapping(value="clicks/test/{artworkId}")
+	
+	public void clicksTest(@PathVariable("artworkId")int artworkId) {
+		List<Object[]> datalist = artworkService.countClicksPerMonth(artworkId);
+		for (Object[] objects : datalist) {
+			for(Object object:objects)
+				System.out.println("objects:"+object);
+		}
+		System.out.println("===============");
+		List<Object[]> datalist2 = artworkService.countClicksBySex(artworkId);
+		for(Object[] objects2 : datalist2) {
+			for(Object object2:objects2)
+				System.out.println("objects2:"+object2);
+			
+		}
+		
 	}
 }

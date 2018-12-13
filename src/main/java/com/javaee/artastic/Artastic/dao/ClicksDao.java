@@ -16,7 +16,7 @@ public interface ClicksDao extends JpaRepository<Clicks, Long>{
 	@Query(value="select count(*) as clicknum,month(Clicktime) as clickmonth from clicks where Artwork_ID=?1 group by month(Clicktime) order by clickmonth desc", nativeQuery=true)
 	public List<Object[]> countClicksPerMonth(int artworkId);
 	
-	@Query(value="select count(*) as clicknum,lu.User_sex as sex from clicks u,users lu where u.User_ID=lu.User_ID and Artwork_ID=?1 group by sex")
+	@Query(value="select count(*) as clicknum,lu.User_sex as sex from clicks u,users lu where u.User_ID=lu.User_ID and Artwork_ID=?1 group by sex", nativeQuery=true)
 	public List<Object[]> countClicksBySex(int artworkId);
 	
 }

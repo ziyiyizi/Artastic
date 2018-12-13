@@ -91,6 +91,30 @@ public class ArtworksServiceImpl implements ArtworksService{
 
 
 	@Override
+	public ArtWorkDetails getArtworkDetails(int artworkId, int clientId) {
+		// TODO Auto-generated method stub
+		ArtWorkDetails artWorkDetails = new ArtWorkDetails();
+		Artworks artworks = findByArtworkId(artworkId);
+		int userId = artworks.getArtistId();
+		artWorkDetails.setArtworkId(artworkId);
+		artWorkDetails.setArtworkName(artworks.getArtworkName());
+		artWorkDetails.setArtistId(userId);
+		
+		Map<String, Object> userNameAndIcon = usersDao.findNameAndIconByUserId(userId);
+		artWorkDetails.setArtistName(userNameAndIcon.get("name").toString());
+		artWorkDetails.setIconURL(userNameAndIcon.get("icon").toString());
+		//获取头像
+		artWorkDetails.setDate(artworks.getUploadtime().toString());
+		artWorkDetails.setFrenzy(countLikes(artworkId));
+		artWorkDetails.setTags(findTagList(artworkId));
+		artWorkDetails.setDescription(artworks.getArtworkDescription());
+		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
+		
+		artWorkDetails.setLike(isLike(clientId, artworkId));
+		return artWorkDetails;
+	}
+
+	@Override
 	public ArtWorkDetails getArtworkDetails(int artworkId) {
 		// TODO Auto-generated method stub
 		ArtWorkDetails artWorkDetails = new ArtWorkDetails();
@@ -257,6 +281,18 @@ public class ArtworksServiceImpl implements ArtworksService{
 	public Page<Integer> findUserLikes(int userId, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return likesDao.findUserLikes(userId, pageable);
+	}
+
+	@Override
+	public List<Object[]> countClicksPerMonth(int artworkId) {
+		// TODO Auto-generated method stub
+		return clicksDao.countClicksPerMonth(artworkId);
+	}
+
+	@Override
+	public List<Object[]> countClicksBySex(int artworkId) {
+		// TODO Auto-generated method stub
+		return clicksDao.countClicksBySex(artworkId);
 	}
 
 

@@ -24,6 +24,7 @@ public interface ArtworksService {
 	public List<Map<String, Object>> findCommentList(int artworkId);
 	public List<String> findTagList(int artworkId);
 	
+	public ArtWorkDetails getArtworkDetails(int artworkId, int clientId);
 	public ArtWorkDetails getArtworkDetails(int artworkId);
 	public ArtWorkDetails getArtworkDetails(Artworks artworks);
 	public ArtWorkLikes getArtworkLikes(int artworkId);
@@ -47,4 +48,7 @@ public interface ArtworksService {
 	public boolean isLike(int userId, int artworkId);
 	public Likes saveLike(Likes likes);
 	public Comments saveComment(Comments comments);
+	
+	public List<Object[]> countClicksPerMonth(int artworkId);
+	public List<Object[]> countClicksBySex(int artworkId);
 }
