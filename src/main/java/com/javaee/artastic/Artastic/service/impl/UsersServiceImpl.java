@@ -1,13 +1,22 @@
 package com.javaee.artastic.Artastic.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.javaee.artastic.Artastic.dao.FollowDao;
 import com.javaee.artastic.Artastic.dao.RolesDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
+import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Roles;
+import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 
@@ -19,6 +28,9 @@ public class UsersServiceImpl implements UsersService{
 	
 	@Resource
 	private RolesDao rolesDao;
+	
+	@Resource
+	private FollowDao followDao;
 	
 	@Transactional(readOnly=true)  
     @Override  
@@ -151,6 +163,49 @@ public class UsersServiceImpl implements UsersService{
 	public int updateUserTokenByUserId(int userId, String userToken) {
 		// TODO Auto-generated method stub
 		return usersDao.updateUserTokenByUserId(userId, userToken);
+	}
+
+	@Override
+	public List<UserDetails> findUsers(String userName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		List<UserDetails> userDetailList = new ArrayList<>();
+		
+		Page<Map<String, Object>> page = usersDao.findUsers(userName, pageable);
+		List<Map<String, Object>> detailslist = page.getContent();
+		for(Map details : detailslist) {
+			UserDetails userDetails = new UserDetails();
+			userDetails.setIconURL(String.valueOf(details.get("userIcon")));
+			userDetails.setArtistName(String.valueOf(details.get("userName")));
+			int userId = Integer.parseInt(String.valueOf(details.get("userId")));
+			userDetails.setFrenzy(followDao.countFollows(userId));
+			userDetailList.add(userDetails);
+		}
+		
+		return userDetailList;
+		
+	}
+
+	@Override
+	public int findUserIdByUserName(String userName) {
+		// TODO Auto-generated method stub
+		return usersDao.findUserIdByUserName(userName);
+	}
+
+	@Override
+	public Follow saveFollow(Follow follow) {
+		// TODO Auto-generated method stub
+		return followDao.save(follow);
+	}
+
+	@Override
+	public boolean isFollow(int artistId, int followerId) {
+		// TODO Auto-generated method stub
+		if(followDao.findByArtistIdAndFollowerId(artistId, followerId) == null) {
+			return false;
+		} else {
+			return true;
+		}
+		
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
@@ -36,7 +37,12 @@ public interface ArtworksService {
 	public Page<Integer> findAllRandSort(Pageable pageable);
 	public Page<Integer> findAllLikeSort(Pageable pageable);
 	public Page<Integer> findBySearchKey(String key, Pageable pageable);
-	public Page<Integer> findBySearchAll(String key, Pageable pageable);
+	public Page<Integer> findBySearchAll(String key, Pageable pageable);	
+	public Page<Integer> findByWorkName(String artworkName, Pageable pageable);
+	public Page<Integer> findByArtistName(String userName, Pageable pageable);
+	public Page<Integer> findByArtistNameEX(String userName, Pageable pageable);
+	public Page<Integer> findByTagName(String tagName, Pageable pageable);
+	public Page<Integer> findByTagNameEX(String tagName, Pageable pageable);
 	public Page<Integer> findByUserNameAndTag(String userName, String tagName, Pageable pageable);
 	public Page<Integer> findByUserNameAndWorkName(String userName, String artworkName, Pageable pageable);
 	public Page<Integer> findByWorkNameAndTag(String artworkName, String tagName, Pageable pageable);

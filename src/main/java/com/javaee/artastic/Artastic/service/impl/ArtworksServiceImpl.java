@@ -301,6 +301,36 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return clicksDao.countClicksBySex(artworkId);
 	}
 
+	@Override
+	public Page<Integer> findByWorkName(String artworkName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByWorkName(artworkName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByArtistName(String userName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByArtistName(userName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByArtistNameEX(String userName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByArtistNameEX(userName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByTagName(String tagName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByTagName(tagName, pageable);
+	}
+
+	@Override
+	public Page<Integer> findByTagNameEX(String tagName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findByTagNameEX(tagName, pageable);
+	}
+
 
 	
 }

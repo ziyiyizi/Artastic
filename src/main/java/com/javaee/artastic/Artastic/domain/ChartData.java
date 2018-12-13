@@ -5,10 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.util.bcel.Const;
+
 public class ChartData {
 
 	private List<Map<String, Object>> data1;
 	private List<Map<String, Object>> data2;
+	
+	public String convertToMonth(String number) {
+		final String[] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
+		return months[Integer.parseInt(number)];
+	}
+	
 	public List<Map<String, Object>> getData1() {
 		return data1;
 	}
@@ -18,7 +26,7 @@ public class ChartData {
 			Map<String, Object> map1 = new HashMap<>();
 			for(int i = 0; i < objects.length; i+=2) {
 				map1.put("clicknum", Integer.valueOf(String.valueOf(objects[i])));
-				map1.put("clickmonth", String.valueOf(objects[i+1]));
+				map1.put("clickmonth", convertToMonth(String.valueOf(objects[i+1])));
 			}
 			this.data1.add(map1);
 		}

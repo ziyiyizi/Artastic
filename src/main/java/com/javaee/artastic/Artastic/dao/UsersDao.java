@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,9 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	public Users findByUserMail(String userMail);
 	public Users findByUserPhone(String userPhone);
 	public Users findByUserNameOrUserMail(String userName, String userMail);
+	
+	@Query("select userId from Users where userName = :userName")
+	public int findUserIdByUserName(@Param("userName")String userName);
 	
 	@Query("select userName from Users where userId = :userId")
 	public String findUserNameByUserId(@Param("userId")int userId);
@@ -74,4 +79,7 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	@Modifying
 	@Query("update Users set userToken = :userToken where userId = :userId")
 	public int updateUserTokenByUserId(@Param("userId")int userId, @Param("userToken")String userToken);
+	
+	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u where u.userName like %:userName%")
+	public Page<Map<String, Object>> findUsers(@Param("userName")String userName, Pageable pageable);
 }

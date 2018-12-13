@@ -57,8 +57,14 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query("select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and lu.userName like %:userName%")
 	public Page<Integer> findByArtistName(@Param("userName")String userName, Pageable pageable);
 	
+	@Query("select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and lu.userName = :userName order by u.uploadtime desc")
+	public Page<Integer> findByArtistNameEX(@Param("userName")String userName, Pageable pageable);
+	
 	@Query("select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName like %:tagName%")
 	public Page<Integer> findByTagName(@Param("tagName")String tagName, Pageable pageable);
+	
+	@Query("select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName = :tagName")
+	public Page<Integer> findByTagNameEX(@Param("tagName")String tagName, Pageable pageable);
 	
 	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:tagName% and lu.userName like %:userName% and u.artworkName like %:workName%)")
 	public Page<Integer> findByAllKey(@Param("userName")String userName, @Param("workName")String artworkName, @Param("tagName")String tagName, Pageable pageable);

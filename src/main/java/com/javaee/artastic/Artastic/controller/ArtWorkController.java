@@ -24,8 +24,11 @@ import com.javaee.artastic.Artastic.domain.ChartData;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Error;
+import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Likes;
+import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.service.ArtworksService;
+import com.javaee.artastic.Artastic.service.UsersService;
 import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 
 import java.net.URLDecoder;
@@ -42,6 +45,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ArtWorkController {
 	@Autowired
 	private ArtworksService artworkService;
+	
+	@Autowired
+	private UsersService usersService;
 	
 //	@RequestMapping(value="/community/{postType}")
 //	@ResponseBody
@@ -226,8 +232,24 @@ public class ArtWorkController {
 			String searchType = strings[1];
 			String searchKey = strings[2];
 			Pageable pageable = new PageRequest(0, 10);
-			Page<Integer> page = artworkService.findBySearchKey(searchKey, pageable);
-//			Page<Integer> page = artworkService.findBySearchAll(searchKey, pageable);
+			Page<Integer> page = null;
+			
+			if(searchType.equals("member")) {
+				
+				List<UserDetails> members = usersService.findUsers(searchKey, pageable);
+				artworksList.setMembers(members);
+				return artworksList;
+				
+			} else if(searchType.equals("thismember")){
+				page = artworkService.findByArtistNameEX(searchKey, pageable);
+			} else if(searchType.equals("thistag")){
+				page = artworkService.findByTagNameEX(searchKey, pageable);
+			} else if(searchType.equals("tag")){
+				page = artworkService.findByTagName(searchKey, pageable);	
+			} else {
+				page = artworkService.findBySearchKey(searchKey, pageable);
+//				Page<Integer> page = artworkService.findBySearchAll(searchKey, pageable);	
+			}
 			
 			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
 			List<Integer> artworkIds = page.getContent();
@@ -261,14 +283,6 @@ public class ArtWorkController {
 			chartData.setData2(datalist2);
 			artworksList.setChartdata(chartData);
 			
-			List<Map<String, Object>> data1 = chartData.getData1();
-			for(Map map : data1) {
-				for(Object key : map.keySet()) {
-					System.out.println("key:" + key.toString());
-					System.out.println("value:" + map.get(key).toString());
-				}
-			}
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			ExceptionUtil.handleException(e);
@@ -277,21 +291,32 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="clicks/test/{artworkId}")
-	
-	public void clicksTest(@PathVariable("artworkId")int artworkId) {
-		List<Object[]> datalist = artworkService.countClicksPerMonth(artworkId);
-		for (Object[] objects : datalist) {
-			for(Object object:objects)
-				System.out.println("objects:"+object);
-		}
-		System.out.println("===============");
-		List<Object[]> datalist2 = artworkService.countClicksBySex(artworkId);
-		for(Object[] objects2 : datalist2) {
-			for(Object object2:objects2)
-				System.out.println("objects2:"+object2);
+	@RequestMapping(value="followmember")
+	@ResponseBody
+	public Error followMember(@RequestHeader HttpHeaders headers) {
+		Error error = new Error();
+		error.setError(false);
+		try {
+			String artistName = headers.getFirst("present");
+			int artistId = usersService.findUserIdByUserName(artistName);
+			int followerId = Integer.parseInt(headers.getFirst("userid"));
+			if(usersService.isFollow(artistId, followerId) == false) {
+				Follow follow = new Follow();
+				follow.setArtistId(artistId);
+				follow.setFollowerId(followerId);
+				follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
+				usersService.saveFollow(follow);
+				System.out.println("成功关注该作者");
+			} else {
+				System.out.println("已经关注过");
+			}
 			
+		} catch (Exception e) {
+			// TODO: handle exception
+			error.setError(true);
 		}
 		
+		return error;
 	}
+	
 }
