@@ -253,6 +253,12 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findByAllKey(userName, artworkName, tagName, pageable);
 	}
 
+	@Override
+	public Page<Integer> findUserLikes(int userId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return likesDao.findUserLikes(userId, pageable);
+	}
+
 
 	
 }

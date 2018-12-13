@@ -18,7 +18,16 @@ public class ArtWorkDetails {
 	private String iconURL;
 	private List<Map<String, String>> likerslist;
 	private List<Map<String, String>> comments;
+	private boolean isLike;
 	
+	public boolean isLike() {
+		return isLike;
+	}
+
+	public void setLike(boolean isLike) {
+		this.isLike = isLike;
+	}
+
 	public List<Map<String, String>> getComments() {
 		return comments;
 	}

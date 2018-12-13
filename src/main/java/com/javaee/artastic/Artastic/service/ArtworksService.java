@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
@@ -38,6 +39,8 @@ public interface ArtworksService {
 	public Page<Integer> findByUserNameAndWorkName(String userName, String artworkName, Pageable pageable);
 	public Page<Integer> findByWorkNameAndTag(String artworkName, String tagName, Pageable pageable);
 	public Page<Integer> findByAllKey(String userName, String artworkName, String tagName, Pageable pageable);
+	
+	public Page<Integer> findUserLikes(int userId, Pageable pageable);
 	
 	public Artworks saveArtwork(Artworks artworks);
 	public Clicks saveClick(Clicks clicks);
