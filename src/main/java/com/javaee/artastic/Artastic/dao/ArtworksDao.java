@@ -51,6 +51,15 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:tagName% and u.artworkName like %:workName%)")
 	public Page<Integer> findByWorkNameAndTag(@Param("workName")String artworkName, @Param("tagName")String tagName, Pageable pageable);
 	
+	@Query("select artworkId from Artworks where artworkName like %:artworkName%")
+	public Page<Integer> findByWorkName(@Param("artworkName")String artworkName, Pageable pageable);
+	
+	@Query("select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and lu.userName like %:userName%")
+	public Page<Integer> findByArtistName(@Param("userName")String userName, Pageable pageable);
+	
+	@Query("select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName like %:tagName%")
+	public Page<Integer> findByTagName(@Param("tagName")String tagName, Pageable pageable);
+	
 	@Query("select distinct u.artworkId from Artworks u,Users lu,Tags ru where u.artistId=lu.userId and u.artworkId=ru.artworkId and (ru.tagName like %:tagName% and lu.userName like %:userName% and u.artworkName like %:workName%)")
 	public Page<Integer> findByAllKey(@Param("userName")String userName, @Param("workName")String artworkName, @Param("tagName")String tagName, Pageable pageable);
 

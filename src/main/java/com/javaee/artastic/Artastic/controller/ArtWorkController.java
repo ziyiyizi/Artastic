@@ -261,7 +261,7 @@ public class ArtWorkController {
 			chartData.setData2(datalist2);
 			artworksList.setChartdata(chartData);
 			
-			List<Map<String, String>> data1 = chartData.getData1();
+			List<Map<String, Object>> data1 = chartData.getData1();
 			for(Map map : data1) {
 				for(Object key : map.keySet()) {
 					System.out.println("key:" + key.toString());
