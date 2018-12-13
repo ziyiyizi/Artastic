@@ -20,6 +20,7 @@ import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.ArtworksList;
+import com.javaee.artastic.Artastic.domain.ChartData;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Error;
@@ -63,7 +64,7 @@ public class ArtWorkController {
 			} else if (typeSort.equals("latest")) {
 				page = artworkService.findAllTimeSort(pageable);
 			} else if (typeSort.equals("feed")) {
-				page = artworkService.findAllRandSort(pageable);
+				page = artworkService.findFollowArtworks(clientId, pageable);
 			} else if (typeSort.equals("mylikes")) {
 				//page = artworkService.findAllRandSort(pageable);
 				int userId = Integer.parseInt(headers.getFirst("userId"));
@@ -247,15 +248,33 @@ public class ArtWorkController {
 	
 	@RequestMapping(value="getpostchart")
 	@ResponseBody
-	public void getPostChart(@RequestHeader HttpHeaders headers) {
+	public ArtworksList getPostChart(@RequestHeader HttpHeaders headers) {
 		
+		ArtworksList artworksList = new ArtworksList();
 		try {
-			int artworkId = Integer.parseInt(headers.getFirst("present"));
+			int artworkId = Integer.parseInt(headers.getFirst("present").split("/")[3]);
+			System.out.println("artworkId:" + String.valueOf(artworkId));
+			List<Object[]> datalist = artworkService.countClicksPerMonth(artworkId);
+			List<Object[]> datalist2 = artworkService.countClicksBySex(artworkId);
+			ChartData chartData = new ChartData();
+			chartData.setData1(datalist);
+			chartData.setData2(datalist2);
+			artworksList.setChartdata(chartData);
 			
+			List<Map<String, String>> data1 = chartData.getData1();
+			for(Map map : data1) {
+				for(Object key : map.keySet()) {
+					System.out.println("key:" + key.toString());
+					System.out.println("value:" + map.get(key).toString());
+				}
+			}
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+			ExceptionUtil.handleException(e);
 		}
+		
+		return artworksList;
 	}
 	
 	@RequestMapping(value="clicks/test/{artworkId}")

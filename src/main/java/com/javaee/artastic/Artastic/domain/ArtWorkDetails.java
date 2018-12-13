@@ -19,7 +19,7 @@ public class ArtWorkDetails {
 	private List<Map<String, String>> likerslist;
 	private List<Map<String, String>> comments;
 	private boolean isLike;
-	
+
 	public boolean isLike() {
 		return isLike;
 	}

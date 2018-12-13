@@ -7,6 +7,16 @@ public class ArtworksList {
 	private List<ArtWorkDetails> posts;
 	
 	private ArtWorkDetails post;
+	
+	private ChartData chartdata;
+	
+	public ChartData getChartdata() {
+		return chartdata;
+	}
+
+	public void setChartdata(ChartData chartdata) {
+		this.chartdata = chartdata;
+	}
 
 	public ArtWorkDetails getPost() {
 		return post;

@@ -190,6 +190,12 @@ public class ArtworksServiceImpl implements ArtworksService{
 	}
 
 	@Override
+	public Page<Integer> findFollowArtworks(int clientId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findFollowArtworks(clientId, pageable);
+	}
+
+	@Override
 	public List<Artworks> findAll() {
 		// TODO Auto-generated method stub
 		return artworksDao.findAll();

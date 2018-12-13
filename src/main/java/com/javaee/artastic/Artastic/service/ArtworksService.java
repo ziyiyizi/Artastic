@@ -30,6 +30,7 @@ public interface ArtworksService {
 	public ArtWorkLikes getArtworkLikes(int artworkId);
 	public List<Artworks> findAll();
 	public Page<Artworks> findAll(Pageable pageable);
+	public Page<Integer> findFollowArtworks(int clientId, Pageable pageable);
 	public Page<Integer> findAllTimeSort(Pageable pageable);
 	public List<Integer> findAllRandSort();
 	public Page<Integer> findAllRandSort(Pageable pageable);

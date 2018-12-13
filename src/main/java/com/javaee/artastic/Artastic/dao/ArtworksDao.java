@@ -21,6 +21,9 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	
 	public Page<Artworks> findAll(Pageable pageable); 
 	
+	@Query("select u.artworkId from Artworks u, Follow lu where lu.followerId = :clientId and lu.artistId = u.artistId order by u.uploadtime desc")
+	public Page<Integer> findFollowArtworks(@Param("clientId")int clientId, Pageable pageable);
+	
 	@Query("select artworkId from Artworks order by uploadTime desc")
 	public Page<Integer> findAllArtworkIdTimeSort(Pageable pageable);
 	
@@ -33,7 +36,7 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) limit 10", nativeQuery=true)
 	public List<Integer> findAllArtworkIdRandSort();
 	
-	@Query(value="(select distinct u.Artwork_ID from Artworks u,Users lu where u.Artist_ID=lu.User_ID and (lu.User_Name like CONCAT('%',?1,'%') or u.Artwork_Name like CONCAT('%',?1,'%'))) union (select distinct u.Artwork_ID from Artworks u,Tags ru where u.Artwork_ID=ru.Artwork_ID and ru.Tag_name like CONCAT('%',?1,'%')) ORDER BY ?#{#pageable}", nativeQuery=true)
+	@Query(value="(select distinct u.Artwork_ID from artworks u,users lu where u.Artist_ID=lu.User_ID and (lu.User_Name like CONCAT('%',?1,'%') or u.Artwork_Name like CONCAT('%',?1,'%'))) union (select distinct s.Artwork_ID from artworks s,tags rs where s.Artwork_ID=rs.Artwork_ID and rs.Tag_name like CONCAT('%',?1,'%')) ORDER BY ?#{#pageable}", nativeQuery=true)
 	public Page<Integer> findBySearchAll(String key, Pageable pageable);
 	
 	@Query("select artworkId from Artworks where artworkId in (select distinct u.artworkId from Artworks u,Users lu where u.artistId=lu.userId and (lu.userName like %:key% or u.artworkName like %:key%)) or artworkId in (select distinct u.artworkId from Artworks u,Tags ru where u.artworkId=ru.artworkId and ru.tagName like %:key%)")
