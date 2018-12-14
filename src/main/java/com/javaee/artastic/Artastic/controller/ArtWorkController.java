@@ -26,6 +26,7 @@ import com.javaee.artastic.Artastic.domain.Comments;
 import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Likes;
+import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import com.javaee.artastic.Artastic.service.UsersService;
@@ -289,15 +290,28 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	public Error pushNotification() {
+	public Error pushNotification(String senderName, String receiverName, String notiContent) {
 		Error error = new Error();
+		error.setError(false);
 		try {
-			
+			Notification notification = new Notification();
+			notification.setSenderName(senderName);
+			notification.setReceiverName(receiverName);
+			notification.setNotiTime(new Timestamp(System.currentTimeMillis()));
+			notification.setNotiState("0");
+			notification.setNotiContent(notiContent);
+			usersService.saveNotification(notification);
 		} catch (Exception e) {
 			// TODO: handle exception
+			error.setError(true);
 		}
 		return error;
 	}
 	
+	public ArtworksList pullNotification(String receiverName){
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setNotifications(usersService.findByReceiverName(receiverName));
+		return artworksList;
+	}
 	
 }

@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.javaee.artastic.Artastic.dao.FollowDao;
+import com.javaee.artastic.Artastic.dao.NotificationDao;
 import com.javaee.artastic.Artastic.dao.RolesDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.Follow;
+import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.Roles;
 import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.domain.Users;
@@ -33,6 +35,9 @@ public class UsersServiceImpl implements UsersService{
 	
 	@Resource
 	private FollowDao followDao;
+	
+	@Resource
+	private NotificationDao notificationDao;
 	
 	@Transactional(readOnly=true)  
     @Override  
@@ -229,6 +234,18 @@ public class UsersServiceImpl implements UsersService{
 			return true;
 		}
 		
+	}
+
+	@Override
+	public List<Notification> findByReceiverName(String receiverName) {
+		// TODO Auto-generated method stub
+		return notificationDao.findByReceiverNameOrderByNotiTimeDesc(receiverName);
+	}
+
+	@Override
+	public Notification saveNotification(Notification notification) {
+		// TODO Auto-generated method stub
+		return notificationDao.save(notification);
 	}
 	
 	

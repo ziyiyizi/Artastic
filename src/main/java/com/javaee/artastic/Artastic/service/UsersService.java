@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 import com.javaee.artastic.Artastic.domain.Follow;
+import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.Roles;
 import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.domain.Users;
@@ -36,4 +37,6 @@ public interface UsersService {
 	public UserDetails findUserDetails(String userName, Pageable pageable);
 	public boolean isFollow(int artistId, int followerId);
 	public Follow saveFollow(Follow follow);
+	public List<Notification> findByReceiverName(String receiverName);
+	public Notification saveNotification(Notification notification);
 }

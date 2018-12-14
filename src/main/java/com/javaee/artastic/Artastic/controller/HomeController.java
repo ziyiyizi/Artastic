@@ -29,46 +29,6 @@ public class HomeController {
 		return mv;
 	}
 	
-	@RequestMapping(value= {"/login"})
-	@ResponseBody
-	public ModelAndView login() {
-		ModelAndView mv = new ModelAndView("login");
-		return mv;
-	}
-	
-	@RequestMapping(value="/loginUser")
-	public ModelAndView loginUser(HttpServletRequest request, HttpSession session) throws Exception {
-
-        ModelAndView mView = new ModelAndView("index");
-        String username = request.getParameter("username");
-        String pwd = request.getParameter("password");
-        UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
-        Subject subject = SecurityUtils.getSubject();
-        try {
-        	subject.login(token);
-        	session.setAttribute("user", subject.getPrincipal());
-        	return mView;
-        }catch (Exception e) {
-			// TODO: handle exception
-        	String msg = null;
-        	if(e instanceof UnknownAccountException) {
-        		System.out.println("账户不存在");
-                msg = "账户不存在或密码不正确";
-        	} else if(e instanceof IncorrectCredentialsException) {
-        		System.out.println("密码不正确");
-                msg = "账户不存在或密码不正确";
-        	} else {
-        		System.out.println("其他异常");
-                msg = "其他异常";
-			}
-        	System.out.println(msg);
-            mView.setViewName("login");
-            mView.addObject("msg", msg);	
-            return mView;
-		}
-        
-    }
-	
 	@RequestMapping(value= {"/success"})
 	@ResponseBody
 	public ModelAndView success() {

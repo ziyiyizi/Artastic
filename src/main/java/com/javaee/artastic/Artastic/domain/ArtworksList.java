@@ -14,6 +14,16 @@ public class ArtworksList {
 	
 	private UserDetails member;
 	
+	private List<Notification> notifications;
+	
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
 	public UserDetails getMember() {
 		return member;
 	}

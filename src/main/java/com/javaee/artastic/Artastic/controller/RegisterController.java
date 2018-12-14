@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,13 +19,13 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.javaee.artastic.Artastic.domain.Error;
+import com.javaee.artastic.Artastic.domain.Params;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
 import com.javaee.artastic.Artastic.service.impl.MailService;
 import com.javaee.artastic.Artastic.utils.Md5Util;
 
 @Controller
-@RequestMapping(value="/Register")
 public class RegisterController {
 	@Autowired
 	private MailService mailService;
@@ -35,24 +36,26 @@ public class RegisterController {
 	@Autowired
 	private TemplateEngine templateEngine;
 	
-	@RequestMapping(value= {"/reg"})
-	@ResponseBody
-	public ModelAndView register() {
-		ModelAndView mView = new ModelAndView("testreg");
-		return mView;
-	}
 	
-	@RequestMapping(value= {"/test"}, method=RequestMethod.POST)
+	@RequestMapping(value= {"/signup"}, method=RequestMethod.POST)
 	@ResponseBody
-	public Error registerUser(@RequestParam("email")String email, @RequestParam("username")String username, @RequestParam("pwd")String pwd) {
-		Error error = new Error();
-		error.setError(false);
+	public Params registerUser(@RequestBody Params params) {
 		
+		params.setError(false);
 		try {
+			String email = params.getEmail();
+			String username = params.getUsername();
+			String pwd = params.getPassword();
+			String sex = null;
+			if(params.getSex().equals("male")) {
+				sex = "boy";
+			} else {
+				sex = "girl";
+			}
 			//检查邮箱用户名是否重复
 			if(usersService.isNameOrMailExists(username, email) == true) {
-				error.setError(true);
-				return error;
+				params.setError(true);
+				return params;
 			}
 			//生成token
 			String token = UUID.randomUUID().toString();
@@ -65,6 +68,7 @@ public class RegisterController {
 			users.setTokenTime(tokenTime);
 			users.setUserMail(email);
 			users.setUserName(username);
+			users.setUserSex(sex);
 			users.setUserPassword(pwd);
 			users.setUserState("0");
 			users.setUserToken(token);
@@ -74,6 +78,7 @@ public class RegisterController {
 			
 			if(users2 != null) {
 				int userId = users2.getUserId();
+				params.setUserId(userId);
 				String registerLink="http://localhost:8080/Register/check?userId="+Md5Util.convertMD5(String.valueOf(userId))
 				+"&token="+Md5Util.string2MD5(token);
 				Context context = new Context();
@@ -85,13 +90,13 @@ public class RegisterController {
 			}
 		}catch (Exception e) {
 			// TODO: handle exception
-			error.setError(true);
+			params.setError(true);
 		}
-		return error;
+		return params;
 
 	}
 	
-	@RequestMapping(value= {"/check"})
+	@RequestMapping(value= {"/Register/check"})
 	public String registerCheck(HttpServletRequest request) {
 		System.out.println("进入激活检查");
 		//检查用户状态是否需要激活
