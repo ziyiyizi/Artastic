@@ -20,6 +20,9 @@ public interface LikesDao extends JpaRepository<Likes, Long>{
 	@Query("select new map(u.userName as userName, u.userIcon as userIcon, ru.liketime as liketime) from Users u, Likes ru where u.userId = ru.userId and ru.artworkId = :artworkId order by liketime desc")
 	public List< Map<String, Object> > findLikesList(@Param("artworkId")int artworkId);
 	
+	@Query("select new map(u.userName as userName, u.userIcon as userIcon, ru.liketime as liketime) from Users u, Likes ru where u.userId = ru.userId and ru.artworkId = :artworkId order by liketime desc")
+	public Page< Map<String, Object> > findLikesList(@Param("artworkId")int artworkId, Pageable pageable);
+	
 	@Query("select count(*) as likeNums from Likes where artworkId = :artworkId")
 	public int countLikes(@Param("artworkId")int artworkId);
 	

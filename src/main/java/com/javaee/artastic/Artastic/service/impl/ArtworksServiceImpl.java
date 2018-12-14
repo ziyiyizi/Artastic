@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,13 @@ public class ArtworksServiceImpl implements ArtworksService{
 	public List<Map<String, Object>> findLikesList(int artworkId) {
 		// TODO Auto-generated method stub
 		return likesDao.findLikesList(artworkId);
+	}
+	
+	@Override
+	public Page<Map<String, Object>> findLikesList(int artworkId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+		return likesDao.findLikesList(artworkId, pageable);
 	}
 
 	@Override
@@ -162,7 +170,8 @@ public class ArtworksServiceImpl implements ArtworksService{
 	public ArtWorkLikes getArtworkLikes(int artworkId) {
 		// TODO Auto-generated method stub
 		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
-		artWorkLikes.setLikerslist(findLikesList(artworkId));
+		Pageable pageable = new PageRequest(0, 10);
+		artWorkLikes.setLikerslist(findLikesList(artworkId,pageable).getContent());
 		artWorkLikes.setComments(commentDao.findCommentList(artworkId));
 		return artWorkLikes;
 	}
@@ -226,6 +235,14 @@ public class ArtworksServiceImpl implements ArtworksService{
 	public List<Integer> findAllRandSort() {
 		// TODO Auto-generated method stub
 		return artworksDao.findAllArtworkIdRandSort();
+	}
+	
+	
+
+	@Override
+	public Page<Integer> findAllCommentSort(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdCommentSort(pageable);
 	}
 
 	//热度排序

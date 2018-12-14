@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
 	
-	@RequestMapping(value= {"/index", "/", "home"})
+	@RequestMapping(value= {"/index", "/"})
 	@ResponseBody
 	public ModelAndView gohome() {
 		ModelAndView mv = new ModelAndView("index");
@@ -80,6 +80,13 @@ public class HomeController {
 	@ResponseBody
 	public ModelAndView community() {
 		ModelAndView mv = new ModelAndView("community");
+		return mv;
+	}
+	
+	@RequestMapping(value= {"/websocket"})
+	@ResponseBody
+	public ModelAndView websocket() {
+		ModelAndView mv = new ModelAndView("websocket");
 		return mv;
 	}
 

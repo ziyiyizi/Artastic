@@ -1,6 +1,8 @@
 package com.javaee.artastic.Artastic.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -183,6 +185,28 @@ public class UsersServiceImpl implements UsersService{
 		
 		return userDetailList;
 		
+	}
+
+	@Override
+	public UserDetails findUserDetails(String userName, Pageable pageable) {
+		// TODO Auto-generated method stub
+		UserDetails userDetails = new UserDetails();
+		Map<String, Object> usermap = usersDao.findUsersEX(userName);
+		int userId = Integer.parseInt(String.valueOf(usermap.get("userId")));
+		userDetails.setArtistId(userId);
+		userDetails.setArtistName(String.valueOf(usermap.get("userName")));
+		userDetails.setFrenzy(followDao.countFollows(userId));
+		userDetails.setIconURL(String.valueOf(usermap.get("userIcon")));
+		Map<String, Object> usermap2 = usersDao.findTimeAndDescription(userId);
+		userDetails.setDescription(String.valueOf(usermap2.get("description")));
+		Timestamp timestamp = (Timestamp)usermap2.get("time");
+		int year = new Date().getYear() - timestamp.getYear();
+		userDetails.setJoinyear(year);
+		userDetails.setWorknum(usersDao.countWorks(userId));
+		userDetails.setFollowers(usersDao.findFollower(userId, pageable).getContent());
+		userDetails.setFollowing(usersDao.findFollowing(userId, pageable).getContent());
+		
+		return userDetails;
 	}
 
 	@Override

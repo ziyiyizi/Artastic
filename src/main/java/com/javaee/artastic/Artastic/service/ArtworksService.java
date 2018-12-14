@@ -21,6 +21,7 @@ public interface ArtworksService {
 	public List<Artworks> findByArtworkName(String artworkName);
 	
 	public List<Map<String, Object>> findLikesList(int artworkId);
+	public Page<Map<String, Object>> findLikesList(int artworkId, Pageable pageable);
 	public int countLikes(int artworkId);
 	public List<Map<String, Object>> findCommentList(int artworkId);
 	public List<String> findTagList(int artworkId);
@@ -33,6 +34,7 @@ public interface ArtworksService {
 	public Page<Artworks> findAll(Pageable pageable);
 	public Page<Integer> findFollowArtworks(int clientId, Pageable pageable);
 	public Page<Integer> findAllTimeSort(Pageable pageable);
+	public Page<Integer> findAllCommentSort(Pageable pageable);
 	public List<Integer> findAllRandSort();
 	public Page<Integer> findAllRandSort(Pageable pageable);
 	public Page<Integer> findAllLikeSort(Pageable pageable);

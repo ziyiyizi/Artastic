@@ -61,7 +61,14 @@ public class ArtWorkController {
 		ArtworksList artworksList = new ArtworksList();
 		
 		try {
-			Pageable pageable = new PageRequest(0, 10);
+			
+			int pageNo = 0;
+			String pageStr = headers.getFirst("page");
+			if(pageStr != null && !pageStr.equals("")) {
+				pageNo = Integer.parseInt(pageStr);
+			}
+			
+			Pageable pageable = new PageRequest(pageNo, 10);
 			Page<Integer> page = null;
 			String typeSort = headers.getFirst("present");
 			int clientId = Integer.parseInt(headers.getFirst("userId"));
@@ -75,6 +82,8 @@ public class ArtWorkController {
 				//page = artworkService.findAllRandSort(pageable);
 				int userId = Integer.parseInt(headers.getFirst("userId"));
 				page = artworkService.findUserLikes(userId, pageable);
+			} else if (typeSort.equals("tweet")) {
+				page = artworkService.findAllCommentSort(pageable);
 			} else {
 				page = artworkService.findAllRandSort(pageable);
 			}
@@ -167,22 +176,6 @@ public class ArtWorkController {
 		return error;
 	}
 	
-	@RequestMapping(value="/artwork/test")
-	@ResponseBody
-	public void pageable(@RequestParam("pageId")String pageId) {
-		int id = Integer.parseInt(pageId);
-		Pageable pageable = new PageRequest(id, 5);
-		Page<Artworks> page = artworkService.findAll(pageable);
-		//查询结果总行数
-		System.out.println(page.getTotalElements());
-		  //按照当前分页大小，总页数
-		System.out.println(page.getTotalPages());
-		  //按照当前页数、分页大小，查出的分页结果集合
-		for(Artworks artworks : page.getContent()) {
-			System.out.println(artworks.getArtworkName());
-		}
-	}
-	
 	@RequestMapping(value="makecomment")
 	public Error makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
 		Error error = new Error();
@@ -228,10 +221,15 @@ public class ArtWorkController {
 			
 			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
 			int clientId = Integer.parseInt(headers.getFirst("userId"));
+			int pageNo = 0;
+			String pageStr = headers.getFirst("page");
+			if(pageStr != null && !pageStr.equals("")) {
+				pageNo = Integer.parseInt(pageStr);
+			}
 			String[] strings = present.split("/");
 			String searchType = strings[1];
 			String searchKey = strings[2];
-			Pageable pageable = new PageRequest(0, 10);
+			Pageable pageable = new PageRequest(pageNo, 12);
 			Page<Integer> page = null;
 			
 			if(searchType.equals("member")) {
@@ -291,32 +289,7 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="followmember")
-	@ResponseBody
-	public Error followMember(@RequestHeader HttpHeaders headers) {
-		Error error = new Error();
-		error.setError(false);
-		try {
-			String artistName = headers.getFirst("present");
-			int artistId = usersService.findUserIdByUserName(artistName);
-			int followerId = Integer.parseInt(headers.getFirst("userid"));
-			if(usersService.isFollow(artistId, followerId) == false) {
-				Follow follow = new Follow();
-				follow.setArtistId(artistId);
-				follow.setFollowerId(followerId);
-				follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
-				usersService.saveFollow(follow);
-				System.out.println("成功关注该作者");
-			} else {
-				System.out.println("已经关注过");
-			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			error.setError(true);
-		}
-		
-		return error;
-	}
+	
+	
 	
 }

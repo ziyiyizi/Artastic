@@ -7,7 +7,7 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-@Service("producer")
+//@Service("producer")
 public class Producer {
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;

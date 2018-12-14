@@ -33,6 +33,7 @@ public interface UsersService {
 	public void deleteByUserId(int userId);
 	public int updateUserTokenByUserId(int userId, String userToken);
 	public List<UserDetails> findUsers(String userName, Pageable pageable);
+	public UserDetails findUserDetails(String userName, Pageable pageable);
 	public boolean isFollow(int artistId, int followerId);
 	public Follow saveFollow(Follow follow);
 }

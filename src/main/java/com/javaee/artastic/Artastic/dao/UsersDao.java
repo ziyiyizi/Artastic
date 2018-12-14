@@ -82,4 +82,19 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	
 	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u where u.userName like %:userName%")
 	public Page<Map<String, Object>> findUsers(@Param("userName")String userName, Pageable pageable);
+	
+	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u where u.userName = :userName")
+	public Map<String, Object> findUsersEX(@Param("userName")String userName);
+	
+	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u, Follow ru where ru.artistId = :artistId and ru.followerId = u.userId order by ru.followtime")
+	public Page<Map<String, Object>> findFollower(@Param("artistId")int artistId, Pageable pageable);
+	
+	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u, Follow ru where ru.followerId = :artistId and ru.artistId = u.userId order by ru.followtime")
+	public Page<Map<String, Object>> findFollowing(@Param("artistId")int artistId, Pageable pageable);
+	
+	@Query("select count(*) from Artworks where artistId=:userId")
+	public int countWorks(@Param("userId")int userId);
+	
+	@Query("select new map(registertime as time, userDescription as description) from Users where userId=:userId")
+	public Map<String, Object> findTimeAndDescription(@Param("userId")int userId);
 }

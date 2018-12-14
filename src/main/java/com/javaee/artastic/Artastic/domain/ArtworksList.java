@@ -11,6 +11,16 @@ public class ArtworksList {
 	private ChartData chartdata;
 	
 	private List<UserDetails> members;
+	
+	private UserDetails member;
+	
+	public UserDetails getMember() {
+		return member;
+	}
+
+	public void setMember(UserDetails member) {
+		this.member = member;
+	}
 
 	public List<UserDetails> getMembers() {
 		return members;

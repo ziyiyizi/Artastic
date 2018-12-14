@@ -27,6 +27,9 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query("select artworkId from Artworks order by uploadTime desc")
 	public Page<Integer> findAllArtworkIdTimeSort(Pageable pageable);
 	
+	@Query("select artworkId from Comments group by artworkId order by count(*) desc")
+	public Page<Integer> findAllArtworkIdCommentSort(Pageable pageable);
+	
 	@Query("select artworkId from Likes group by artworkId order by count(*) desc")
 	public Page<Integer> findAllArtworkIdLikeSort(Pageable pageable);
 	

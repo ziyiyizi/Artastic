@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
-@Configuration
+//@Configuration
 public class ActiveMQConfig {
 	@Value("${queueName}")
     private String queueName;
