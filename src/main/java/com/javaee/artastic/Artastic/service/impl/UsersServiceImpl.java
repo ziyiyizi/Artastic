@@ -200,8 +200,7 @@ public class UsersServiceImpl implements UsersService{
 		Map<String, Object> usermap2 = usersDao.findTimeAndDescription(userId);
 		userDetails.setDescription(String.valueOf(usermap2.get("description")));
 		Timestamp timestamp = (Timestamp)usermap2.get("time");
-		int year = new Date().getYear() - timestamp.getYear();
-		userDetails.setJoinyear(year);
+		userDetails.setJoinyear(timestamp.getYear());
 		userDetails.setWorknum(usersDao.countWorks(userId));
 		userDetails.setFollowers(usersDao.findFollower(userId, pageable).getContent());
 		userDetails.setFollowing(usersDao.findFollowing(userId, pageable).getContent());

@@ -289,7 +289,15 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	
+	public Error pushNotification() {
+		Error error = new Error();
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return error;
+	}
 	
 	
 }
