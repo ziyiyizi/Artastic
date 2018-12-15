@@ -67,6 +67,7 @@ public class UsersController {
         	session.setAttribute("user", subject.getPrincipal());
         	Users users = usersService.findByUserName(username);
         	param.setUserId(users.getUserId());
+        	param.setIconURL(users.getUserIcon());
         	System.out.println("登录成功");
         	return param;
         }catch (Exception e) {

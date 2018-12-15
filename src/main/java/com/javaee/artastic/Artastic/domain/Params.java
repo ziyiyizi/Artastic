@@ -7,7 +7,16 @@ public class Params {
 	private String email;
 	private String sex;
 	private boolean error;
+	private String iconURL;
 	
+	
+	
+	public String getIconURL() {
+		return iconURL;
+	}
+	public void setIconURL(String iconURL) {
+		this.iconURL = iconURL;
+	}
 	public boolean isError() {
 		return error;
 	}
