@@ -168,7 +168,8 @@ public class ArtWorkController {
 				artworkService.saveLike(likes);
 				String senderName = headers.getFirst("username");
 				String receiverName = usersService.findNameByWorkId(artworkId);
-				pushNotification(senderName, receiverName, "like", "");
+				String workName = artworkService.findNameByworkId(artworkId);
+				usersService.pushNotification(senderName, receiverName, workName, "like", "");
 				System.out.println("已添加喜欢");
 			} else {
 				System.out.println("已喜欢过该作品");

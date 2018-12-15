@@ -22,7 +22,7 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	public Users findByUserPhone(String userPhone);
 	public Users findByUserNameOrUserMail(String userName, String userMail);
 	
-	@Query("select u.userName from Users u, Artworks ru where ru.artistId=userId and ru.artworkId=:workId")
+	@Query("select u.userName from Users u, Artworks ru where ru.artistId=u.userId and ru.artworkId=:workId")
 	public String findNameByWorkId(@Param("workId")int workId);
 	
 	@Query("select userId from Users where userName = :userName")

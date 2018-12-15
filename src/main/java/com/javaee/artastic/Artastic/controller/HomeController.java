@@ -36,7 +36,7 @@ public class HomeController {
 		return mv;
 	}
 	
-	@RequestMapping(value= {"/community", "/error"})
+	@RequestMapping(value= {"/community"})
 	@ResponseBody
 	public ModelAndView community() {
 		ModelAndView mv = new ModelAndView("community");

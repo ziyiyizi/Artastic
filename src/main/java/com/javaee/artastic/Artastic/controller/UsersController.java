@@ -116,7 +116,7 @@ public class UsersController {
 				System.out.println("成功关注该作者");
 				
 				String senderName = headers.getFirst("username");
-				usersService.pushNotification(senderName, artistName, "follow", "");
+				usersService.pushNotification(senderName, artistName, "", "follow", "");
 				
 			} else {
 				System.out.println("已经关注过");
