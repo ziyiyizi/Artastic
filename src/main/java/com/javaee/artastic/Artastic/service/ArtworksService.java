@@ -20,6 +20,8 @@ public interface ArtworksService {
 	public Artworks findByArtworkId(int artworkId);
 	public List<Artworks> findByArtworkName(String artworkName);
 	
+	public String findNameByworkId(int workId);
+	
 	public List<Map<String, Object>> findLikesList(int artworkId);
 	public Page<Map<String, Object>> findLikesList(int artworkId, Pageable pageable);
 	public int countLikes(int artworkId);

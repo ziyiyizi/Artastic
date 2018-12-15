@@ -22,6 +22,9 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	public Users findByUserPhone(String userPhone);
 	public Users findByUserNameOrUserMail(String userName, String userMail);
 	
+	@Query("select u.userName from Users u, Artworks ru where ru.artistId=userId and ru.artworkId=:workId")
+	public String findNameByWorkId(@Param("workId")int workId);
+	
 	@Query("select userId from Users where userName = :userName")
 	public int findUserIdByUserName(@Param("userName")String userName);
 	
@@ -97,4 +100,7 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	
 	@Query("select new map(registertime as time, userDescription as description) from Users where userId=:userId")
 	public Map<String, Object> findTimeAndDescription(@Param("userId")int userId);
+	
+	@Query(value="select u.User_Name,ru.Artist_ID,count(*) from artworks ru, users u where ru.Artist_ID=u.User_ID and ru.Uploadtime between ?1 and ?2 group by Artist_ID order by count(*) desc limit 10", nativeQuery=true)
+	public List<Map<String, Object>> findByTimeBetweenAndWorkNum(String start, String end);
 }

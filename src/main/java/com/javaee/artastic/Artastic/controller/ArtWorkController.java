@@ -35,6 +35,7 @@ import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -165,6 +166,9 @@ public class ArtWorkController {
 				likes.setUserId(userId);
 				likes.setLiketime(new Timestamp(System.currentTimeMillis()));
 				artworkService.saveLike(likes);
+				String senderName = headers.getFirst("username");
+				String receiverName = usersService.findNameByWorkId(artworkId);
+				pushNotification(senderName, receiverName, "like", "");
 				System.out.println("已添加喜欢");
 			} else {
 				System.out.println("已喜欢过该作品");
@@ -200,6 +204,15 @@ public class ArtWorkController {
 			comments.setUserName(responseTo);
 			comments.setCommentTime(new Timestamp(System.currentTimeMillis()));
 			artworkService.saveComment(comments);
+			
+			String workName = artworkService.findNameByworkId(artworkId);
+			if(responseTo == null || responseTo.equals("")) {
+				String receiverName = usersService.findNameByWorkId(artworkId);
+				usersService.pushNotification(commentorName, receiverName, workName, "comment", comment);
+			} else {
+				usersService.pushNotification(commentorName, responseTo, workName, "comment2", comment);
+			}
+			
 		}catch (Exception e) {
 			// TODO: handle exception
 			error.setError(true);
@@ -290,27 +303,20 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	public Error pushNotification(String senderName, String receiverName, String notiContent) {
-		Error error = new Error();
-		error.setError(false);
-		try {
-			Notification notification = new Notification();
-			notification.setSenderName(senderName);
-			notification.setReceiverName(receiverName);
-			notification.setNotiTime(new Timestamp(System.currentTimeMillis()));
-			notification.setNotiState("0");
-			notification.setNotiContent(notiContent);
-			usersService.saveNotification(notification);
-		} catch (Exception e) {
-			// TODO: handle exception
-			error.setError(true);
-		}
-		return error;
-	}
-	
-	public ArtworksList pullNotification(String receiverName){
+	@RequestMapping(value="getnotification")
+	@ResponseBody
+	public ArtworksList pullNotification(@RequestHeader HttpHeaders headers){
 		ArtworksList artworksList = new ArtworksList();
-		artworksList.setNotifications(usersService.findByReceiverName(receiverName));
+		String receiverName = headers.getFirst("username");
+		artworksList.setNotification(usersService.findByReceiverName(receiverName));
+		int num = 0;
+		for(Notification notification : artworksList.getNotification()) {
+			if(notification.getNotiState().equals("0")) {
+				num++;
+			}
+		}
+		artworksList.setNotifyNum(num);
+		usersService.updateNotification(receiverName);
 		return artworksList;
 	}
 	

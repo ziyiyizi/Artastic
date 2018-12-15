@@ -60,7 +60,7 @@ public class UsersController {
         String username = param.getUsername();
         String pwd = param.getPassword();
         UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
-        //token.setRememberMe(rememberMe);
+        token.setRememberMe(true);
         Subject subject = SecurityUtils.getSubject();
         try {
         	subject.login(token);
@@ -114,6 +114,10 @@ public class UsersController {
 				follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
 				usersService.saveFollow(follow);
 				System.out.println("成功关注该作者");
+				
+				String senderName = headers.getFirst("username");
+				usersService.pushNotification(senderName, artistName, "follow", "");
+				
 			} else {
 				System.out.println("已经关注过");
 			}

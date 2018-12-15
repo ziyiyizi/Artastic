@@ -10,7 +10,7 @@ public class UserDetails {
 	private int frenzy;
 	
 	private int worknum;
-	private int joinyear;
+	private String joinyear;
 	private String description;
 	private List<ArtWorkDetails> works;
 	private List<Map<String, Object>> followers;
@@ -23,10 +23,10 @@ public class UserDetails {
 	public void setFollow(boolean follow) {
 		this.follow = follow;
 	}
-	public int getJoinyear() {
+	public String getJoinyear() {
 		return joinyear;
 	}
-	public void setJoinyear(int joinyear) {
+	public void setJoinyear(String joinyear) {
 		this.joinyear = joinyear;
 	}
 	public int getArtistId() {

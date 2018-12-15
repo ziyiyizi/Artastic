@@ -19,6 +19,9 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	public Artworks findByArtworkId(int artworkId);
 	public List<Artworks> findByArtworkName(String artworkName);
 	
+	@Query("select artworkName from Artworks where artworkId=:artworkId")
+	public String findNameByworkId(@Param("artworkId")int workId);
+	
 	public Page<Artworks> findAll(Pageable pageable); 
 	
 	@Query("select u.artworkId from Artworks u, Follow lu where lu.followerId = :clientId and lu.artistId = u.artistId order by u.uploadtime desc")
@@ -32,6 +35,9 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	
 	@Query("select artworkId from Likes group by artworkId order by count(*) desc")
 	public Page<Integer> findAllArtworkIdLikeSort(Pageable pageable);
+	
+	@Query(value="select Artwork_ID from likes where date(liketime) between ?1 and ?2 group by Artwork_ID order by count(*) desc limit 10", nativeQuery=true)
+	public List<Integer> findAllArtworkIdLikeSort(String start, String end);
 	
 	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) ORDER BY ?#{#pageable}", nativeQuery=true)
 	public Page<Integer> findAllArtworkIdRandSort(Pageable pageable);

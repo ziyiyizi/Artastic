@@ -14,14 +14,24 @@ public class ArtworksList {
 	
 	private UserDetails member;
 	
-	private List<Notification> notifications;
+	private List<Notification> notification;
 	
-	public List<Notification> getNotifications() {
-		return notifications;
+	private int notifyNum;
+	
+	public int getNotifyNum() {
+		return notifyNum;
 	}
 
-	public void setNotifications(List<Notification> notifications) {
-		this.notifications = notifications;
+	public void setNotifyNum(int notifyNum) {
+		this.notifyNum = notifyNum;
+	}
+
+	public List<Notification> getNotification() {
+		return notification;
+	}
+
+	public void setNotification(List<Notification> notification) {
+		this.notification = notification;
 	}
 
 	public UserDetails getMember() {

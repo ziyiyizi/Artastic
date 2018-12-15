@@ -12,6 +12,8 @@ public class Notification {
     private Timestamp notiTime;
     private String notiState;
     private String notiContent;
+    private String type;
+    private String workName;
 
     @Id
     @Column(name = "Noti_ID")
@@ -72,6 +74,26 @@ public class Notification {
     public void setNotiContent(String notiContent) {
         this.notiContent = notiContent;
     }
+    
+    @Basic
+    @Column(name = "type")
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    @Basic
+    @Column(name = "Work_Name")
+    public String getWorkName() {
+        return workName;
+    }
+
+    public void setWorkName(String workName) {
+        this.workName = workName;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -86,6 +108,8 @@ public class Notification {
         if (notiTime != null ? !notiTime.equals(that.notiTime) : that.notiTime != null) return false;
         if (notiState != null ? !notiState.equals(that.notiState) : that.notiState != null) return false;
         if (notiContent != null ? !notiContent.equals(that.notiContent) : that.notiContent != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (workName != null ? !workName.equals(that.workName) : that.workName != null) return false;
 
         return true;
     }
@@ -98,6 +122,8 @@ public class Notification {
         result = 31 * result + (notiTime != null ? notiTime.hashCode() : 0);
         result = 31 * result + (notiState != null ? notiState.hashCode() : 0);
         result = 31 * result + (notiContent != null ? notiContent.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (workName != null ? workName.hashCode() : 0);
         return result;
     }
 }

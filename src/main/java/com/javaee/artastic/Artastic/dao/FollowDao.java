@@ -16,4 +16,7 @@ public interface FollowDao extends JpaRepository<Follow, Long>{
 	
 	@Query("select count(*) from Follow where artistId = :artistId")
 	public int countFollows(@Param("artistId")int artistId);
+	
+	@Query(value="select Artist_ID from follow where followtime between ?1 and ?2 group by Artist_ID order by count(*) desc limit 10", nativeQuery=true)
+	public List<Integer> findByTimeBetween(String start, String end);
 }

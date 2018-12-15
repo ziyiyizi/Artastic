@@ -348,6 +348,12 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findByTagNameEX(tagName, pageable);
 	}
 
+	@Override
+	public String findNameByworkId(int workId) {
+		// TODO Auto-generated method stub
+		return artworksDao.findNameByworkId(workId);
+	}
+
 
 	
 }

@@ -44,5 +44,10 @@ public class Params {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "Params [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", sex=" + sex + ", error=" + error + "]";
+	}
 	
 }

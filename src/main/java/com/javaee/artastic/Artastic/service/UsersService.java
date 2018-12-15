@@ -1,5 +1,6 @@
 package com.javaee.artastic.Artastic.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.Roles;
@@ -19,6 +21,7 @@ public interface UsersService {
 	public List<Roles> findRoleList(int userId);
 	public List<Roles> findRoleList(Users users);
 	public int findUserIdByUserName(String userName);
+	public String findNameByWorkId(int workId);
 	public String findUserNameByUserId(int userId);
 	public String findUserMailByUserId(int userId);
 	public String findUserPhoneByUserId(int userId);
@@ -39,4 +42,7 @@ public interface UsersService {
 	public Follow saveFollow(Follow follow);
 	public List<Notification> findByReceiverName(String receiverName);
 	public Notification saveNotification(Notification notification);
+	public int updateNotification(String receiverName);
+	
+	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent);
 }

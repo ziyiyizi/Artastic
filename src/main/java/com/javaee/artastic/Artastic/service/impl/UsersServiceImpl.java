@@ -17,6 +17,7 @@ import com.javaee.artastic.Artastic.dao.FollowDao;
 import com.javaee.artastic.Artastic.dao.NotificationDao;
 import com.javaee.artastic.Artastic.dao.RolesDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
+import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.Roles;
@@ -205,7 +206,7 @@ public class UsersServiceImpl implements UsersService{
 		Map<String, Object> usermap2 = usersDao.findTimeAndDescription(userId);
 		userDetails.setDescription(String.valueOf(usermap2.get("description")));
 		Timestamp timestamp = (Timestamp)usermap2.get("time");
-		userDetails.setJoinyear(timestamp.getYear());
+		userDetails.setJoinyear(timestamp.toString());
 		userDetails.setWorknum(usersDao.countWorks(userId));
 		userDetails.setFollowers(usersDao.findFollower(userId, pageable).getContent());
 		userDetails.setFollowing(usersDao.findFollowing(userId, pageable).getContent());
@@ -246,6 +247,41 @@ public class UsersServiceImpl implements UsersService{
 	public Notification saveNotification(Notification notification) {
 		// TODO Auto-generated method stub
 		return notificationDao.save(notification);
+	}
+
+	@Transactional
+	@Override
+	public int updateNotification(String receiverName) {
+		// TODO Auto-generated method stub
+		return notificationDao.update(receiverName);
+	}
+
+	@Override
+	public String findNameByWorkId(int workId) {
+		// TODO Auto-generated method stub
+		return usersDao.findNameByWorkId(workId);
+	}
+
+	@Override
+	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent) {
+		// TODO Auto-generated method stub
+		Error error = new Error();
+		error.setError(false);
+		try {
+			Notification notification = new Notification();
+			notification.setSenderName(senderName);
+			notification.setReceiverName(receiverName);
+			notification.setWorkName(workName);
+			notification.setNotiTime(new Timestamp(System.currentTimeMillis()));
+			notification.setNotiState("0");
+			notification.setType(type);
+			notification.setNotiContent(notiContent);
+			saveNotification(notification);
+		} catch (Exception e) {
+			// TODO: handle exception
+			error.setError(true);
+		}
+		return error;
 	}
 	
 	
