@@ -1,5 +1,6 @@
 package com.javaee.artastic.Artastic.controller;
 
+import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -136,7 +137,15 @@ public class UsersController {
 	public ArtworksList getMember(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		try {
-			String userName = headers.getFirst("username");
+			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
+			String[] strings = present.split("/");
+			String searchType = strings[1];
+			String searchKey = strings[2];
+			if(searchType.equals("member")) {
+				
+			}
+			String userName = searchKey;
+			//String userName = headers.getFirst("username");
 			int userId = Integer.parseInt(headers.getFirst("userId"));
 			
 			Pageable pageable = new PageRequest(0, 10);
