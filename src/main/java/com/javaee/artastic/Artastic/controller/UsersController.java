@@ -142,19 +142,19 @@ public class UsersController {
 			String searchType = strings[1];
 			String searchKey = strings[2];
 			if(searchType.equals("member")) {
+				String userName = searchKey;
+				//String userName = headers.getFirst("username");
+				int userId = Integer.parseInt(headers.getFirst("userId"));
 				
+				Pageable pageable = new PageRequest(0, 10);
+				UserDetails userDetails = usersService.findUserDetails(userName, pageable);
+				
+				boolean isFollow = usersService.isFollow(userDetails.getArtistId(), userId);
+				userDetails.setFollow(isFollow);
+				
+				artworksList.setMember(userDetails);
 			}
-			String userName = searchKey;
-			//String userName = headers.getFirst("username");
-			int userId = Integer.parseInt(headers.getFirst("userId"));
 			
-			Pageable pageable = new PageRequest(0, 10);
-			UserDetails userDetails = usersService.findUserDetails(userName, pageable);
-			
-			boolean isFollow = usersService.isFollow(userDetails.getArtistId(), userId);
-			userDetails.setFollow(isFollow);
-			
-			artworksList.setMember(userDetails);
 		} catch (Exception e) {
 			// TODO: handle exception
 			ExceptionUtil.handleException(e);
