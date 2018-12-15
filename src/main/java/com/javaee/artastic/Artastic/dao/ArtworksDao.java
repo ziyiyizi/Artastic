@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
 import com.javaee.artastic.Artastic.domain.Artworks;
-import com.javaee.artastic.Artastic.domain.Users;
 
 @Component
 public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecificationExecutor<Artworks>{
@@ -30,14 +29,19 @@ public interface ArtworksDao extends JpaRepository<Artworks, Long>, JpaSpecifica
 	@Query("select artworkId from Artworks order by uploadTime desc")
 	public Page<Integer> findAllArtworkIdTimeSort(Pageable pageable);
 	
+	//tweet排序
 	@Query("select artworkId from Comments group by artworkId order by count(*) desc")
 	public Page<Integer> findAllArtworkIdCommentSort(Pageable pageable);
 	
 	@Query("select artworkId from Likes group by artworkId order by count(*) desc")
 	public Page<Integer> findAllArtworkIdLikeSort(Pageable pageable);
 	
-	@Query(value="select Artwork_ID from likes where date(liketime) between ?1 and ?2 group by Artwork_ID order by count(*) desc limit 10", nativeQuery=true)
+	//一定时间内like最多
+	@Query(value="select Artwork_ID from likes where date(liketime) between ?1 and ?2 group by Artwork_ID order by count(*) desc limit 5", nativeQuery=true)
 	public List<Integer> findAllArtworkIdLikeSort(String start, String end);
+	
+	@Query(value="select u.Artwork_ID,u.Artwork_Name,u.Artist_ID,ru.Artdata,count(*) as num from artworks u,artdata ru,clicks lu where u.Artwork_ID=ru.Artwork_ID and u.Artwork_ID=lu.Artwork_ID and lu.Clicktime between ?1 and ?2 group by u.Artwork_ID order by num desc limit 1", nativeQuery=true)
+	public List<Object[]> findArtworkMaxClicks(String start, String end);
 	
 	@Query(value="SELECT artwork_ID FROM artworks WHERE artwork_ID >= ((SELECT MAX(artwork_ID) FROM artworks)-(SELECT MIN(artwork_ID) FROM artworks)) * RAND() + (SELECT MIN(artwork_ID) FROM artworks) ORDER BY ?#{#pageable}", nativeQuery=true)
 	public Page<Integer> findAllArtworkIdRandSort(Pageable pageable);

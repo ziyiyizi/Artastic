@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UsersDao extends JpaRepository<Users, Long> {
 	public Users findByUserName(String username);
-	public Users findByUserId(String userId);
+	public Users findByUserId(int userId);
 	public Users findByUserMail(String userMail);
 	public Users findByUserPhone(String userPhone);
 	public Users findByUserNameOrUserMail(String userName, String userMail);
@@ -45,6 +45,9 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	
 	@Query("select userState from Users where userId = :userId")
 	public String findUserStateByUserId(@Param("userId")int userId);
+	
+	@Query("select userState from Users where userName = :userName")
+	public String findUserStateByUserName(@Param("userName")String userName);
 	
 	@Query("select userToken from Users where userId = :userId")
 	public String findUserTokenByUserId(@Param("userId")int userId);
@@ -83,6 +86,10 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	@Query("update Users set userToken = :userToken where userId = :userId")
 	public int updateUserTokenByUserId(@Param("userId")int userId, @Param("userToken")String userToken);
 	
+	@Modifying
+	@Query("update Users set userSex = :sex,userMail = :mail,userPassword = :pwd,userDescription = :description where userId = :id")
+	public int updateUserByUserId(@Param("sex")String sex, @Param("mail")String mail, @Param("pwd")String pwd, @Param("description")String description, @Param("id")int id);
+	
 	@Query("select new map(u.userId as userId, u.userName as userName, u.userIcon as userIcon) from Users u where u.userName like %:userName%")
 	public Page<Map<String, Object>> findUsers(@Param("userName")String userName, Pageable pageable);
 	
@@ -101,6 +108,8 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	@Query("select new map(registertime as time, userDescription as description) from Users where userId=:userId")
 	public Map<String, Object> findTimeAndDescription(@Param("userId")int userId);
 	
+	//一定时间内投稿数最多
 	@Query(value="select u.User_Name,ru.Artist_ID,count(*) from artworks ru, users u where ru.Artist_ID=u.User_ID and ru.Uploadtime between ?1 and ?2 group by Artist_ID order by count(*) desc limit 10", nativeQuery=true)
-	public List<Map<String, Object>> findByTimeBetweenAndWorkNum(String start, String end);
+	public List<Object[]> findByTimeBetweenAndWorkNum(String start, String end);
+	
 }

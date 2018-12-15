@@ -29,7 +29,4 @@ public class RolesServiceImpl implements RolesService{
 		return permissionsDao.findPermissionByRole(roleid);
 	}
 	
-	
-	
-	
 }

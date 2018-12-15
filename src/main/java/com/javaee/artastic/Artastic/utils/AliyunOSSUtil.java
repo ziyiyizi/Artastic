@@ -77,25 +77,23 @@ public class AliyunOSSUtil {
             String[] split = url.split("/");
             this.uploadFile2OSS(fin, split[split.length - 1]);
         } catch (FileNotFoundException e) {
-            throw new Exception("图片上传失败01");
+            throw new Exception("fail for file_not_found_execption...");
         }
     }
 	
 	public String uploadImg2Oss(MultipartFile file) throws Exception {
         if (file.getSize() > 5 * 1024 * 1024) {
-            throw new Exception("上传图片大小不能超过5MB！");
+            throw new Exception("the max size of the pic is 5MB...");
         }
         String originalFilename = file.getOriginalFilename();
         String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-//        Random random = new Random();
-//        String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
         String name = UUID.randomUUID().toString() + substring;
         try {
             InputStream inputStream = file.getInputStream();
             this.uploadFile2OSS(inputStream, name);
             return name;
         } catch (Exception e) {
-            throw new Exception("图片上传失败02");
+            throw new Exception("fail for unknown exception");
         }
     }
 

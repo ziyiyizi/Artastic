@@ -3,8 +3,9 @@ package com.javaee.artastic.Artastic.controller;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
@@ -19,6 +20,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +28,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.javaee.artastic.Artastic.domain.ArtworksList;
-import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Params;
-import com.javaee.artastic.Artastic.domain.Roles;
 import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
+import com.javaee.artastic.Artastic.service.impl.UploadPicService;
 import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 
 
@@ -44,11 +47,14 @@ import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 //@RequestMapping(value="/user")
 
 public class UsersController {
-	
+
 	@Autowired
 	private UsersService usersService;
 	
-	@RequestMapping(value="/user/login",method = RequestMethod.GET)
+	@Autowired
+	private UploadPicService uploadPicService;
+	
+	@RequestMapping(value= {"/user/login", "/login"},method = RequestMethod.GET)
 	public ModelAndView login() {
 		return new ModelAndView("index");
 	}
@@ -56,12 +62,11 @@ public class UsersController {
 	@RequestMapping(value="/user/login",method = RequestMethod.POST)
 	@ResponseBody
 	public Params login(@RequestBody Params param, HttpResponse response, HttpSession session) throws Exception {
-
-        //ModelAndView mView = new ModelAndView("success");
+		
+		param.setError(false);
         String username = param.getUsername();
         String pwd = param.getPassword();
-        UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
-        token.setRememberMe(true);
+        UsernamePasswordToken token = new UsernamePasswordToken(username,pwd,param.isRemember());
         Subject subject = SecurityUtils.getSubject();
         try {
         	subject.login(token);
@@ -70,7 +75,6 @@ public class UsersController {
         	param.setUserId(users.getUserId());
         	param.setIconURL(users.getUserIcon());
         	System.out.println("登录成功");
-        	return param;
         }catch (Exception e) {
 			// TODO: handle exception
         	String msg = null;
@@ -85,11 +89,9 @@ public class UsersController {
                 msg = "其他异常";
 			}
         	System.out.println(msg);
-//            mView.addObject("msg", msg);	
-//            mView.addObject("error", true);
-            return null;
+            param.setError(true);
 		}
-        
+        return param;
     }
 	
 	@RequestMapping(value={"/user/showAll"})
@@ -102,9 +104,9 @@ public class UsersController {
 	
 	@RequestMapping(value="followmember")
 	@ResponseBody
-	public Error followMember(@RequestHeader HttpHeaders headers) {
-		Error error = new Error();
-		error.setError(false);
+	public ArtworksList followMember(@RequestHeader HttpHeaders headers) {
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setError(false);
 		try {
 			String artistName = headers.getFirst("present");
 			int artistId = usersService.findUserIdByUserName(artistName);
@@ -126,10 +128,10 @@ public class UsersController {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-			error.setError(true);
+			artworksList.setError(true);
 		}
 		
-		return error;
+		return artworksList;
 	}
 	
 	@RequestMapping(value="getmemberdetail")
@@ -166,4 +168,42 @@ public class UsersController {
 		}
 		return artworksList;
 	}
+	
+	@RequestMapping(value="getprofile")
+	@ResponseBody
+	public Users getProfile(@RequestHeader HttpHeaders headers) {
+		int userId = Integer.parseInt(headers.getFirst("userid"));
+		Users users = usersService.findByUserId(userId);
+		return users;
+	}
+	
+	@RequestMapping(value="uploadprofile", method=RequestMethod.POST)
+	@ResponseBody
+	public ArtworksList uploadProfile(HttpServletRequest request, @RequestHeader HttpHeaders headers){
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setError(false);
+		MultipartHttpServletRequest mRequest = null;
+        MultipartFile mFile = null;
+        try {
+        	mRequest = (MultipartHttpServletRequest)request;
+        	
+        	int userId = Integer.valueOf(headers.getFirst("userid"));
+        	String userSex = mRequest.getParameter("userSex");
+        	String userDescription = mRequest.getParameter("userDescription");
+        	String userMail = mRequest.getParameter("userMail");
+        	String userPassword = mRequest.getParameter("userPassword");
+        	
+        	mFile = mRequest.getFile("file");
+        	uploadPicService.uploadIcon(mFile, userId);
+        	usersService.updateProfile(userSex, userMail, userPassword, userDescription, userId);
+        	
+        } catch (Exception e) {
+			// TODO: handle exception
+        	artworksList.setError(true);
+        	
+		}
+        
+		return artworksList;
+	}
+	
 }

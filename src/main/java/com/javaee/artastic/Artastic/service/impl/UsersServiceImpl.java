@@ -2,7 +2,6 @@ package com.javaee.artastic.Artastic.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ import com.javaee.artastic.Artastic.dao.FollowDao;
 import com.javaee.artastic.Artastic.dao.NotificationDao;
 import com.javaee.artastic.Artastic.dao.RolesDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
-import com.javaee.artastic.Artastic.domain.Error;
+import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.Roles;
@@ -97,7 +96,6 @@ public class UsersServiceImpl implements UsersService{
 		} else {
 			return true;
 		}
-		
 	}
 
 	@Override
@@ -136,7 +134,12 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public boolean isUserActivate(String userName) {
 		// TODO Auto-generated method stub
-		return false;
+		if(usersDao.findUserStateByUserName(userName).equals("1")) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	@Override
@@ -237,6 +240,20 @@ public class UsersServiceImpl implements UsersService{
 		
 	}
 
+	@Transactional
+	@Override
+	public int updateUserIconByUserId(int userId, String userIcon) {
+		// TODO Auto-generated method stub
+		return usersDao.updateUserIconByUserId(userId, userIcon);
+	}
+
+	@Transactional
+	@Override
+	public int updateProfile(String sex, String mail, String pwd, String description, int id) {
+		// TODO Auto-generated method stub
+		return usersDao.updateUserByUserId(sex, mail, pwd, description, id);
+	}
+
 	@Override
 	public List<Notification> findByReceiverName(String receiverName) {
 		// TODO Auto-generated method stub
@@ -263,10 +280,13 @@ public class UsersServiceImpl implements UsersService{
 	}
 
 	@Override
-	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent, int workId) {
+	public ArtworksList pushNotification(String senderName, String receiverName, String workName, String type, String notiContent, int workId) {
 		// TODO Auto-generated method stub
-		Error error = new Error();
-		error.setError(false);
+		if(senderName.equals(receiverName)) {
+			return null;
+		}
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setError(false);
 		try {
 			Notification notification = new Notification();
 			notification.setSenderName(senderName);
@@ -280,9 +300,9 @@ public class UsersServiceImpl implements UsersService{
 			saveNotification(notification);
 		} catch (Exception e) {
 			// TODO: handle exception
-			error.setError(true);
+			artworksList.setError(true);
 		}
-		return error;
+		return artworksList;
 	}
 
 	@Override
@@ -290,8 +310,47 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return notificationDao.countNotifyNum(receiverName);
 	}
-	
-	
-	
+
+	@Override
+	public Users findByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return usersDao.findByUserId(userId);
+	}
+
+	@Override
+	public Users findByUserMail(String userMail) {
+		// TODO Auto-generated method stub
+		return usersDao.findByUserMail(userMail);
+	}
+
+	@Override
+	public Users findByUserPhone(String userPhone) {
+		// TODO Auto-generated method stub
+		return usersDao.findByUserPhone(userPhone);
+	}
+
+	@Override
+	public Users findByUserNameOrUserMail(String userName, String userMail) {
+		// TODO Auto-generated method stub
+		return usersDao.findByUserNameOrUserMail(userName, userMail);
+	}
+
+	@Override
+	public List<Object[]> findByTimeBetweenAndWorkNum(String start, String end) {
+		// TODO Auto-generated method stub
+		return usersDao.findByTimeBetweenAndWorkNum(start, end);
+	}
+
+	@Override
+	public Map<String, Object> findNameAndIconByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return usersDao.findNameAndIconByUserId(userId);
+	}
+
+	@Override
+	public int countFollows(int artistId) {
+		// TODO Auto-generated method stub
+		return followDao.countFollows(artistId);
+	}
 	
 }

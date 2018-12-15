@@ -17,6 +17,7 @@ public interface TagsDao extends JpaRepository<Tags, Long>{
 	@Query("select tagName from Tags where artworkId = :artworkId")
 	public List<String> findTagList(@Param("artworkId")int artworkId);
 	
+	//一定时间内喜爱度最高的作品tag频率
 	@Query(value="select ru.Tag_name from likes u,tags ru where u.Artwork_ID=ru.Artwork_ID and date(u.liketime) between ?1 and ?2 group by ru.Tag_name order by count(*) desc limit 5", nativeQuery=true)
 	public List<String> findTagListPopular(String start, String end);
 }

@@ -8,9 +8,15 @@ public class Params {
 	private String sex;
 	private boolean error;
 	private String iconURL;
+	private boolean remember;
 	
 	
-	
+	public boolean isRemember() {
+		return remember;
+	}
+	public void setRemember(boolean remember) {
+		this.remember = remember;
+	}
 	public String getIconURL() {
 		return iconURL;
 	}

@@ -15,18 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.javaee.artastic.Artastic.dao.ArtworksDao;
 import com.javaee.artastic.Artastic.domain.ArtWorkDetails;
 import com.javaee.artastic.Artastic.domain.ArtWorkLikes;
-import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.ChartData;
 import com.javaee.artastic.Artastic.domain.Clicks;
 import com.javaee.artastic.Artastic.domain.Comments;
-import com.javaee.artastic.Artastic.domain.Error;
-import com.javaee.artastic.Artastic.domain.Follow;
 import com.javaee.artastic.Artastic.domain.Likes;
-import com.javaee.artastic.Artastic.domain.Notification;
 import com.javaee.artastic.Artastic.domain.UserDetails;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import com.javaee.artastic.Artastic.service.UsersService;
@@ -35,9 +30,7 @@ import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,11 +44,11 @@ public class ArtWorkController {
 	@Autowired
 	private UsersService usersService;
 	
-//	@RequestMapping(value="/community/{postType}")
-//	@ResponseBody
-//	public ModelAndView showArtwork(@PathVariable("postType")String postType) {
-//		return new ModelAndView("community");
-//	}
+	@RequestMapping(value="/community/{postType}")
+	@ResponseBody
+	public ModelAndView showArtwork(@PathVariable("postType")String postType) {
+		return new ModelAndView("community");
+	}
 	
 	@RequestMapping(value="/getPosts")
 	@ResponseBody
@@ -153,9 +146,9 @@ public class ArtWorkController {
 	
 	@RequestMapping(value="/likerequest")
 	@ResponseBody
-	public Error addLikes(@RequestHeader HttpHeaders headers) {
-		Error error = new Error();
-		error.setError(false);
+	public ArtworksList addLikes(@RequestHeader HttpHeaders headers) {
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setError(false);
 		try {
 			int userId = Integer.valueOf(headers.getFirst("userid"));
 			int artworkId = Integer.valueOf(headers.getFirst("present"));
@@ -176,16 +169,16 @@ public class ArtWorkController {
 			}
 			
 		}catch (Exception e) {
-			error.setError(true);
+			artworksList.setError(true);
 		}
 		
-		return error;
+		return artworksList;
 	}
 	
 	@RequestMapping(value="makecomment")
-	public Error makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
-		Error error = new Error();
-		error.setError(false);
+	public ArtworksList makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+		ArtworksList artworksList = new ArtworksList();
+		artworksList.setError(false);
 		try {
 			String commentorName = headers.getFirst("username");
 			
@@ -193,8 +186,8 @@ public class ArtWorkController {
 			String responseTo = mRequest.getParameter("responseTo");
 			String comment = mRequest.getParameter("comment");
 			if(comment == null || comment.equals("")) {
-				error.setError(true);
-				return error;
+				artworksList.setError(true);
+				return artworksList;
 			}
 			int artworkId = Integer.parseInt(mRequest.getParameter("artworkId"));
 			
@@ -216,9 +209,9 @@ public class ArtWorkController {
 			
 		}catch (Exception e) {
 			// TODO: handle exception
-			error.setError(true);
+			artworksList.setError(true);
 		}
-		return error;
+		return artworksList;
 	}
 	
 	@RequestMapping(value="search/{searchType}/{searchKey}")
@@ -310,6 +303,7 @@ public class ArtWorkController {
 		ArtworksList artworksList = new ArtworksList();
 		String receiverName = headers.getFirst("username");
 		artworksList.setNotification(usersService.findByReceiverName(receiverName));
+
 		usersService.updateNotification(receiverName);
 		return artworksList;
 	}

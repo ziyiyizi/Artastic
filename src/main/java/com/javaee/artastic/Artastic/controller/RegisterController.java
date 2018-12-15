@@ -11,14 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.javaee.artastic.Artastic.domain.Error;
 import com.javaee.artastic.Artastic.domain.Params;
 import com.javaee.artastic.Artastic.domain.Users;
 import com.javaee.artastic.Artastic.service.UsersService;
@@ -36,7 +32,6 @@ public class RegisterController {
 	@Autowired
 	private TemplateEngine templateEngine;
 	
-	
 	@RequestMapping(value= {"/signup"}, method=RequestMethod.POST)
 	@ResponseBody
 	public Params registerUser(@RequestBody Params params) {
@@ -46,12 +41,7 @@ public class RegisterController {
 			String email = params.getEmail();
 			String username = params.getUsername();
 			String pwd = params.getPassword();
-			String sex = null;
-			if(params.getSex().equals("male")) {
-				sex = "boy";
-			} else {
-				sex = "girl";
-			}
+			String sex = params.getSex();
 			//检查邮箱用户名是否重复
 			if(usersService.isNameOrMailExists(username, email) == true) {
 				params.setError(true);
@@ -60,7 +50,7 @@ public class RegisterController {
 			//生成token
 			String token = UUID.randomUUID().toString();
 			Timestamp registerTime = new Timestamp(System.currentTimeMillis());
-			Timestamp tokenTime = new Timestamp(System.currentTimeMillis()+1000*3600*24);
+			Timestamp tokenTime = new Timestamp(System.currentTimeMillis() + 1000 * 3600 * 24);
 	
 			//控制邮件在一定时间内只发送一次
 			Users users = new Users();

@@ -18,6 +18,28 @@ public class ArtworksList {
 	
 	private int notifyNum;
 	
+	private Weekly weekly;
+	
+	private boolean error;
+	
+	
+	
+	public Weekly getWeekly() {
+		return weekly;
+	}
+
+	public void setWeekly(Weekly weekly) {
+		this.weekly = weekly;
+	}
+
+	public boolean isError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
 	public int getNotifyNum() {
 		return notifyNum;
 	}

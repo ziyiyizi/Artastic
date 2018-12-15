@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.javaee.artastic.Artastic.dao.ArtdataDao;
 import com.javaee.artastic.Artastic.dao.ArtworksDao;
 import com.javaee.artastic.Artastic.dao.TagsDao;
+import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.Artdata;
 import com.javaee.artastic.Artastic.domain.Artworks;
 import com.javaee.artastic.Artastic.domain.Tags;
@@ -34,19 +35,46 @@ public class UploadPicService {
 	@Autowired
 	private ArtdataDao artdataDao;
 	
+	@Autowired
+	private UsersDao usersDao;
+	
     private AliyunOSSUtil ossUtil = new AliyunOSSUtil();
+    
+    @Transactional
+    public Map<String, Object> uploadIcon(MultipartFile mFile, int userId){
+    	Map<String, Object> value = new HashMap<String, Object>();
+        value.put("error", true);
+
+        try {
+
+        	if (mFile != null && mFile.getSize() > 0) {
+        		ossUtil.setFileDir(ossUtil.getBaseFileDir() + String.valueOf(userId) + "/");
+            	String name = ossUtil.uploadImg2Oss(mFile);
+                String imgUrl = ossUtil.getImgUrl(name);
+                value.put("name", name);
+                value.put("imgUrl", imgUrl);
+            	usersDao.updateUserIconByUserId(userId, imgUrl);
+            }
+
+        } catch (Exception e) {
+			// TODO: handle exception
+        	value.put("error", false);
+        	
+		}
+        return value;
+    }
     
     @Transactional
     public Map<String, Object> uploadFile(HttpServletRequest request, HttpHeaders headers){
     	Map<String, Object> value = new HashMap<String, Object>();
-        value.put("success", true);
+        value.put("error", true);
         MultipartHttpServletRequest mRequest = null;
         MultipartFile mFile = null;
         try {
         	mRequest = (MultipartHttpServletRequest)request;
         	mFile = mRequest.getFile("file");
         	if (mFile == null || mFile.getSize() <= 0) {
-                throw new Exception("图片不能为空");
+                throw new Exception("the pic is not allowed to be empty...");
             }
         	
             int artistId = Integer.valueOf(headers.getFirst("userId"));
@@ -68,7 +96,6 @@ public class UploadPicService {
             value.put("name", name);
             value.put("imgUrl", imgUrl);
             
-            
             Artworks artworks = new Artworks();
             artworks.setArtistId(artistId);
             artworks.setArtworkDescription(description);
@@ -77,11 +104,6 @@ public class UploadPicService {
             artworks.setUploadtime(new Timestamp(System.currentTimeMillis()));
 
             int artworkId = artworksDao.save(artworks).getArtworkId();
-            System.out.println(String.valueOf(artworkId));
-            
-//            if(true) {
-//            	throw new RuntimeException("test exception");
-//            }
             
             if(tags != null && !tags.equals("")) {
             	String[] tagslist = tags.split(",");
@@ -102,7 +124,7 @@ public class UploadPicService {
 
         } catch (IOException e) {
             e.printStackTrace();
-            value.put("success", false);
+            value.put("error", false);
         } catch (Exception e) {
             e.printStackTrace();
         }

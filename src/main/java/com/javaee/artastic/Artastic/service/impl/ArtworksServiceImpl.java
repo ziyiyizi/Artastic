@@ -97,7 +97,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return tagsDao.findTagList(artworkId);
 	}
 
-
 	@Override
 	public ArtWorkDetails getArtworkDetails(int artworkId, int clientId) {
 		// TODO Auto-generated method stub
@@ -237,8 +236,6 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findAllArtworkIdRandSort();
 	}
 	
-	
-
 	@Override
 	public Page<Integer> findAllCommentSort(Pageable pageable) {
 		// TODO Auto-generated method stub
@@ -354,6 +351,23 @@ public class ArtworksServiceImpl implements ArtworksService{
 		return artworksDao.findNameByworkId(workId);
 	}
 
+	@Override
+	public List<String> findTagListPopular(String start, String end) {
+		// TODO Auto-generated method stub
+		return tagsDao.findTagListPopular(start, end);
+	}
+
+	@Override
+	public Integer findAllArtworkIdLikeSort(String start, String end) {
+		// TODO Auto-generated method stub
+		return artworksDao.findAllArtworkIdLikeSort(start, end).get(0);
+	}
+
+	@Override
+	public Object[] findArtworkWeekly(String start, String end) {
+		// TODO Auto-generated method stub
+		return artworksDao.findArtworkMaxClicks(start, end).get(0);
+	}
 
 	
 }
