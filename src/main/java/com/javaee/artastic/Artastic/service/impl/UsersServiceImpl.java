@@ -263,7 +263,7 @@ public class UsersServiceImpl implements UsersService{
 	}
 
 	@Override
-	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent) {
+	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent, int workId) {
 		// TODO Auto-generated method stub
 		Error error = new Error();
 		error.setError(false);
@@ -276,6 +276,7 @@ public class UsersServiceImpl implements UsersService{
 			notification.setNotiState("0");
 			notification.setType(type);
 			notification.setNotiContent(notiContent);
+			notification.setWorkId(workId);
 			saveNotification(notification);
 		} catch (Exception e) {
 			// TODO: handle exception

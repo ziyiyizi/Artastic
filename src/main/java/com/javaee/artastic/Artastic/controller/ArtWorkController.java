@@ -169,7 +169,7 @@ public class ArtWorkController {
 				String senderName = headers.getFirst("username");
 				String receiverName = usersService.findNameByWorkId(artworkId);
 				String workName = artworkService.findNameByworkId(artworkId);
-				usersService.pushNotification(senderName, receiverName, workName, "like", "");
+				usersService.pushNotification(senderName, receiverName, workName, "like", "", artworkId);
 				System.out.println("已添加喜欢");
 			} else {
 				System.out.println("已喜欢过该作品");
@@ -209,9 +209,9 @@ public class ArtWorkController {
 			String workName = artworkService.findNameByworkId(artworkId);
 			if(responseTo == null || responseTo.equals("")) {
 				String receiverName = usersService.findNameByWorkId(artworkId);
-				usersService.pushNotification(commentorName, receiverName, workName, "comment", comment);
+				usersService.pushNotification(commentorName, receiverName, workName, "comment", comment, artworkId);
 			} else {
-				usersService.pushNotification(commentorName, responseTo, workName, "comment2", comment);
+				usersService.pushNotification(commentorName, responseTo, workName, "comment2", comment, artworkId);
 			}
 			
 		}catch (Exception e) {
