@@ -21,4 +21,7 @@ public interface NotificationDao extends JpaRepository<Notification, Long>{
 	@Modifying
 	@Query(value="update notification set Noti_State='1' where Receiver_Name = ?1 and Noti_Time < now()", nativeQuery=true)
 	public int update(String receiverName);
+	
+	@Query(value="select count(*) from Notification where receiverName=:name and notiState='0'")
+	public int countNotifyNum(@Param("name")String receiverName);
 }

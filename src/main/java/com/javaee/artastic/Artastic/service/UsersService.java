@@ -43,6 +43,6 @@ public interface UsersService {
 	public List<Notification> findByReceiverName(String receiverName);
 	public Notification saveNotification(Notification notification);
 	public int updateNotification(String receiverName);
-	
+	public int countNotifyNum(String receiverName);
 	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent);
 }

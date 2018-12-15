@@ -310,14 +310,16 @@ public class ArtWorkController {
 		ArtworksList artworksList = new ArtworksList();
 		String receiverName = headers.getFirst("username");
 		artworksList.setNotification(usersService.findByReceiverName(receiverName));
-		int num = 0;
-		for(Notification notification : artworksList.getNotification()) {
-			if(notification.getNotiState().equals("0")) {
-				num++;
-			}
-		}
-		artworksList.setNotifyNum(num);
 		usersService.updateNotification(receiverName);
+		return artworksList;
+	}
+	
+	@RequestMapping(value="fetchnotification")
+	@ResponseBody
+	public ArtworksList fetchNotification(@RequestHeader HttpHeaders headers) {
+		ArtworksList artworksList = new ArtworksList();
+		String receiverName = headers.getFirst("username");
+		artworksList.setNotifyNum(usersService.countNotifyNum(receiverName));
 		return artworksList;
 	}
 	

@@ -283,6 +283,12 @@ public class UsersServiceImpl implements UsersService{
 		}
 		return error;
 	}
+
+	@Override
+	public int countNotifyNum(String receiverName) {
+		// TODO Auto-generated method stub
+		return notificationDao.countNotifyNum(receiverName);
+	}
 	
 	
 	
