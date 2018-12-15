@@ -44,5 +44,5 @@ public interface UsersService {
 	public Notification saveNotification(Notification notification);
 	public int updateNotification(String receiverName);
 	public int countNotifyNum(String receiverName);
-	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent);
+	public Error pushNotification(String senderName, String receiverName, String workName, String type, String notiContent, int workId);
 }

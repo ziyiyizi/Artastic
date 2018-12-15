@@ -14,6 +14,7 @@ public class Notification {
     private String notiContent;
     private String type;
     private String workName;
+    private int workId;
 
     @Id
     @Column(name = "Noti_ID")
@@ -94,6 +95,16 @@ public class Notification {
     public void setWorkName(String workName) {
         this.workName = workName;
     }
+    
+    @Basic
+    @Column(name = "Work_ID")
+    public int getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(int workId) {
+        this.workId = workId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -110,7 +121,7 @@ public class Notification {
         if (notiContent != null ? !notiContent.equals(that.notiContent) : that.notiContent != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (workName != null ? !workName.equals(that.workName) : that.workName != null) return false;
-
+        if (workId != that.workId) return false;
         return true;
     }
 
@@ -124,6 +135,7 @@ public class Notification {
         result = 31 * result + (notiContent != null ? notiContent.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (workName != null ? workName.hashCode() : 0);
+        result = 31 * result + workId;
         return result;
     }
 }
