@@ -24,6 +24,10 @@ public class ChartData {
 		this.data1 = new ArrayList<>();
 		for(Object[] objects : data1) {
 			Map<String, Object> map1 = new HashMap<>();
+			for(int i = 1; i < 13; i++) {
+				map1.put("clicknum", 0);
+				map1.put("clickmonth", convertToMonth(String.valueOf(i)));
+			}
 			for(int i = 0; i < objects.length; i+=2) {
 				map1.put("clicknum", Integer.valueOf(String.valueOf(objects[i])));
 				map1.put("clickmonth", convertToMonth(String.valueOf(objects[i+1])));

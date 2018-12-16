@@ -50,6 +50,12 @@ public class ArtWorkController {
 		return new ModelAndView("community");
 	}
 	
+	@RequestMapping(value="/lab/{postType}")
+	@ResponseBody
+	public ModelAndView showLab(@PathVariable("postType")String postType) {
+		return new ModelAndView("community");
+	}
+	
 	@RequestMapping(value="/getPosts")
 	@ResponseBody
 	public ArtworksList getArtWorksAll(@RequestHeader HttpHeaders headers) {
