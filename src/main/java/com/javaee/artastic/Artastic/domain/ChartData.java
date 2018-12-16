@@ -22,17 +22,21 @@ public class ChartData {
 	}
 	public void setData1(List<Object[]> data1) {
 		this.data1 = new ArrayList<>();
+		for(int i = 1; i < 13; i++) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("clicknum", 0);
+			map.put("clickmonth", convertToMonth(String.valueOf(i)));
+			this.data1.add(map);
+		}
+		
 		for(Object[] objects : data1) {
 			Map<String, Object> map1 = new HashMap<>();
-			for(int i = 1; i < 13; i++) {
-				map1.put("clicknum", 0);
-				map1.put("clickmonth", convertToMonth(String.valueOf(i)));
-			}
-			for(int i = 0; i < objects.length; i+=2) {
-				map1.put("clicknum", Integer.valueOf(String.valueOf(objects[i])));
-				map1.put("clickmonth", convertToMonth(String.valueOf(objects[i+1])));
-			}
-			this.data1.add(map1);
+			int month = Integer.parseInt(String.valueOf(objects[1]));
+
+			map1.put("clicknum", Integer.valueOf(String.valueOf(objects[0])));
+			map1.put("clickmonth", convertToMonth(String.valueOf(objects[1])));
+
+			this.data1.set(month-1, map1);
 		}
 
 	}
@@ -41,13 +45,28 @@ public class ChartData {
 	}
 	public void setData2(List<Object[]> data2) {
 		this.data2 = new ArrayList<>();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("clicknum", 0);
+		map.put("sex", "boy");
+		
+		Map<String, Object> map1 = new HashMap<>();
+		map1.put("clicknum", 0);
+		map1.put("sex", "girl");
+		
+		this.data2.add(map);
+		this.data2.add(map1);
+		
 		for(Object[] objects : data2) {
 			Map<String, Object> map2 = new HashMap<>();
-			for(int i = 0; i < objects.length; i+=2) {
-				map2.put("clicknum", Integer.valueOf(String.valueOf(objects[i])));
-				map2.put("sex", String.valueOf(objects[i+1]));
+			map2.put("clicknum", Integer.valueOf(String.valueOf(objects[0])));
+			map2.put("sex", String.valueOf(objects[1]));
+			if(String.valueOf(objects[1]).equals("boy")) {
+				this.data2.set(0, map2);
+			} else {
+				this.data2.set(1, map2);
 			}
-			this.data2.add(map2);
+
 		}
 		
 	}

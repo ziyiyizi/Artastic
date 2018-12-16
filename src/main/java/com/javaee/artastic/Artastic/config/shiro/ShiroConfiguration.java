@@ -51,15 +51,21 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/getpost", "anon");
         filterChainDefinitionMap.put("/getPosts", "anon");
         filterChainDefinitionMap.put("/getlikelistandcomments", "anon");
+        filterChainDefinitionMap.put("/getmemberdetail", "anon");
         filterChainDefinitionMap.put("/getsearch", "anon");
         filterChainDefinitionMap.put("/getweekly", "anon");
         filterChainDefinitionMap.put("/fetchnotification", "anon");
+        filterChainDefinitionMap.put("/lab/**", "anon");
+        filterChainDefinitionMap.put("/member/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/user/94b2d71afb3182b7c9d52b7bd18377e7.jpg", "anon");
         filterChainDefinitionMap.put("/0e40b5786876766a7db2a1b5922ac748.png", "anon");
         filterChainDefinitionMap.put("/1cedb6e919bfed6a2c1ec00b5d8ee620.svg", "anon");
         filterChainDefinitionMap.put("/94b2d71afb3182b7c9d52b7bd18377e7.jpg", "anon");
+        filterChainDefinitionMap.put("/5f7c529010048486e5e75707ff0a58cc.svg", "anon");
+        filterChainDefinitionMap.put("/b6cbb1c40dc3792372eec59da0a62963.svg", "anon");
+        filterChainDefinitionMap.put("/a60613b465f2dd5c6f5848d3feb40ffd.jpg", "anon");
         
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setLoginUrl("/user/login");

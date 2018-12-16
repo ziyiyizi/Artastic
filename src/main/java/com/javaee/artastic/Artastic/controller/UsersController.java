@@ -139,27 +139,34 @@ public class UsersController {
 	public ArtworksList getMember(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		try {
+			UserDetails userDetails = null;
+			
 			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
 			String[] strings = present.split("/");
 			String searchType = strings[1];
 			String searchKey = strings[2];
 			String userName = null;
+			
 			if(searchType.equals("member")) {
 				userName = searchKey;
-
 			} else {
-				userName = headers.getFirst("username");
-				
+				userName = headers.getFirst("username");	
 			}
 			
-			int userId = Integer.parseInt(headers.getFirst("userId"));
-			
-			Pageable pageable = new PageRequest(0, 10);
-			UserDetails userDetails = usersService.findUserDetails(userName, pageable);
-			
-			boolean isFollow = usersService.isFollow(userDetails.getArtistId(), userId);
-			userDetails.setFollow(isFollow);
-			
+			if(!userName.equals("null")) {
+				Pageable pageable = new PageRequest(0, 10);
+				userDetails = usersService.findUserDetails(userName, pageable);
+				
+				String userIdStr = headers.getFirst("userId");
+				boolean isFollow = false;
+				if(!userIdStr.equals("null")) {
+					int userId = Integer.parseInt(userIdStr);
+					isFollow = usersService.isFollow(userDetails.getArtistId(), userId);
+					
+				}
+				userDetails.setFollow(isFollow);
+			}
+
 			artworksList.setMember(userDetails);
 			
 		} catch (Exception e) {
@@ -172,8 +179,14 @@ public class UsersController {
 	@RequestMapping(value="getprofile")
 	@ResponseBody
 	public Users getProfile(@RequestHeader HttpHeaders headers) {
-		int userId = Integer.parseInt(headers.getFirst("userid"));
-		Users users = usersService.findByUserId(userId);
+		Users users = null;
+		try {
+			int userId = Integer.parseInt(headers.getFirst("userid"));
+			users = usersService.findByUserId(userId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
 		return users;
 	}
 	

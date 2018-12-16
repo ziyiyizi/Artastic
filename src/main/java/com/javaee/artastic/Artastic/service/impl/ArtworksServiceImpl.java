@@ -140,6 +140,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setTags(findTagList(artworkId));
 		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
+		artWorkDetails.setLike(false);
 		return artWorkDetails;
 	}
 	
@@ -162,6 +163,7 @@ public class ArtworksServiceImpl implements ArtworksService{
 		artWorkDetails.setTags(findTagList(artworkId));
 		artWorkDetails.setDescription(artworks.getArtworkDescription());
 		artWorkDetails.setFileURL(artdataDao.findUrlByArtworkId(artworkId));
+		artWorkDetails.setLike(false);
 		return artWorkDetails;
 	}
 

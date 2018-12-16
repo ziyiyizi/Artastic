@@ -56,6 +56,12 @@ public class ArtWorkController {
 		return new ModelAndView("community");
 	}
 	
+	@RequestMapping(value="search/{searchType}/{searchKey}")
+	@ResponseBody
+	public ModelAndView search(@PathVariable("searchType")String searchType, @PathVariable("searchKey")String searchKey) {
+		return new ModelAndView("community");
+	}
+	
 	@RequestMapping(value="/getPosts")
 	@ResponseBody
 	public ArtworksList getArtWorksAll(@RequestHeader HttpHeaders headers) {
@@ -72,16 +78,18 @@ public class ArtWorkController {
 			Pageable pageable = new PageRequest(pageNo, 10);
 			Page<Integer> page = null;
 			String typeSort = headers.getFirst("present");
-			int clientId = Integer.parseInt(headers.getFirst("userId"));
+			String userIdStr = headers.getFirst("userId");
+			
 			if(typeSort.equals("popular")) {
 				page = artworkService.findAllLikeSort(pageable);
 			} else if (typeSort.equals("latest")) {
 				page = artworkService.findAllTimeSort(pageable);
 			} else if (typeSort.equals("feed")) {
+				int clientId = Integer.parseInt(userIdStr);
 				page = artworkService.findFollowArtworks(clientId, pageable);
 			} else if (typeSort.equals("mylikes")) {
 				//page = artworkService.findAllRandSort(pageable);
-				int userId = Integer.parseInt(headers.getFirst("userId"));
+				int userId = Integer.parseInt(userIdStr);
 				page = artworkService.findUserLikes(userId, pageable);
 			} else if (typeSort.equals("tweet")) {
 				page = artworkService.findAllCommentSort(pageable);
@@ -92,10 +100,17 @@ public class ArtWorkController {
 			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
 			List<Integer> artworkIds = page.getContent();
 			
-			for(Integer integer : artworkIds) {
-				artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
+			if(userIdStr.equals("null")) {
+				for(Integer integer : artworkIds) {
+					artWorkDetails.add(artworkService.getArtworkDetails(integer));
+				}
+			} else {
+				int clientId = Integer.parseInt(userIdStr);
+				for(Integer integer : artworkIds) {
+					artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
+				}
 			}
-			
+
 			artworksList.setPosts(artWorkDetails);
 			
 		} catch (Exception e) {
@@ -118,9 +133,14 @@ public class ArtWorkController {
 		try {
 			System.out.println(headers.getFirst("present"));
 			int artworkId = Integer.parseInt(headers.getFirst("present"));
-			int clientId = Integer.parseInt(headers.getFirst("userId"));
-			
-			ArtWorkDetails artWorkDetails = artworkService.getArtworkDetails(artworkId, clientId);
+			String userIdStr = headers.getFirst("userId");
+			ArtWorkDetails artWorkDetails = null;
+			if(userIdStr.equals("null")) {
+				artWorkDetails = artworkService.getArtworkDetails(artworkId);
+			} else {
+				int clientId = Integer.parseInt(userIdStr);				
+				artWorkDetails = artworkService.getArtworkDetails(artworkId, clientId);
+			}
 			artworksList.setPost(artWorkDetails);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -135,7 +155,11 @@ public class ArtWorkController {
 		ArtWorkLikes artWorkLikes = new ArtWorkLikes();
 		try {
 			int artworkId = Integer.valueOf(headers.getFirst("artworkid"));
-			int userId = Integer.valueOf(headers.getFirst("userId"));
+			String userIdStr = headers.getFirst("userId");
+			int userId = 114514;
+			if(!userIdStr.equals("null")) {
+				userId = Integer.valueOf(userIdStr);
+			}
 			Clicks clicks = new Clicks();
 			clicks.setArtworkId(artworkId);
 			clicks.setUserId(userId);
@@ -220,12 +244,6 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="search/{searchType}/{searchKey}")
-	@ResponseBody
-	public ModelAndView search(@PathVariable("searchType")String searchType, @PathVariable("searchKey")String searchKey) {
-		return new ModelAndView("community");
-	}
-	
 	@RequestMapping(value="getsearch")
 	@ResponseBody
 	public ArtworksList searchArtworks(@RequestHeader HttpHeaders headers) {
@@ -234,7 +252,7 @@ public class ArtWorkController {
 		try {
 			
 			String present = URLDecoder.decode(headers.getFirst("present"), "UTF-8");
-			int clientId = Integer.parseInt(headers.getFirst("userId"));
+			String userIdStr = headers.getFirst("userId");
 			int pageNo = 0;
 			String pageStr = headers.getFirst("page");
 			if(pageStr != null && !pageStr.equals("")) {
@@ -265,9 +283,15 @@ public class ArtWorkController {
 			
 			List<ArtWorkDetails> artWorkDetails = new ArrayList<>();
 			List<Integer> artworkIds = page.getContent();
-			
-			for(Integer integer : artworkIds) {
-				artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
+			if(userIdStr.equals("null")) {
+				for(Integer integer : artworkIds) {
+					artWorkDetails.add(artworkService.getArtworkDetails(integer));
+				}
+			} else {
+				int clientId = Integer.parseInt(userIdStr);
+				for(Integer integer : artworkIds) {
+					artWorkDetails.add(artworkService.getArtworkDetails(integer, clientId));
+				}
 			}
 			artworksList.setPosts(artWorkDetails);
 
@@ -287,7 +311,6 @@ public class ArtWorkController {
 		ArtworksList artworksList = new ArtworksList();
 		try {
 			int artworkId = Integer.parseInt(headers.getFirst("present").split("/")[3]);
-			System.out.println("artworkId:" + String.valueOf(artworkId));
 			List<Object[]> datalist = artworkService.countClicksPerMonth(artworkId);
 			List<Object[]> datalist2 = artworkService.countClicksBySex(artworkId);
 			ChartData chartData = new ChartData();
@@ -307,10 +330,18 @@ public class ArtWorkController {
 	@ResponseBody
 	public ArtworksList pullNotification(@RequestHeader HttpHeaders headers){
 		ArtworksList artworksList = new ArtworksList();
-		String receiverName = headers.getFirst("username");
-		artworksList.setNotification(usersService.findByReceiverName(receiverName));
-
-		usersService.updateNotification(receiverName);
+		try {
+			String receiverName = headers.getFirst("username");
+			if(!receiverName.equals("null")) {
+				artworksList.setNotification(usersService.findByReceiverName(receiverName));
+				usersService.updateNotification(receiverName);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
 		return artworksList;
 	}
 	
@@ -318,8 +349,17 @@ public class ArtWorkController {
 	@ResponseBody
 	public ArtworksList fetchNotification(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
-		String receiverName = headers.getFirst("username");
-		artworksList.setNotifyNum(usersService.countNotifyNum(receiverName));
+		try {
+			String receiverName = headers.getFirst("username");
+			if(!receiverName.equals("null")) {
+				artworksList.setNotifyNum(usersService.countNotifyNum(receiverName));
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
 		return artworksList;
 	}
 	
