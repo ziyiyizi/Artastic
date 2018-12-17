@@ -18,7 +18,6 @@ import com.javaee.artastic.Artastic.service.impl.UploadPicService;
 @RequestMapping("/upload")
 public class UploadPicController {
 
-
 	@Autowired
 	private UploadPicService uploadPicService;
 	

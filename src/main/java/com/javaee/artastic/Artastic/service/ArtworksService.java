@@ -26,20 +26,16 @@ public interface ArtworksService {
 	public List<Map<String, Object>> findLikesList(int artworkId);
 	//找出作品的喜爱者列表，分页
 	public Page<Map<String, Object>> findLikesList(int artworkId, Pageable pageable);
-	//作品的喜爱数
-	public int countLikes(int artworkId);
 	//作品评论列表
 	public List<Map<String, Object>> findCommentList(int artworkId);
 	//作品tag列表
 	public List<String> findTagList(int artworkId);
-	//获取作品详细信息
-	public ArtWorkDetails getArtworkDetails(int artworkId, int clientId);
-	//获取作品详细信息
-	public ArtWorkDetails getArtworkDetails(int artworkId);
-	//获取作品详细信息
-	public ArtWorkDetails getArtworkDetails(Artworks artworks);
-	//获取作品喜爱，评论列表
-	public ArtWorkLikes getArtworkLikes(int artworkId);
+	//一定时间内最受欢迎的tag
+	public List<String> findTagListPopular(String start, String end);
+	//一定时间内最受喜欢的作品
+	public Integer findAllArtworkIdLikeSort(String start, String end);
+	//一定时间内点击量最高的作品
+	public Object[] findArtworkWeekly(String start, String end);
 	//获取所有作品
 	public List<Artworks> findAll();
 	//获取所有作品，分页，无排序
@@ -59,7 +55,7 @@ public interface ArtworksService {
 	//按关键字查询，模糊搜索
 	public Page<Integer> findBySearchKey(String key, Pageable pageable);
 	//按关键字查询，模糊搜索
-	public Page<Integer> findBySearchAll(String key, Pageable pageable);	
+	public Page<Integer> findBySearchAll(String key, Pageable pageable);
 	//按作品名字查询，模糊搜索
 	public Page<Integer> findByWorkName(String artworkName, Pageable pageable);
 	//按作家名字查询，模糊搜索
@@ -80,24 +76,33 @@ public interface ArtworksService {
 	public Page<Integer> findByAllKey(String userName, String artworkName, String tagName, Pageable pageable);
 	//获取喜爱的作品
 	public Page<Integer> findUserLikes(int userId, Pageable pageable);
+	
+	//获取作品详细信息
+	public ArtWorkDetails getArtworkDetails(int artworkId, int clientId);
+	//获取作品详细信息
+	public ArtWorkDetails getArtworkDetails(int artworkId);
+	//获取作品详细信息
+	public ArtWorkDetails getArtworkDetails(Artworks artworks);
+	//获取作品喜爱，评论列表
+	public ArtWorkLikes getArtworkLikes(int artworkId);
+	
+	//是否喜欢
+	public boolean isLike(int userId, int artworkId);
+	
 	//更新作品
 	public Artworks saveArtwork(Artworks artworks);
 	//更新点击
 	public Clicks saveClick(Clicks clicks);
-	//是否喜欢
-	public boolean isLike(int userId, int artworkId);
 	//更新喜爱作品
 	public Likes saveLike(Likes likes);
 	//更新评论
 	public Comments saveComment(Comments comments);
+	
 	//获取每月点击量
 	public List<Object[]> countClicksPerMonth(int artworkId);
 	//统计点击者性别比例
 	public List<Object[]> countClicksBySex(int artworkId);
-	//一定时间内最受欢迎的tag
-	public List<String> findTagListPopular(String start, String end);
-	//一定时间内最受喜欢的作品
-	public Integer findAllArtworkIdLikeSort(String start, String end);
-	//一定时间内点击量最高的作品
-	public Object[] findArtworkWeekly(String start, String end);
+	//作品的喜爱数
+	public int countLikes(int artworkId);
+
 }

@@ -3,7 +3,6 @@ package com.javaee.artastic.Artastic.controller;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,17 +19,14 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.Follow;
@@ -44,7 +40,6 @@ import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 
 @EnableAutoConfiguration
 @RestController
-//@RequestMapping(value="/user")
 
 public class UsersController {
 
@@ -53,11 +48,6 @@ public class UsersController {
 	
 	@Autowired
 	private UploadPicService uploadPicService;
-	
-	@RequestMapping(value= {"/user/login", "/login"},method = RequestMethod.GET)
-	public ModelAndView login() {
-		return new ModelAndView("index");
-	}
 	
 	@RequestMapping(value="/user/login",method = RequestMethod.POST)
 	@ResponseBody
