@@ -1,4 +1,4 @@
-# The Artastic Project
+﻿# The Artastic Project
 
 ## Overview
 Artastic is an experimental project of software engineering with a deployment of JavaEE backend and React Frontend. 
@@ -38,10 +38,10 @@ According to the requirements of users, the following functionalities will be ta
 * maven v3.6
 * spring boot v1.4.1
 * webpack v4.0
-* jpa
+* spring data jpa
 * thymeleaf
-* shiro
-* activemq
+* apache shiro
+* websocket
 
 ## Code Contributors
 
