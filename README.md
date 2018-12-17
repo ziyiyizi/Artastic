@@ -5,6 +5,8 @@ Artastic is an experimental project of software engineering with a deployment of
 
 Project ‘Artastic’ is designed as a complete solution of an online community for creative artists. Which means it's a platform where members can exhibit artworks of their own, share their ideas, and make comments on works of others.
 
+Link to Frontend: https://github.com/Aquamarino/ArtasticFrontend
+
 ### Let's have a peek at it:
 ![Alt text](/src/Artastic_Community.gif "Project Artastic")
 
