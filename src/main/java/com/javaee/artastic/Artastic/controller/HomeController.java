@@ -3,6 +3,7 @@ package com.javaee.artastic.Artastic.controller;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -43,10 +44,11 @@ public class HomeController {
 		return mv;
 	}
 	
-	@RequestMapping(value= {"/websocket"})
+	@RequestMapping(value= {"/websockettest/{userName}"})
 	@ResponseBody
-	public ModelAndView websocket() {
+	public ModelAndView websocket(@PathParam("userName")String userName) {
 		ModelAndView mv = new ModelAndView("websocket");
+		mv.addObject("userName", userName);
 		return mv;
 	}
 

@@ -67,7 +67,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/b6cbb1c40dc3792372eec59da0a62963.svg", "anon");
         filterChainDefinitionMap.put("/a60613b465f2dd5c6f5848d3feb40ffd.jpg", "anon");
         
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setLoginUrl("/user/login");
         shiroFilterFactoryBean.setSuccessUrl("/success");
         
