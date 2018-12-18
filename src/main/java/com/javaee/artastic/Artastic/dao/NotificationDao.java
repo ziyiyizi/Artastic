@@ -15,7 +15,7 @@ public interface NotificationDao extends JpaRepository<Notification, Long>{
 	
 	//public List<Notification> findByReceiverNameOrderByNotiTimeDesc(String receiverName);
 	
-	@Query(value="select * from notification where Receiver_Name=?1 order by Noti_Time desc limit 10", nativeQuery=true)
+	@Query(value="select * from notification where Receiver_Name=?1 order by Noti_Time desc limit 50", nativeQuery=true)
 	public List<Notification> findByReceiverNameOrderByNotiTimeDesc(String receiverName);
 	
 	@Modifying

@@ -64,6 +64,8 @@ public interface UsersService {
 	public boolean isNameOrMailExists(String userName, String userMail);
 	//用户是否激活
 	public boolean isUserActivate(String userName);
+	//用户是否激活
+	public boolean isUserActivate(Users users);
 	//是否关注过
 	public boolean isFollow(int artistId, int followerId);
 	

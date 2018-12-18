@@ -147,7 +147,11 @@ public class ArtworksServiceImpl implements ArtworksService{
 	@Override
 	public ArtWorkDetails getArtworkDetails(Artworks artworks) {
 		// TODO Auto-generated method stub
+		
 		ArtWorkDetails artWorkDetails = new ArtWorkDetails();
+		if(artworks == null) {
+			return artWorkDetails;
+		}
 		int artworkId = artworks.getArtworkId();
 		int userId = artworks.getArtistId();
 		artWorkDetails.setArtworkId(artworkId);
@@ -368,7 +372,13 @@ public class ArtworksServiceImpl implements ArtworksService{
 	@Override
 	public Object[] findArtworkWeekly(String start, String end) {
 		// TODO Auto-generated method stub
-		return artworksDao.findArtworkMaxClicks(start, end).get(0);
+		List<Object[]> objects = artworksDao.findArtworkMaxClicks(start, end);
+		if(objects.isEmpty() == true) {
+			return null;
+		} else {
+			return objects.get(0);
+		}
+		
 	}
 
 	

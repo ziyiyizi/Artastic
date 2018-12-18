@@ -172,7 +172,7 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="makecomment")
+	@RequestMapping(value="/makecomment")
 	public ArtworksList makeComment(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		artworksList.setError(false);
@@ -211,7 +211,7 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="getpostchart")
+	@RequestMapping(value="/getpostchart")
 	@ResponseBody
 	public ArtworksList getPostChart(@RequestHeader HttpHeaders headers) {
 		

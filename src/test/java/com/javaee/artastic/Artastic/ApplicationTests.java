@@ -34,6 +34,6 @@ public class ApplicationTests {
       context.setVariable("id", "1");
 	  String emailContent = templateEngine.process("emailTemplate", context);
 
-	  mailService.sendHtmlMail("xiajinlei@foxmail.com","主题：这是模板邮件",emailContent);
+	  mailService.sendHtmlMail("xiajinlei@foxmail.com","主题：这是模板邮件", "emailTemplate", context);
 	}
 }

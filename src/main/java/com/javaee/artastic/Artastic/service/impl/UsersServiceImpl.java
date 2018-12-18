@@ -59,6 +59,9 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public List<Roles> findRoleList(Users users) {
 		// TODO Auto-generated method stub
+		if(users == null) {
+			return null;
+		}
 		int userid = users.getUserId();
 		return rolesDao.findRolesByUser(userid);
 	}
@@ -134,12 +137,23 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public boolean isUserActivate(String userName) {
 		// TODO Auto-generated method stub
-		if(usersDao.findUserStateByUserName(userName).equals("1")) {
-			return true;
-		} else {
+		String userState = usersDao.findUserStateByUserName(userName);
+		if(userState.equals("") || userState.equals("0") || userState == null) {
 			return false;
+		} else {
+			return true;
 		}
 		
+	}
+
+	@Override
+	public boolean isUserActivate(Users users) {
+		// TODO Auto-generated method stub
+		if(users == null || users.getUserState().equals("0")) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -181,17 +195,21 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		List<UserDetails> userDetailList = new ArrayList<>();
 		
-		Page<Map<String, Object>> page = usersDao.findUsers(userName, pageable);
-		List<Map<String, Object>> detailslist = page.getContent();
-		for(Map details : detailslist) {
-			UserDetails userDetails = new UserDetails();
-			userDetails.setIconURL(String.valueOf(details.get("userIcon")));
-			userDetails.setArtistName(String.valueOf(details.get("userName")));
-			int userId = Integer.parseInt(String.valueOf(details.get("userId")));
-			userDetails.setFrenzy(followDao.countFollows(userId));
-			userDetailList.add(userDetails);
+		try {
+			Page<Map<String, Object>> page = usersDao.findUsers(userName, pageable);
+			List<Map<String, Object>> detailslist = page.getContent();
+			for(Map details : detailslist) {
+				UserDetails userDetails = new UserDetails();
+				userDetails.setIconURL(String.valueOf(details.get("userIcon")));
+				userDetails.setArtistName(String.valueOf(details.get("userName")));
+				int userId = Integer.parseInt(String.valueOf(details.get("userId")));
+				userDetails.setFrenzy(followDao.countFollows(userId));
+				userDetailList.add(userDetails);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		
+				
 		return userDetailList;
 		
 	}
@@ -200,19 +218,23 @@ public class UsersServiceImpl implements UsersService{
 	public UserDetails findUserDetails(String userName, Pageable pageable) {
 		// TODO Auto-generated method stub
 		UserDetails userDetails = new UserDetails();
-		Map<String, Object> usermap = usersDao.findUsersEX(userName);
-		int userId = Integer.parseInt(String.valueOf(usermap.get("userId")));
-		userDetails.setArtistId(userId);
-		userDetails.setArtistName(String.valueOf(usermap.get("userName")));
-		userDetails.setFrenzy(followDao.countFollows(userId));
-		userDetails.setIconURL(String.valueOf(usermap.get("userIcon")));
-		Map<String, Object> usermap2 = usersDao.findTimeAndDescription(userId);
-		userDetails.setDescription(String.valueOf(usermap2.get("description")));
-		Timestamp timestamp = (Timestamp)usermap2.get("time");
-		userDetails.setJoinyear(timestamp.toString());
-		userDetails.setWorknum(usersDao.countWorks(userId));
-		userDetails.setFollowers(usersDao.findFollower(userId, pageable).getContent());
-		userDetails.setFollowing(usersDao.findFollowing(userId, pageable).getContent());
+		try {
+			Map<String, Object> usermap = usersDao.findUsersEX(userName);
+			int userId = Integer.parseInt(String.valueOf(usermap.get("userId")));
+			userDetails.setArtistId(userId);
+			userDetails.setArtistName(String.valueOf(usermap.get("userName")));
+			userDetails.setFrenzy(followDao.countFollows(userId));
+			userDetails.setIconURL(String.valueOf(usermap.get("userIcon")));
+			Map<String, Object> usermap2 = usersDao.findTimeAndDescription(userId);
+			userDetails.setDescription(String.valueOf(usermap2.get("description")));
+			Timestamp timestamp = (Timestamp)usermap2.get("time");
+			userDetails.setJoinyear(timestamp.toString());
+			userDetails.setWorknum(usersDao.countWorks(userId));
+			userDetails.setFollowers(usersDao.findFollower(userId, pageable).getContent());
+			userDetails.setFollowing(usersDao.findFollowing(userId, pageable).getContent());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		return userDetails;
 	}

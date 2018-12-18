@@ -31,35 +31,28 @@ public class MyShiroRealm extends AuthorizingRealm{
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		// TODO Auto-generated method stub
-		System.out.println("权限配置");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         String username = (String) principals.getPrimaryPrincipal();
-        System.out.println(username);
         Users users = usersService.findByUserName(username);
         if(users == null) {
         	return null;
         }
-
         for (Roles role : usersService.findRoleList(users)) {
             authorizationInfo.addRole(role.getRoleName());
             for (Permissions p: rolesService.findPermissionList(role)) {
                 authorizationInfo.addStringPermission(p.getAuthority());
             }
         }
-
         return authorizationInfo;
-
-
 	}
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// TODO Auto-generated method stub
-		System.out.println("身份认证");
         String username = (String)token.getPrincipal(); //获取用户名，loginUser-username。
         Users users = usersService.findByUserName(username);
 
-        if (users == null) {
+        if (!usersService.isUserActivate(users)) {
             //没有返回登录用户名对应的SimpleAuthenticationInfo对象时,就会在LoginController中抛出UnknownAccountException异常
             return null;
         }
@@ -67,7 +60,6 @@ public class MyShiroRealm extends AuthorizingRealm{
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 username, //用户信息
                 users.getUserPassword(),
-                //ByteSource.Util.bytes(users.getUserName()+users.getUserSalt()),
                 getName() //realm name
         );
 

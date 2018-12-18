@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@IdClass(NotificationPK.class)
 public class Notification {
     private int notiId;
     private String senderName;
@@ -26,7 +25,7 @@ public class Notification {
         this.notiId = notiId;
     }
 
-    @Id
+    @Basic
     @Column(name = "Sender_Name")
     public String getSenderName() {
         return senderName;
@@ -36,7 +35,7 @@ public class Notification {
         this.senderName = senderName;
     }
 
-    @Id
+    @Basic
     @Column(name = "Receiver_Name")
     public String getReceiverName() {
         return receiverName;
@@ -46,7 +45,7 @@ public class Notification {
         this.receiverName = receiverName;
     }
 
-    @Id
+    @Basic
     @Column(name = "Noti_Time")
     public Timestamp getNotiTime() {
         return notiTime;

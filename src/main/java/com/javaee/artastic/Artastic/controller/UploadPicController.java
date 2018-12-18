@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.service.impl.UploadPicService;
 
 @RestController
@@ -23,7 +24,7 @@ public class UploadPicController {
 	
     @RequestMapping(value="/test", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> headImgUpload(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+    public ArtworksList headImgUpload(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
 
     	return uploadPicService.uploadFile(request, headers);
     }

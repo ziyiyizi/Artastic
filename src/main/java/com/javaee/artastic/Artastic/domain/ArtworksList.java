@@ -22,8 +22,16 @@ public class ArtworksList {
 	
 	private boolean error;
 	
+	private String errorMsg;
 	
-	
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
 	public Weekly getWeekly() {
 		return weekly;
 	}

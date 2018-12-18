@@ -27,14 +27,14 @@ public class WeeklyController {
 	@Autowired
 	private ArtworksService artworksService;
 	
-	@RequestMapping("getweekly")
+	@RequestMapping("/getweekly")
 	@ResponseBody
 	public ArtworksList getWeekly(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		
 		try {
 			Weekly weekly = new Weekly();
-			weekly.setTags(artworksService.findTagListPopular("2018-12-07", "2018-12-15"));
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			
 			Date startDay = new Date(System.currentTimeMillis()-3600l*24*7*1000);
@@ -42,22 +42,29 @@ public class WeeklyController {
 			String start = formatter.format(startDay);
 			String end = formatter.format(endDay);
 			
+			weekly.setTags(artworksService.findTagListPopular(start, end));
+			
 			Object[] artworkdetails = artworksService.findArtworkWeekly(start, end);
-			weekly.setArtworkId(Integer.parseInt(String.valueOf(artworkdetails[0])));
-			weekly.setArtworkName((String)artworkdetails[1]);
-			int artistId = Integer.parseInt(String.valueOf(artworkdetails[2]));
-			weekly.setFileURL((String)artworkdetails[3]);
 			
-			weekly.setArtworkviews(Integer.parseInt(String.valueOf(artworkdetails[4])));
-			Map<String, Object> userNameAndIcon = usersService.findNameAndIconByUserId(artistId);
-			weekly.setArtistName((String)userNameAndIcon.get("name"));
-			weekly.setIconURL((String)userNameAndIcon.get("icon"));
-			weekly.setFrenzy(usersService.countFollows(artistId));
-			
+			if(artworkdetails != null) {
+				
+				weekly.setArtworkId(Integer.parseInt(String.valueOf(artworkdetails[0])));
+				weekly.setArtworkName((String)artworkdetails[1]);
+				int artistId = Integer.parseInt(String.valueOf(artworkdetails[2]));
+				weekly.setFileURL((String)artworkdetails[3]);
+				weekly.setArtworkviews(Integer.parseInt(String.valueOf(artworkdetails[4])));
+				
+				Map<String, Object> userNameAndIcon = usersService.findNameAndIconByUserId(artistId);
+				
+				weekly.setArtistName((String)userNameAndIcon.get("name"));
+				weekly.setIconURL((String)userNameAndIcon.get("icon"));
+				weekly.setFrenzy(usersService.countFollows(artistId));
+			}
+
 			artworksList.setWeekly(weekly);
 		} catch (Exception e) {
 			// TODO: handle exception
-			ExceptionUtil.handleException(e);
+			artworksList.setError(true);
 		}
 		return artworksList;
 	}

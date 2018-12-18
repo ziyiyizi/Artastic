@@ -51,7 +51,7 @@ public class UsersController {
 	
 	@RequestMapping(value="/user/login",method = RequestMethod.POST)
 	@ResponseBody
-	public Params login(@RequestBody Params param, HttpResponse response, HttpSession session) throws Exception {
+	public Params login(@RequestBody Params param, HttpSession session) throws Exception {
 		
 		param.setError(false);
         String username = param.getUsername();
@@ -64,22 +64,18 @@ public class UsersController {
         	Users users = usersService.findByUserName(username);
         	param.setUserId(users.getUserId());
         	param.setIconURL(users.getUserIcon());
-        	System.out.println("登录成功");
         }catch (Exception e) {
 			// TODO: handle exception
         	String msg = null;
         	if(e instanceof UnknownAccountException) {
-        		System.out.println("账户不存在");
-                msg = "账户不存在或密码不正确";
+                msg = "Unknown Account";
         	} else if(e instanceof IncorrectCredentialsException) {
-        		System.out.println("密码不正确");
-                msg = "账户不存在或密码不正确";
+                msg = "Incorrect Password";
         	} else {
-        		System.out.println("其他异常");
-                msg = "其他异常";
+                msg = "Other Exception";
 			}
-        	System.out.println(msg);
             param.setError(true);
+            param.setErrorMsg(msg);
 		}
         return param;
     }
@@ -92,7 +88,7 @@ public class UsersController {
 		return usersEntities;
 	}
 	
-	@RequestMapping(value="followmember")
+	@RequestMapping(value="/followmember")
 	@ResponseBody
 	public ArtworksList followMember(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
@@ -100,7 +96,13 @@ public class UsersController {
 		try {
 			String artistName = headers.getFirst("present");
 			int artistId = usersService.findUserIdByUserName(artistName);
-			int followerId = Integer.parseInt(headers.getFirst("userid"));
+			String userIdStr = headers.getFirst("userid");
+			if(userIdStr.equals("null")) {
+				artworksList.setError(true);
+				artworksList.setErrorMsg("Please sign in first!");
+				return artworksList;
+			}
+			int followerId = Integer.parseInt(userIdStr);
 			if(usersService.isFollow(artistId, followerId) == false) {
 				Follow follow = new Follow();
 				follow.setArtistId(artistId);
@@ -124,9 +126,9 @@ public class UsersController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="getmemberdetail")
+	@RequestMapping(value="/getmemberdetail")
 	@ResponseBody
-	public ArtworksList getMember(@RequestHeader HttpHeaders headers) {
+	public ArtworksList getMemberDetails(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		try {
 			UserDetails userDetails = null;
@@ -144,7 +146,7 @@ public class UsersController {
 			}
 			
 			if(!userName.equals("null")) {
-				Pageable pageable = new PageRequest(0, 10);
+				Pageable pageable = new PageRequest(0, 20);
 				userDetails = usersService.findUserDetails(userName, pageable);
 				
 				String userIdStr = headers.getFirst("userId");
@@ -166,9 +168,9 @@ public class UsersController {
 		return artworksList;
 	}
 	
-	@RequestMapping(value="getprofile")
+	@RequestMapping(value="/getprofile")
 	@ResponseBody
-	public Users getProfile(@RequestHeader HttpHeaders headers) {
+	public Users getUserProfile(@RequestHeader HttpHeaders headers) {
 		Users users = null;
 		try {
 			int userId = Integer.parseInt(headers.getFirst("userid"));
@@ -180,7 +182,7 @@ public class UsersController {
 		return users;
 	}
 	
-	@RequestMapping(value="uploadprofile", method=RequestMethod.POST)
+	@RequestMapping(value="/uploadprofile", method=RequestMethod.POST)
 	@ResponseBody
 	public ArtworksList uploadProfile(HttpServletRequest request, @RequestHeader HttpHeaders headers){
 		ArtworksList artworksList = new ArtworksList();
@@ -190,7 +192,13 @@ public class UsersController {
         try {
         	mRequest = (MultipartHttpServletRequest)request;
         	
-        	int userId = Integer.valueOf(headers.getFirst("userid"));
+        	String userIdStr = headers.getFirst("userid");
+        	if(userIdStr.equals("null")) {
+        		artworksList.setError(true);
+        		artworksList.setErrorMsg("Please sign in first!");
+        		return artworksList;
+        	}
+        	int userId = Integer.valueOf(userIdStr);
         	String userSex = mRequest.getParameter("userSex");
         	String userDescription = mRequest.getParameter("userDescription");
         	String userMail = mRequest.getParameter("userMail");

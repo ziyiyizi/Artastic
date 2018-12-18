@@ -91,6 +91,7 @@ public class WebSocketController {
         String now = getNowTime();
         try {
             if (webSocketSet.get(sendUserName) != null) {
+            	System.out.println(now + "用户" + username + "发来消息：" + " <br/> " + sendMessage);
                 webSocketSet.get(sendUserName).sendMessage(now + "用户" + username + "发来消息：" + " <br/> " + sendMessage);
             } else {
                 System.out.println("当前用户不在线");

@@ -2,8 +2,11 @@ package com.javaee.artastic.Artastic.service.impl;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +23,7 @@ import com.javaee.artastic.Artastic.dao.TagsDao;
 import com.javaee.artastic.Artastic.dao.UsersDao;
 import com.javaee.artastic.Artastic.domain.Artdata;
 import com.javaee.artastic.Artastic.domain.Artworks;
+import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.Tags;
 import com.javaee.artastic.Artastic.utils.AliyunOSSUtil;
 
@@ -41,9 +45,9 @@ public class UploadPicService {
     private AliyunOSSUtil ossUtil = new AliyunOSSUtil();
     
     @Transactional
-    public Map<String, Object> uploadIcon(MultipartFile mFile, int userId){
-    	Map<String, Object> value = new HashMap<String, Object>();
-        value.put("error", true);
+    public ArtworksList uploadIcon(MultipartFile mFile, int userId){
+    	ArtworksList artworksList = new ArtworksList();
+        artworksList.setError(false);
 
         try {
 
@@ -51,23 +55,20 @@ public class UploadPicService {
         		ossUtil.setFileDir(ossUtil.getBaseFileDir() + String.valueOf(userId) + "/");
             	String name = ossUtil.uploadImg2Oss(mFile);
                 String imgUrl = ossUtil.getImgUrl(name);
-                value.put("name", name);
-                value.put("imgUrl", imgUrl);
             	usersDao.updateUserIconByUserId(userId, imgUrl);
             }
 
         } catch (Exception e) {
 			// TODO: handle exception
-        	value.put("error", false);
+        	artworksList.setError(true);
         	
 		}
-        return value;
+        return artworksList;
     }
     
     @Transactional
-    public Map<String, Object> uploadFile(HttpServletRequest request, HttpHeaders headers){
-    	Map<String, Object> value = new HashMap<String, Object>();
-        value.put("error", true);
+    public ArtworksList uploadFile(HttpServletRequest request, HttpHeaders headers){
+    	ArtworksList artworksList = new ArtworksList();
         MultipartHttpServletRequest mRequest = null;
         MultipartFile mFile = null;
         try {
@@ -93,9 +94,7 @@ public class UploadPicService {
             
         	String name = ossUtil.uploadImg2Oss(mFile);
             String imgUrl = ossUtil.getImgUrl(name);
-            value.put("name", name);
-            value.put("imgUrl", imgUrl);
-            
+
             Artworks artworks = new Artworks();
             artworks.setArtistId(artistId);
             artworks.setArtworkDescription(description);
@@ -105,30 +104,33 @@ public class UploadPicService {
 
             int artworkId = artworksDao.save(artworks).getArtworkId();
             
-            if(tags != null && !tags.equals("")) {
-            	String[] tagslist = tags.split(",");
-                for(String tagName : tagslist) {
-                	Tags tag = new Tags();
-                	tag.setArtworkId(artworkId);
-                	tag.setTagName(tagName);
-                	tagsDao.save(tag);                	
-                }
-            }
-            
             if(imgUrl != null) {
             	Artdata artdata = new Artdata();
             	artdata.setArtworkId(artworkId);
             	artdata.setArtdata(imgUrl);
             	artdataDao.save(artdata);
-            }        
+            }   
+            
+            if(tags != null && !tags.equals("")) {
+            	String[] tagslist = tags.split(",");
+            	Set<String> tagset = new HashSet<>();
+            	for(String tagName : tagslist) {
+                	tagset.add(tagName);         	
+                }
+                for(String tagName2 : tagset) {
+                	Tags tag = new Tags();
+                	tag.setArtworkId(artworkId);
+                	tag.setTagName(tagName2);
+                	tagsDao.save(tag);                	
+                }
+            }          
 
         } catch (IOException e) {
-            e.printStackTrace();
-            value.put("error", false);
+            artworksList.setError(true);
         } catch (Exception e) {
-            e.printStackTrace();
+        	artworksList.setError(true);
         }
         
-        return value; 
+        return artworksList; 
     }
 }

@@ -37,7 +37,6 @@ public class ShiroConfiguration {
 //        shiroFilterFactoryBean.setSuccessUrl("/index");
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/403"); //这里设置403并不会起作用，参考http://www.jianshu.com/p/e03f5b54838c
 
-        filterChainDefinitionMap.put("/success", "authc");
         filterChainDefinitionMap.put("/index", "anon");
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/user/login", "anon");
@@ -69,7 +68,7 @@ public class ShiroConfiguration {
         
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setLoginUrl("/user/login");
-        shiroFilterFactoryBean.setSuccessUrl("/success");
+        shiroFilterFactoryBean.setSuccessUrl("/community");
         
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
@@ -124,7 +123,7 @@ public class ShiroConfiguration {
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
 
         //<!-- 记住我cookie生效时间30天 ,单位秒;-->
-        simpleCookie.setMaxAge(600);
+        simpleCookie.setMaxAge(3600 * 24 * 7);
         return simpleCookie;
     }
 

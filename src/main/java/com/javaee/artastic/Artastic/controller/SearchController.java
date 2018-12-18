@@ -29,7 +29,7 @@ public class SearchController {
 	@Autowired
 	private UsersService usersService;
 	
-	@RequestMapping(value="getsearch")
+	@RequestMapping(value="/getsearch")
 	@ResponseBody
 	public ArtworksList searchArtworks(@RequestHeader HttpHeaders headers) {
 		

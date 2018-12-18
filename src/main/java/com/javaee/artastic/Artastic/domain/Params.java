@@ -7,10 +7,17 @@ public class Params {
 	private String email;
 	private String sex;
 	private boolean error;
+	private String errorMsg;
 	private String iconURL;
 	private boolean remember;
 	
 	
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
 	public boolean isRemember() {
 		return remember;
 	}

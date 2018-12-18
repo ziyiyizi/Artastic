@@ -11,6 +11,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 
 @Service
 public class MailService {
@@ -18,6 +21,9 @@ public class MailService {
 	
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	private TemplateEngine templateEngine;
 	
 	@Value("${mail.fromMail.addr}")
 	private String fromMail;
@@ -38,17 +44,18 @@ public class MailService {
 		}
 	}
 	
-	public void sendHtmlMail(String toMail, String subject, String content) {
+	public void sendHtmlMail(String toMail, String subject, String htmlPage, Context context) {
 		MimeMessage message = mailSender.createMimeMessage();
 
 	    try {
 	        //true表示需要创建一个multipart message
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        String emailContent = templateEngine.process(htmlPage, context);
 	        helper.setFrom(fromMail);
 	        helper.setTo(toMail);
 	        helper.setSubject(subject);
-	        helper.setText(content, true);
-
+	        helper.setText(emailContent, true);
+	        
 	        mailSender.send(message);
 	        logger.info("html邮件发送成功");
 	    } catch (MessagingException e) {
