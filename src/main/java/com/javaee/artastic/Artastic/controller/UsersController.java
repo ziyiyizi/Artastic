@@ -103,19 +103,17 @@ public class UsersController {
 				return artworksList;
 			}
 			int followerId = Integer.parseInt(userIdStr);
-			if(usersService.isFollow(artistId, followerId) == false) {
+			if(artistId != followerId && usersService.isFollow(artistId, followerId) == false) {
 				Follow follow = new Follow();
 				follow.setArtistId(artistId);
 				follow.setFollowerId(followerId);
 				follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
 				usersService.saveFollow(follow);
-				System.out.println("成功关注该作者");
+				System.out.println("follow success");
 				
 				String senderName = headers.getFirst("username");
 				usersService.pushNotification(senderName, artistName, "", "follow", "", 0);
 				
-			} else {
-				System.out.println("已经关注过");
 			}
 			
 		} catch (Exception e) {

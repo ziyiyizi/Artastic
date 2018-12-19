@@ -75,6 +75,7 @@ public class RegisterController {
 			if(users2 != null) {
 				int userId = users2.getUserId();
 				params.setUserId(userId);
+				params.setIconURL(users2.getUserIcon());
 				
 				if(users2.getUserState().equals("0")) {
 					String registerLink="http://localhost:8080/Register/check?userId="
