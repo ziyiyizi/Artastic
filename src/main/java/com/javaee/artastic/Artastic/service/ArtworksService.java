@@ -104,5 +104,8 @@ public interface ArtworksService {
 	public List<Object[]> countClicksBySex(int artworkId);
 	//作品的喜爱数
 	public int countLikes(int artworkId);
+	
+	public List<String> findSimilarTag(String key);
+	public List<String> findSimilarTagEX(String key);
 
 }

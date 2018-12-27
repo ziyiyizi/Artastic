@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.javaee.artastic.Artastic.controller.WebSocketController;
 import com.javaee.artastic.Artastic.dao.FollowDao;
 import com.javaee.artastic.Artastic.dao.NotificationDao;
 import com.javaee.artastic.Artastic.dao.RolesDao;
@@ -320,6 +322,13 @@ public class UsersServiceImpl implements UsersService{
 			notification.setNotiContent(notiContent);
 			notification.setWorkId(workId);
 			saveNotification(notification);
+			
+			ConcurrentHashMap<String, WebSocketController> webSocketSet = WebSocketController.getWebSocketSet();
+			
+			if (webSocketSet.get(receiverName) != null) {
+	            webSocketSet.get(receiverName).sendMessage(type);
+	        }
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			artworksList.setError(true);

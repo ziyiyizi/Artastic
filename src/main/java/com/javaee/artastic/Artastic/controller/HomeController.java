@@ -1,7 +1,5 @@
 package com.javaee.artastic.Artastic.controller;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,13 +55,6 @@ public class HomeController {
 	@RequestMapping(value="search/{searchType}/{searchKey}")
 	public ModelAndView search(@PathVariable("searchType")String searchType, @PathVariable("searchKey")String searchKey) {
 		return new ModelAndView("community");
-	}
-	
-	@RequestMapping(value= {"/websockettest/{userName}"})
-	public ModelAndView websocket(@PathParam("userName")String userName) {
-		ModelAndView mv = new ModelAndView("websocket");
-		mv.addObject("userName", userName);
-		return mv;
 	}
 
 }

@@ -3,7 +3,6 @@ package com.javaee.artastic.Artastic.config.shiro;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -24,17 +23,8 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-//        filterChainDefinitionMap.put("/index", "authc");
-//        filterChainDefinitionMap.put("/login", "anon");
-//        filterChainDefinitionMap.put("/loginUser", "anon");
-//        filterChainDefinitionMap.put("/logout", "logout");
-////        filterChainDefinitionMap.put("/index", "user");
-////        filterChainDefinitionMap.put("/", "user");
-//        filterChainDefinitionMap.put("/favicon.ico", "anon");
-//        filterChainDefinitionMap.put("/**", "authc");
+
 //        //authc表示需要验证身份才能访问，还有一些比如anon表示不需要验证身份就能访问等。
-//        shiroFilterFactoryBean.setLoginUrl("/login");
-//        shiroFilterFactoryBean.setSuccessUrl("/index");
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/403"); //这里设置403并不会起作用，参考http://www.jianshu.com/p/e03f5b54838c
 
         filterChainDefinitionMap.put("/index", "anon");

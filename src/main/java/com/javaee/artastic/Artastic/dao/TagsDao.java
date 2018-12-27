@@ -20,4 +20,15 @@ public interface TagsDao extends JpaRepository<Tags, Long>{
 	//一定时间内喜爱度最高的作品tag频率
 	@Query(value="select ru.Tag_name from likes u,tags ru where u.Artwork_ID=ru.Artwork_ID and date(u.liketime) between ?1 and ?2 group by ru.Tag_name order by count(*) desc limit 5", nativeQuery=true)
 	public List<String> findTagListPopular(String start, String end);
+	
+	@Query(value="select Tag_name from tags where Artwork_ID in " + 
+			"(select Artwork_ID from tags where Tag_name like CONCAT('%',?1,'%')) and Tag_name <> ?1 " + 
+			"group by Tag_name order by count(*) desc limit 5", nativeQuery=true)
+	public List<String> findSimilarTag(String key);
+	
+	@Query(value="select Tag_name from tags where Artwork_ID in " + 
+			"(select Artwork_ID from tags where Tag_name = ?1) and Tag_name <> ?1 " + 
+			"group by Tag_name order by count(*) desc limit 5", nativeQuery=true)
+	public List<String> findSimilarTagEX(String key);
+	
 }

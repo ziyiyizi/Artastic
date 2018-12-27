@@ -11,7 +11,6 @@ import com.javaee.artastic.Artastic.domain.ArtworksList;
 import com.javaee.artastic.Artastic.domain.Weekly;
 import com.javaee.artastic.Artastic.service.ArtworksService;
 import com.javaee.artastic.Artastic.service.UsersService;
-import com.javaee.artastic.Artastic.utils.ExceptionUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;

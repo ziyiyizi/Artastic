@@ -16,6 +16,8 @@ public class ArtworksList {
 	
 	private List<Notification> notification;
 	
+	private List<String> values;
+	
 	private int notifyNum;
 	
 	private Weekly weekly;
@@ -24,6 +26,14 @@ public class ArtworksList {
 	
 	private String errorMsg;
 	
+	public List<String> getValues() {
+		return values;
+	}
+
+	public void setValues(List<String> values) {
+		this.values = values;
+	}
+
 	public String getErrorMsg() {
 		return errorMsg;
 	}

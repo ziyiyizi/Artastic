@@ -381,5 +381,17 @@ public class ArtworksServiceImpl implements ArtworksService{
 		
 	}
 
+	@Override
+	public List<String> findSimilarTag(String key) {
+		// TODO Auto-generated method stub
+		return tagsDao.findSimilarTag(key);
+	}
+
+	@Override
+	public List<String> findSimilarTagEX(String key) {
+		// TODO Auto-generated method stub
+		return tagsDao.findSimilarTagEX(key);
+	}
+
 	
 }

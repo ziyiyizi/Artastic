@@ -99,7 +99,6 @@ public class ArtWorkController {
 	public ArtworksList getArtworkOne(@RequestHeader HttpHeaders headers) {
 		ArtworksList artworksList = new ArtworksList();
 		try {
-			System.out.println(headers.getFirst("present"));
 			int artworkId = Integer.parseInt(headers.getFirst("present"));
 			String userIdStr = headers.getFirst("userId");
 			ArtWorkDetails artWorkDetails = null;
@@ -206,6 +205,7 @@ public class ArtWorkController {
 			// TODO: handle exception
 			artworksList.setError(true);
 		}
+		
 		return artworksList;
 	}
 	
@@ -231,4 +231,22 @@ public class ArtWorkController {
 		return artworksList;
 	}
 	
+	@RequestMapping(value="/getrecommendtags")
+	@ResponseBody
+	public ArtworksList getRecommendTags(@RequestHeader HttpHeaders headers) {
+		ArtworksList artworksList = new ArtworksList();
+		try {
+			String key = headers.getFirst("present");
+			List<String> values = artworkService.findSimilarTagEX(key);
+			if(values.get(0) == null || values.get(0).equals("")) {
+				values.add("unknown");
+			}
+			artworksList.setValues(values);
+		} catch (Exception e) {
+			// TODO: handle exception
+			ExceptionUtil.handleException(e);
+		}
+		
+		return artworksList;
+	}
 }
