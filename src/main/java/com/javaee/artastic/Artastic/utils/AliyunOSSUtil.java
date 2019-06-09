@@ -27,9 +27,9 @@ public class AliyunOSSUtil {
 	
 	private String endpoint = "oss-cn-shanghai.aliyuncs.com";
 	
-	private String accessKeyId = "";
+	private String accessKeyId = "LTAIE0LLKSsRlKOV";
 	
-	private String accessKeySecret = "";
+	private String accessKeySecret = "lmYNpl3uNu6PUzJRaGqbJslvYVwJeW";
 	
 	private String bucketName = "pic-artastic";
 	
