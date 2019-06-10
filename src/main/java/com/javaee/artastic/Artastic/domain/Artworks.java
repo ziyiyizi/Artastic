@@ -1,6 +1,10 @@
 package com.javaee.artastic.Artastic.domain;
 
 import javax.persistence.*;
+
+import org.springframework.context.support.StaticApplicationContext;
+
+import java.lang.Thread.State;
 import java.sql.Timestamp;
 
 @Entity
