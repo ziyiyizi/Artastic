@@ -19,7 +19,7 @@ import com.javaee.artastic.Artastic.service.RolesService;
 import com.javaee.artastic.Artastic.service.UsersService;
 
 @Component
-public class MyShiroRealm extends AuthorizingRealm{
+public class MyShiroRealm extends AuthorizingRealm { 
 	@Resource
 	private UsersService usersService;
 	

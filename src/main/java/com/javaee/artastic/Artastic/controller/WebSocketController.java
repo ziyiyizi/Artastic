@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
  * @ServerEndpoint 可以把当前类变成websocket服务类
  */
-@ServerEndpoint("/websocket/{username}")
+//@ServerEndpoint("/websocket/{username}")
 @Component
 public class WebSocketController {
 
