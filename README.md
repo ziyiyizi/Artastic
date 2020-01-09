@@ -82,7 +82,7 @@ The BeanFactory interface provides an advanced configuration mechanism capable o
 
 > ![Alt text](/src/Deployment_Diagram.jpg "Deployment") 
 
-    We use Aliyun QOS for Picture storage because mysql is lightweight and favourable for basic relationship database, however the pictures will be a bottleneck in data travel streaming, where it would lead clients to unbearable time consumption. Aliyun provides a well-rounded solution for huge picture storage and is easy for configuration in Springboot.
+    We use Aliyun OSS for Picture storage because mysql is lightweight and favourable for basic relationship database, however the pictures will be a bottleneck in data travel streaming, where it would lead clients to unbearable time consumption. Aliyun provides a well-rounded solution for huge picture storage and is easy for configuration in Springboot.
 
 > ![Alt text](/src/Database.png "Deployment") 
 
@@ -124,7 +124,4 @@ This part is under construction. Cuz i'm lazy and this part is non-related to Ja
 
 * Wen Chao Jie
 * Xia Jin Lei
-* Meng Fan Yu
-* Huang Shou Yu
-* Yang Yan
 
